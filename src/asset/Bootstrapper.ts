@@ -1,12 +1,12 @@
 import { 
-    Bootstrapper,
+    Bootstrapper as BaseBootstrapper,
     Camera,
     CssSpriteRenderer,
     SceneBuilder
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
 
-export class Scene498Bootstrapper extends Bootstrapper {
+export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
         const instantiater = this.instantiater;
         
