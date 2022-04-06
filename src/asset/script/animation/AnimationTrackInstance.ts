@@ -12,15 +12,20 @@ export class AnimationTrackInstance<T> {
     private _currentFrameIndex: number;
     private _animationTrack: AnimationTrack<T>;
 
-    public constructor(animationTrack: AnimationTrack<T>, target: T);
-    
-    public constructor(animationTrack: AnimationTrack<T>, target: (value: T) => void);
-
     public constructor(animationTrack: AnimationTrack<T>, target: ((value: T) => void)|T) {
         this._animationTrack = animationTrack;
         this._target = target;
         this._targetType = typeof target === "function" ? TargetKind.SetFunction : TargetKind.Reference;
         this._currentFrameIndex = 0;
+    }
+
+    public set target(target: ((value: T) => void)|T) {
+        this._target = target;
+        this._targetType = typeof target === "function" ? TargetKind.SetFunction : TargetKind.Reference;
+    }
+
+    public get target(): ((value: T) => void)|T {
+        return this._target;
     }
 
     public process(frame: number) {
