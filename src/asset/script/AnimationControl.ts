@@ -58,8 +58,10 @@ export class AnimationControl extends Component {
         if (!this._player) return;
         if (this._player.isPlaying) {
             this._player.stop();
+            if (this._playButton) this._playButton.textContent = "Play";
         } else {
             this._player.play();
+            if (this._playButton) this._playButton.textContent = "Stop";
         }
     };
 }

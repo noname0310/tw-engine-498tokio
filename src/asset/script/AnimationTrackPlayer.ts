@@ -8,9 +8,10 @@ export class AnimationTrackPlayer<T> extends Component {
     private _animationTrackInstace: AnimationTrackInstance<T>|null = null;
     private _elapsedTime = 0;
     private _frameRate = 60;
+    private _isPlaying = false;
 
     public update(): void {
-        if (!this._animationTrackInstace) return;
+        if (!this._animationTrackInstace || !this._isPlaying) return;
         
         this._elapsedTime += this.engine.time.deltaTime;
         const frameTime = this._elapsedTime * this._frameRate;
@@ -22,14 +23,20 @@ export class AnimationTrackPlayer<T> extends Component {
         if (!this._animationTarget) throw new Error("animationTarget is not set");
         this._elapsedTime = 0;
         this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
+        this._isPlaying = true;
     }
 
     public stop(): void {
-        this._animationTrackInstace = null;
+        this._isPlaying = false;
     }
 
     public process(frameTime: number): void {
-        if (!this._animationTrackInstace) return;
+        if (!this._animationTrack) throw new Error("animationTrack is not set");
+        if (!this._animationTarget) throw new Error("animationTarget is not set");
+
+        if (!this._animationTrackInstace) {
+            this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
+        }
         this._animationTrackInstace.process(frameTime);
     }
 
@@ -46,6 +53,6 @@ export class AnimationTrackPlayer<T> extends Component {
     }
 
     public get isPlaying(): boolean {
-        return this._animationTrackInstace ? true : false;
+        return this._isPlaying;
     }
 }
