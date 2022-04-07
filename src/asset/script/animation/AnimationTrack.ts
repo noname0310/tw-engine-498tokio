@@ -11,8 +11,19 @@ export class AnimationTrack<T> {
     private readonly _interpolator: IAnimationInterpolator<T>;
 
     public constructor(keys: AnimationKey<T>[], interpolator: IAnimationInterpolator<T>) {
+        AnimationTrack.validateKeys(keys);
         this._keys = keys.slice();
         this._interpolator = interpolator;
+    }
+
+    private static validateKeys<T>(keys: AnimationKey<T>[]): void {
+        let previousFrame = 0;
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i].frame < previousFrame) {
+                throw new Error("AnimationTrack: keys must be sorted by frame");
+            }
+            previousFrame = keys[i].frame;
+        }
     }
 
     public get keys(): readonly AnimationKey<T>[] {
