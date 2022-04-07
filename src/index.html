@@ -54,6 +54,12 @@
             width: 100%;
             margin: 0px 10px 0px 10px;
         }
+
+        .control_text {
+            margin: 0px 10px 0px 10px;
+            width: 80px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -61,7 +67,8 @@
     <div class="game_view" id="game_view"></div>
     <div class="game_controls">
         <button class="control_button" id="play_button">play</button>
-        <input type="range" min="1" max="1024" value="0" class="animation_slider" id="animation_slider">
+        <input type="range" min="0" max="1024" value="0" step="1" class="animation_slider" id="animation_slider">
+        <span id="frame_display" class="control_text">00000</span>
     </div>
 </body>
 

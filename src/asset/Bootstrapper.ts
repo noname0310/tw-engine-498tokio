@@ -58,6 +58,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     c.player = animationPlayer.ref;
                     c.playButton = document.getElementById("play_button")! as HTMLButtonElement;
                     c.slider = document.getElementById("animation_slider")! as HTMLInputElement;
+                    c.frameDisplayText = document.getElementById("frame_display")! as HTMLInputElement;
                 }))
         ;
     }

@@ -40,8 +40,13 @@ export class AnimationTrackPlayer<T> extends Component {
         this._animationTrackInstace.process(frameTime);
     }
 
-    public set animationTrack(animationTrack: AnimationTrack<T>) {
+    public get animationTrack(): AnimationTrack<T>|null {
+        return this._animationTrack;
+    }
+
+    public set animationTrack(animationTrack: AnimationTrack<T>|null) {
         this._animationTrack = animationTrack;
+        if (!animationTrack) return;
         if (!this._animationTarget || !this._animationTrackInstace) return;
         this._animationTrackInstace = animationTrack.createInstance(this._animationTarget);
     }
