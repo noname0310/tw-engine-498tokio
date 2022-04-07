@@ -28,6 +28,11 @@ export class AnimationTrackPlayer<T> extends Component {
         this._animationTrackInstace = null;
     }
 
+    public process(frameTime: number): void {
+        if (!this._animationTrackInstace) return;
+        this._animationTrackInstace.process(frameTime);
+    }
+
     public set animationTrack(animationTrack: AnimationTrack<T>) {
         this._animationTrack = animationTrack;
         if (!this._animationTarget || !this._animationTrackInstace) return;
@@ -38,5 +43,9 @@ export class AnimationTrackPlayer<T> extends Component {
         this._animationTarget = targetSetFunction;
         if (!this._animationTrackInstace) return;
         this._animationTrackInstace.targetSetFunction = targetSetFunction;
+    }
+
+    public get isPlaying(): boolean {
+        return this._animationTrackInstace ? true : false;
     }
 }
