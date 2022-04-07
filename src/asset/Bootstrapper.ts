@@ -5,7 +5,7 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
-import { AnimationKey } from "./script/animation/AnimationKey";
+import { AnimationKey, InterpolationKind } from "./script/animation/AnimationKey";
 import { AnimationTrack } from "./script/animation/AnimationTrack";
 import { AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
 
@@ -21,16 +21,24 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
-                .withComponent(AnimationTrackPlayer, c => {
-                    c.animationTarget = c.transform.position;
-                    c.animationTrack = new AnimationTrack([
-                        new AnimationKey(0, new Vector3(0, 0, 0)),
-                        new AnimationKey(1, new Vector3(1, 1, 1)),
-                        new AnimationKey(2, new Vector3(2, 2, 2)),
-                        new AnimationKey(3, new Vector3(3, 3, 3)),
-                        new AnimationKey(4, new Vector3(4, 4, 4)),
-                        new AnimationKey(5, new Vector3(5, 5, 5))
+                .withComponent(AnimationTrackPlayer, (c: AnimationTrackPlayer<Vector3>) => {
+                    const position = c.transform.position;
+                    c.animationTarget = value => position.copy(value);
+                    c.animationTrack = AnimationTrack.createVector3Track([
+                        AnimationKey.createRefType(0, new Vector3(0, 0, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(100, new Vector3(2, 2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(200, new Vector3(-2, -2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(300, new Vector3(-2, 2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(400, new Vector3(2, -2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(500, new Vector3(1, 1, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(600, new Vector3(0, 0, 0), InterpolationKind.Linear),
+                        AnimationKey.createRefType(700, new Vector3(2, 2, 0), InterpolationKind.Linear),
+                        AnimationKey.createRefType(800, new Vector3(-2, -2, 0), InterpolationKind.Linear),
+                        AnimationKey.createRefType(900, new Vector3(-2, 2, 0), InterpolationKind.Linear),
+                        AnimationKey.createRefType(1000, new Vector3(2, -2, 0), InterpolationKind.Linear),
+                        AnimationKey.createRefType(1100, new Vector3(1, 1, 0), InterpolationKind.Linear)
                     ]);
+                    c.play();
                 }));
     }
 }
