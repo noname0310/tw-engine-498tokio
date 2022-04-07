@@ -32,8 +32,8 @@ export class AnimationTrackInstance<T> {
 
         let startKeyIndex = this._currentFrameIndex;
 
-        while (0 <= startKeyIndex && frameTime <= keys[startKeyIndex].frame) startKeyIndex -= 1;
-        while (startKeyIndex < keys.length - 1 && frameTime > keys[startKeyIndex + 1].frame) startKeyIndex += 1;
+        while (0 < startKeyIndex && frameTime < keys[startKeyIndex].frame) startKeyIndex -= 1;
+        while (startKeyIndex < keys.length - 1 && frameTime >= keys[startKeyIndex + 1].frame) startKeyIndex += 1;
 
         this._currentFrameIndex = startKeyIndex;
 
