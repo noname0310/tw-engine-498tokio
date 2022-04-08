@@ -1,9 +1,11 @@
 import { Vector2, Vector3, Quaternion } from "three/src/Three";
 
 export interface IAnimationInterpolator<T> {
+    readonly tangentTempInstance?: T; //if T is value type, this is undefined
     readonly tempInstance?: T; //if T is value type, this is undefined
     lerp: (start: T, end: T, gradient: number, out?: T) => T;
     hermite: (start: T, end: T, inTangent: T, outTangent: T, gradient: number, out?: T) => T;
+    linearTangent: (start: T, end: T, out?: T) => T;
 }
 
 export const ScalarInterpolator = new class implements IAnimationInterpolator<number> {
@@ -22,9 +24,14 @@ export const ScalarInterpolator = new class implements IAnimationInterpolator<nu
 
         return start * part1 + end * part2 + inTangent * part3 + outTangent * part4;
     }
+
+    public linearTangent(start: number, end: number): number {
+        return end - start;
+    }
 };
 
 export const Vector2Interpolator = new class implements IAnimationInterpolator<Vector2> {
+    public readonly tangentTempInstance = new Vector2();
     public readonly tempInstance = new Vector2();
 
     public lerp(start: Vector2, end: Vector2, gradient: number, out?: Vector2): Vector2 {
@@ -59,9 +66,19 @@ export const Vector2Interpolator = new class implements IAnimationInterpolator<V
 
         return out;
     }
+
+    public linearTangent(start: Vector2, end: Vector2, out?: Vector2): Vector2 {
+        if (!out) out = new Vector2();
+
+        out.x = end.x - start.x;
+        out.y = end.y - start.y;
+        
+        return out;
+    }
 };
 
 export const Vector3Interpolator = new class Vector3Interpolator implements IAnimationInterpolator<Vector3> {
+    public readonly tangentTempInstance = new Vector3();
     public readonly tempInstance = new Vector3();
 
     public lerp(start: Vector3, end: Vector3, gradient: number, out?: Vector3): Vector3 {
@@ -98,9 +115,20 @@ export const Vector3Interpolator = new class Vector3Interpolator implements IAni
 
         return out;
     }
+
+    public linearTangent(start: Vector3, end: Vector3, out?: Vector3): Vector3 {
+        if (!out) out = new Vector3();
+
+        out.x = end.x - start.x;
+        out.y = end.y - start.y;
+        out.z = end.z - start.z;
+
+        return out;
+    }
 };
 
 export const QuaternionInterpolator = new class QuaternionInterpolator implements IAnimationInterpolator<Quaternion> {
+    public readonly tangentTempInstance = new Quaternion();
     public readonly tempInstance = new Quaternion();
 
     //slerp interpolation
@@ -160,6 +188,17 @@ export const QuaternionInterpolator = new class QuaternionInterpolator implement
         out.x = start.x * part1 + end.x * part2 + inTangent.x * part3 + outTangent.x * part4;
         out.y = start.y * part1 + end.y * part2 + inTangent.y * part3 + outTangent.y * part4;
         out.z = start.z * part1 + end.z * part2 + inTangent.z * part3 + outTangent.z * part4;
+
+        return out;
+    }
+
+    public linearTangent(start: Quaternion, end: Quaternion, out?: Quaternion): Quaternion {
+        if (!out) out = new Quaternion();
+
+        out.x = end.x - start.x;
+        out.y = end.y - start.y;
+        out.z = end.z - start.z;
+        out.w = end.w - start.w;
 
         return out;
     }

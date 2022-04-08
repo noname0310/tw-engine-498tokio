@@ -28,14 +28,15 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(AnimationTrackPlayer, (c: AnimationTrackPlayer<Vector3>) => {
                     const position = c.transform.position;
                     c.animationTarget = value => position.copy(value);
+                    const zero = new Vector3(0, 0, 0);
                     let acc = 0;
                     c.animationTrack = AnimationTrack.createVector3Track([
-                        AnimationKey.createRefType(acc, new Vector3(0, 0, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, 2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
-                        AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Cubic, new Vector3(0, 0, 0), new Vector3(0, 0, 0)),
+                        AnimationKey.createRefType(acc, new Vector3(0, 0, 0), InterpolationKind.Cubic, zero, zero),
+                        AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Cubic, zero, zero),
+                        AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Cubic, zero, zero),
+                        AnimationKey.createRefType(acc += 100, new Vector3(-2, 2, 0), InterpolationKind.Cubic, zero, zero),
+                        AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Cubic, zero, zero),
+                        AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Cubic, zero, zero),
                         AnimationKey.createRefType(acc += 100, new Vector3(0, 0, 0), InterpolationKind.Linear),
                         AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Linear),
                         AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Linear),

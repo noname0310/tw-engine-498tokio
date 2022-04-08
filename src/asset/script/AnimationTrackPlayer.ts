@@ -93,8 +93,9 @@ export class AnimationTrackPlayer<T> extends Component {
         
         this._elapsedTime += this.engine.time.deltaTime;
         const frameTime = this._elapsedTime * this._frameRate;
-        this._animationTrackInstace.process(frameTime);
-        this.invokeAnimationProcessDelegate(frameTime);
+        const frame = Math.floor(frameTime);
+        this._animationTrackInstace.process(frame);
+        this.invokeAnimationProcessDelegate(frame);
         if (this._animationTrack!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();

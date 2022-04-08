@@ -58,14 +58,30 @@ export class AnimationTrackInstance<T> {
         const interpolator = this._animationTrack.interpolator;
         const gradient = (frameTime - startKey.frame) / (endKey.frame - startKey.frame);
         
-        if (startKey.interpolation === InterpolationKind.Linear) {
+        if (startKey.interpolation === InterpolationKind.Linear && endKey.interpolation === InterpolationKind.Linear) {
             const value = interpolator.lerp(startKey.value, endKey.value, gradient, interpolator.tempInstance);
             this._targetSetFunction(value);
             return;
         }
 
-        const outTangent = startKey.outTangent ? startKey.outTangent : startKey.value;
-        const inTangent = endKey.inTangent ? endKey.inTangent : endKey.value;
+        let outTangent: T;
+        let inTangent: T;
+        if (startKey.interpolation !== InterpolationKind.Cubic) {
+            const linearTangent = interpolator.linearTangent(startKey.value, endKey.value, interpolator.tangentTempInstance);
+            outTangent = linearTangent;
+            if (endKey.interpolation !== InterpolationKind.Cubic) {
+                inTangent = linearTangent;
+            } else {
+                inTangent = endKey.inTangent!;
+            }
+        } else {
+            outTangent = startKey.outTangent!;
+            if (endKey.interpolation !== InterpolationKind.Cubic) {
+                inTangent = interpolator.linearTangent(startKey.value, endKey.value, interpolator.tangentTempInstance);
+            } else {
+                inTangent = endKey.inTangent!;
+            }
+        }
         const value = interpolator.hermite(startKey.value, endKey.value, outTangent, inTangent, gradient, interpolator.tempInstance);
         this._targetSetFunction(value);
     }
