@@ -9,10 +9,10 @@ export class AnimationControl extends Component {
 
     public onDestroy(): void {
         if (this._player) {
-            this._player.removeOnAnimationProcessListener(this.onAnimationProcess);
-            this._player.removeOnAnimationStartListener(this.onAnimationStart);
-            this._player.removeOnAnimationPausedListener(this.onAnimationPaused);
-            this._player.removeOnAnimationEndListener(this.onAnimationEnd);
+            this._player.onAnimationProcess.removeListener(this.onAnimationProcess);
+            this._player.onAnimationStart.removeListener(this.onAnimationStart);
+            this._player.onAnimationPaused.removeListener(this.onAnimationPaused);
+            this._player.onAnimationEnd.removeListener(this.onAnimationEnd);
         }
 
         if (this._slider) {
@@ -35,19 +35,19 @@ export class AnimationControl extends Component {
 
     public set player(player: AnimationTrackPlayer<unknown>|null) {
         if (this._player) {
-            this._player.removeOnAnimationProcessListener(this.onAnimationProcess);
-            this._player.removeOnAnimationStartListener(this.onAnimationStart);
-            this._player.removeOnAnimationPausedListener(this.onAnimationPaused);
-            this._player.removeOnAnimationEndListener(this.onAnimationEnd);
+            this._player.onAnimationProcess.removeListener(this.onAnimationProcess);
+            this._player.onAnimationStart.removeListener(this.onAnimationStart);
+            this._player.onAnimationPaused.removeListener(this.onAnimationPaused);
+            this._player.onAnimationEnd.removeListener(this.onAnimationEnd);
         }
 
         this._player = player;
         if (!player) return;
 
-        player.addOnAnimationProcessListener(this.onAnimationProcess);
-        player.addOnAnimationStartListener(this.onAnimationStart);
-        player.addOnAnimationPausedListener(this.onAnimationPaused);
-        player.addOnAnimationEndListener(this.onAnimationEnd);
+        player.onAnimationProcess.addListener(this.onAnimationProcess);
+        player.onAnimationStart.addListener(this.onAnimationStart);
+        player.onAnimationPaused.addListener(this.onAnimationPaused);
+        player.onAnimationEnd.addListener(this.onAnimationEnd);
 
         if (!this._playButton) return;
         if (player.isPlaying) {

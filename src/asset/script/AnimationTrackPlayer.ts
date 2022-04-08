@@ -1,4 +1,4 @@
-import { Component } from "the-world-engine";
+import { Component, EventContainer, IEventContainer } from "the-world-engine";
 import { AnimationTrack } from "./animation/AnimationTrack";
 import { AnimationTrackInstance } from "./animation/AnimationTrackInstance";
 
@@ -15,78 +15,26 @@ export class AnimationTrackPlayer<T> extends Component {
     private _frameRate = 60;
     private _isPlaying = false;
     private _loopMode = AnimationLoopMode.None;
-    private readonly _onAnimationProcessDeledate: ((frameTime: number) => void)[] = [];
-    private readonly _onAnimationStartDelegate: (() => void)[] = [];
-    private readonly _onAnimationPausedDelegate: (() => void)[] = [];
-    private readonly _onAnimationEndDelegate: (() => void)[] = [];
+    private readonly _onAnimationProcessEvent = new EventContainer<(frameTime: number) => void>();
+    private readonly _onAnimationStartEvent = new EventContainer<() => void>();
+    private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
+    private readonly _onAnimationEndEvent = new EventContainer<() => void>();
 
-    //#region events
-
-    private invokeAnimationProcessDelegate(frameTime: number): void {
-        for (let i = 0; i < this._onAnimationProcessDeledate.length; i++) {
-            this._onAnimationProcessDeledate[i](frameTime);
-        }
+    public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
+        return this._onAnimationProcessEvent;
     }
 
-    private invokeAnimationStartDelegate(): void {
-        for (let i = 0; i < this._onAnimationStartDelegate.length; i++) {
-            this._onAnimationStartDelegate[i]();
-        }
+    public get onAnimationStart(): IEventContainer<() => void> {
+        return this._onAnimationStartEvent;
     }
 
-    private invokeAnimationPausedDelegate(): void {
-        for (let i = 0; i < this._onAnimationPausedDelegate.length; i++) {
-            this._onAnimationPausedDelegate[i]();
-        }
+    public get onAnimationPaused(): IEventContainer<() => void> {
+        return this._onAnimationPausedEvent;
     }
 
-    private invokeAnimationEndDelegate(): void {
-        for (let i = 0; i < this._onAnimationEndDelegate.length; i++) {
-            this._onAnimationEndDelegate[i]();
-        }
+    public get onAnimationEnd(): IEventContainer<() => void> {
+        return this._onAnimationEndEvent;
     }
-
-    public addOnAnimationProcessListener(listener: (frameTime: number) => void): void {
-        this._onAnimationProcessDeledate.push(listener);
-    }
-
-    public removeOnAnimationProcessListener(listener: (frameTime: number) => void): void {
-        const index = this._onAnimationProcessDeledate.indexOf(listener);
-        if (index === -1) return;
-        this._onAnimationProcessDeledate.splice(index, 1);
-    }
-
-    public addOnAnimationStartListener(listener: () => void): void {
-        this._onAnimationStartDelegate.push(listener);
-    }
-
-    public removeOnAnimationStartListener(listener: () => void): void {
-        const index = this._onAnimationStartDelegate.indexOf(listener);
-        if (index === -1) return;
-        this._onAnimationStartDelegate.splice(index, 1);
-    }
-
-    public addOnAnimationPausedListener(listener: () => void): void {
-        this._onAnimationPausedDelegate.push(listener);
-    }
-
-    public removeOnAnimationPausedListener(listener: () => void): void {
-        const index = this._onAnimationPausedDelegate.indexOf(listener);
-        if (index === -1) return;
-        this._onAnimationPausedDelegate.splice(index, 1);
-    }
-
-    public addOnAnimationEndListener(listener: () => void): void {
-        this._onAnimationEndDelegate.push(listener);
-    }
-
-    public removeOnAnimationEndListener(listener: () => void): void {
-        const index = this._onAnimationEndDelegate.indexOf(listener);
-        if (index === -1) return;
-        this._onAnimationEndDelegate.splice(index, 1);
-    }
-
-    //#endregion events
 
     public update(): void {
         if (!this._animationTrackInstace || !this._isPlaying) return;
@@ -95,7 +43,7 @@ export class AnimationTrackPlayer<T> extends Component {
         const frameTime = this._elapsedTime * this._frameRate;
         const frame = Math.floor(frameTime);
         this._animationTrackInstace.process(frame);
-        this.invokeAnimationProcessDelegate(frame);
+        this._onAnimationProcessEvent.invoke(frame);
         if (this._animationTrack!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();
@@ -110,18 +58,18 @@ export class AnimationTrackPlayer<T> extends Component {
         if (!this._animationTarget) throw new Error("animationTarget is not set");
         this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
         this._isPlaying = true;
-        this.invokeAnimationStartDelegate();
+        this._onAnimationStartEvent.invoke();
     }
 
     public pause(): void {
         this._isPlaying = false;
-        this.invokeAnimationPausedDelegate();
+        this._onAnimationPausedEvent.invoke();
     }
 
     public stop(): void {
         this._isPlaying = false;
         this._elapsedTime = 0;
-        this.invokeAnimationEndDelegate();
+        this._onAnimationEndEvent.invoke();
     }
 
     public process(frameTime: number): void {
@@ -132,7 +80,7 @@ export class AnimationTrackPlayer<T> extends Component {
             this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
         }
         this._animationTrackInstace.process(frameTime);
-        this.invokeAnimationProcessDelegate(frameTime);
+        this._onAnimationProcessEvent.invoke(frameTime);
     }
 
     public get animationTrack(): AnimationTrack<T>|null {
