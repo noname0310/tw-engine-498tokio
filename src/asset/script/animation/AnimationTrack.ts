@@ -34,6 +34,14 @@ export class AnimationTrack<T> {
         return this._interpolator;
     }
 
+    public get startFrame(): number {
+        return this._keys[0].frame;
+    }
+
+    public get endFrame(): number {
+        return this._keys[this._keys.length - 1].frame;
+    }
+
     public createInstance(target: (value: T) => void): AnimationTrackInstance<T> {
         return new AnimationTrackInstance<T>(this, target);
     }

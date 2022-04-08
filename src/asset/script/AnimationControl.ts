@@ -13,9 +13,14 @@ export class AnimationControl extends Component {
 
     public set player(player: AnimationTrackPlayer<unknown>|null) {
         this._player = player;
-        if (!this._player) return;
+        if (!player) return;
+
+        player.addOnAnimationProcessListener(this.onAnimationProcess);
+        player.addOnAnimationStartListener(this.onAnimationStart);
+        player.addOnAnimationEndListener(this.onAnimationEnd);
+
         if (!this._playButton) return;
-        if (this._player.isPlaying) {
+        if (player.isPlaying) {
             this._playButton.textContent = "Stop";
         } else {
             this._playButton.textContent = "Play";
@@ -61,7 +66,6 @@ export class AnimationControl extends Component {
     private onSliderInput = (event: Event): void => {
         if (!this._player) return;
         const value = (event.target as HTMLInputElement).valueAsNumber;
-        if (this._frameDisplayText) this._frameDisplayText.textContent = value.toString();
         this._player.process(value);
     };
 
@@ -69,10 +73,24 @@ export class AnimationControl extends Component {
         if (!this._player) return;
         if (this._player.isPlaying) {
             this._player.stop();
-            if (this._playButton) this._playButton.textContent = "Play";
         } else {
             this._player.play();
-            if (this._playButton) this._playButton.textContent = "Stop";
         }
+    };
+
+    private onAnimationProcess = (frameTime: number): void => {
+        if (!this._slider) return;
+        this._slider.value = frameTime.toString();
+        if (this._frameDisplayText) this._frameDisplayText.textContent = Math.floor(frameTime).toString();
+    };
+
+    private onAnimationStart = (): void => {
+        if (!this._playButton) return;
+        this._playButton.textContent = "Stop";
+    };
+
+    private onAnimationEnd = (): void => {
+        if (!this._playButton) return;
+        this._playButton.textContent = "Play";
     };
 }
