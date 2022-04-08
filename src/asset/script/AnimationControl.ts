@@ -7,16 +7,46 @@ export class AnimationControl extends Component {
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
 
+    public onDestroy(): void {
+        if (this._player) {
+            this._player.removeOnAnimationProcessListener(this.onAnimationProcess);
+            this._player.removeOnAnimationStartListener(this.onAnimationStart);
+            this._player.removeOnAnimationPausedListener(this.onAnimationPaused);
+            this._player.removeOnAnimationEndListener(this.onAnimationEnd);
+        }
+
+        if (this._slider) {
+            this._slider.removeEventListener("input", this.onSliderInput);
+        }
+
+        if (this._playButton) {
+            this._playButton.removeEventListener("click", this.onPlayButtonClick);
+        }
+
+        this._player = null;
+        this._slider = null;
+        this._playButton = null;
+        this._frameDisplayText = null;
+    }
+
     public get player(): AnimationTrackPlayer<unknown>|null {
         return this._player;
     }
 
     public set player(player: AnimationTrackPlayer<unknown>|null) {
+        if (this._player) {
+            this._player.removeOnAnimationProcessListener(this.onAnimationProcess);
+            this._player.removeOnAnimationStartListener(this.onAnimationStart);
+            this._player.removeOnAnimationPausedListener(this.onAnimationPaused);
+            this._player.removeOnAnimationEndListener(this.onAnimationEnd);
+        }
+
         this._player = player;
         if (!player) return;
 
         player.addOnAnimationProcessListener(this.onAnimationProcess);
         player.addOnAnimationStartListener(this.onAnimationStart);
+        player.addOnAnimationPausedListener(this.onAnimationPaused);
         player.addOnAnimationEndListener(this.onAnimationEnd);
 
         if (!this._playButton) return;
@@ -66,13 +96,17 @@ export class AnimationControl extends Component {
     private onSliderInput = (event: Event): void => {
         if (!this._player) return;
         const value = (event.target as HTMLInputElement).valueAsNumber;
-        this._player.process(value);
+        if (this._player.isPlaying) {
+            this._player.frameTime = value;
+        } else {
+            this._player.process(value);
+        }
     };
 
     private onPlayButtonClick = (_event: Event): void => {
         if (!this._player) return;
         if (this._player.isPlaying) {
-            this._player.stop();
+            this._player.pause();
         } else {
             this._player.play();
         }
@@ -87,6 +121,11 @@ export class AnimationControl extends Component {
     private onAnimationStart = (): void => {
         if (!this._playButton) return;
         this._playButton.textContent = "Stop";
+    };
+
+    private onAnimationPaused = (): void => {
+        if (!this._playButton) return;
+        this._playButton.textContent = "Play";
     };
 
     private onAnimationEnd = (): void => {

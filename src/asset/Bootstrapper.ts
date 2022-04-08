@@ -9,7 +9,7 @@ import { Vector3 } from "three/src/Three";
 import { AnimationKey, InterpolationKind } from "./script/animation/AnimationKey";
 import { AnimationTrack } from "./script/animation/AnimationTrack";
 import { AnimationControl } from "./script/AnimationControl";
-import { AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
+import { AnimationLoopMode, AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -49,6 +49,7 @@ export class Bootstrapper extends BaseBootstrapper {
                         AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Step),
                         AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Step)
                     ]);
+                    c.loopMode = AnimationLoopMode.Loop;
                     c.play();
                 })
                 .getComponent(AnimationTrackPlayer, animationPlayer))
