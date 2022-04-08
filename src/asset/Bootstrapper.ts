@@ -5,9 +5,8 @@ import {
     PrefabRef,
     SceneBuilder
 } from "the-world-engine";
-import { Vector3 } from "three/src/Three";
-import { AnimationKey, InterpolationKind } from "./script/animation/AnimationKey";
-import { AnimationTrack } from "./script/animation/AnimationTrack";
+import { Vector3, Vector2 } from "three/src/Three";
+import { testAnimationTrack2 } from "./animation/TestAnimationTrack";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode, AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
 
@@ -25,31 +24,10 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
-                .withComponent(AnimationTrackPlayer, (c: AnimationTrackPlayer<Vector3>) => {
+                .withComponent(AnimationTrackPlayer, (c: AnimationTrackPlayer<Vector2>) => {
                     const position = c.transform.position;
-                    c.animationTarget = value => position.copy(value);
-                    const zero = new Vector3(0, 0, 0);
-                    let acc = 0;
-                    c.animationTrack = AnimationTrack.createVector3Track([
-                        AnimationKey.createRefType(acc, new Vector3(0, 0, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, 2, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Cubic, zero, zero),
-                        AnimationKey.createRefType(acc += 100, new Vector3(0, 0, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, 2, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Linear),
-                        AnimationKey.createRefType(acc += 100, new Vector3(0, 0, 0), InterpolationKind.Step),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, 2, 0), InterpolationKind.Step),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, -2, 0), InterpolationKind.Step),
-                        AnimationKey.createRefType(acc += 100, new Vector3(-2, 2, 0), InterpolationKind.Step),
-                        AnimationKey.createRefType(acc += 100, new Vector3(2, -2, 0), InterpolationKind.Step),
-                        AnimationKey.createRefType(acc += 100, new Vector3(1, 1, 0), InterpolationKind.Step)
-                    ]);
+                    c.animationTarget = value => { position.x = value.x; position.y = value.y; };
+                    c.animationTrack = testAnimationTrack2;
                     c.loopMode = AnimationLoopMode.Loop;
                     c.play();
                 })
