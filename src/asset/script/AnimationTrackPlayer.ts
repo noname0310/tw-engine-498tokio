@@ -49,6 +49,7 @@ export class AnimationTrackPlayer<T> extends Component {
                 this.stop();
             } else {
                 this._elapsedTime = frameTime % this._animationTrack!.endFrame;
+                this._animationTrackInstace.frameIndexHint(0);
             }
         }
     }
