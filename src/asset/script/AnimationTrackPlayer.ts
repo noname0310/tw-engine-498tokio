@@ -48,7 +48,7 @@ export class AnimationTrackPlayer<T> extends Component {
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();
             } else {
-                this._elapsedTime = frameTime % this._animationTrack!.endFrame;
+                this._elapsedTime = (frameTime % this._animationTrack!.endFrame) / this._frameRate;
                 this._animationTrackInstace.frameIndexHint(0);
             }
         }
