@@ -7,10 +7,11 @@ module.exports = {
     output: {
         path: path.join(__dirname, "/dist"),
         filename: "[name].bundle.js",
-        assetModuleFilename: 'images/[name][ext]',
+        assetModuleFilename: 'asset/[name][ext]',
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.tsx?$/,
                 use: [{
                     loader: 'ts-loader'
@@ -19,7 +20,11 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif)$/,
                 type: 'asset',
-            }
+            },
+            {
+                test: /\.html$/i,
+                loader: "html-loader",
+            },
         ],
     },
     resolve: {
