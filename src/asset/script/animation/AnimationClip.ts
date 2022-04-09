@@ -1,6 +1,9 @@
+import { AnimationClipInstance } from "./AnimationClipInstance";
 import { AnimationTrack } from "./AnimationTrack";
+import { BindInfo } from "./BindInfo";
+import { IAnimationContainer } from "./IAnimationContainer";
 
-export class AnimationClip {
+export class AnimationClip implements IAnimationContainer {
     public readonly tracks: AnimationTrack<unknown>[];
     public readonly startFrame: number;
     public readonly endFrame: number;
@@ -48,5 +51,9 @@ export class AnimationClip {
         const index = this._trackMap.get(name);
         if (index === undefined) return null;
         return this.tracks[index];
+    }
+
+    public createInstance(bindInfo: BindInfo): AnimationClipInstance {
+        return new AnimationClipInstance(this, bindInfo);
     }
 }
