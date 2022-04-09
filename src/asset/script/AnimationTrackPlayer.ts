@@ -1,13 +1,10 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
 import { AnimationTrack } from "./animation/AnimationTrack";
 import { AnimationTrackInstance } from "./animation/AnimationTrackInstance";
+import { AnimationLoopMode } from "./AnimationLoopMode";
+import { IAnimationPlayer } from "./IAnimationPlayer";
 
-export const enum AnimationLoopMode {
-    None,
-    Loop
-}
-
-export class AnimationTrackPlayer<T> extends Component {
+export class AnimationTrackPlayer<T> extends Component implements IAnimationPlayer {
     private _animationTrack: AnimationTrack<T>|null = null;
     private _animationTarget: ((value: T) => void)|null = null;
     private _animationTrackInstace: AnimationTrackInstance<T>|null = null;
@@ -93,6 +90,10 @@ export class AnimationTrackPlayer<T> extends Component {
         if (!animationTrack) return;
         if (!this._animationTarget || !this._animationTrackInstace) return;
         this._animationTrackInstace = animationTrack.createInstance(this._animationTarget);
+    }
+
+    public get animationContainer(): AnimationTrack<T>|null {
+        return this._animationTrack;
     }
 
     public set animationTarget(targetSetFunction: (value: T) => void) {

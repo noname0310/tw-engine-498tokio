@@ -2,8 +2,9 @@ import { Vector2, Vector3, Quaternion } from "three/src/Three";
 import { IAnimationInterpolator, QuaternionInterpolator, ScalarInterpolator, Vector2Interpolator, Vector3Interpolator } from "./AnimationInterpolator";
 import { AnimationKey } from "./AnimationKey";
 import { AnimationTrackInstance } from "./AnimationTrackInstance";
+import { IAnimationContainer } from "./IAnimationContainer";
 
-export class AnimationTrack<T> {
+export class AnimationTrack<T> implements IAnimationContainer {
     /**
      * this member must be sorted by frame member
      */

@@ -1,8 +1,8 @@
 import { Component } from "the-world-engine";
-import { AnimationTrackPlayer } from "./AnimationTrackPlayer";
+import { IAnimationPlayer } from "./IAnimationPlayer";
 
 export class AnimationControl extends Component {
-    private _player: AnimationTrackPlayer<unknown>|null = null;
+    private _player: IAnimationPlayer|null = null;
     private _slider: HTMLInputElement|null = null;
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
@@ -31,11 +31,11 @@ export class AnimationControl extends Component {
         this._frameDisplayText = null;
     }
 
-    public get player(): AnimationTrackPlayer<unknown>|null {
+    public get player(): IAnimationPlayer|null {
         return this._player;
     }
 
-    public set player(player: AnimationTrackPlayer<unknown>|null) {
+    public set player(player: IAnimationPlayer|null) {
         if (this._player) {
             this._player.onAnimationProcess.removeListener(this.onAnimationProcess);
             this._player.onAnimationStart.removeListener(this.onAnimationStart);
@@ -66,7 +66,7 @@ export class AnimationControl extends Component {
     public set slider(slider: HTMLInputElement|null) {
         this._slider = slider;
         if (!this._slider) return;
-        if (this._player) this._slider.max = this._player.animationTrack?.keys[this._player.animationTrack.keys.length - 1].frame.toString() ?? "0";
+        if (this._player) this._slider.max = this._player.animationContainer?.endFrame.toString() ?? "0";
         this._slider.addEventListener("input", this.onSliderInput);
         this._slider.addEventListener("mousedown", this.onSliderMouseDown);
         this._slider.addEventListener("mouseup", this.onSliderMouseUp);
