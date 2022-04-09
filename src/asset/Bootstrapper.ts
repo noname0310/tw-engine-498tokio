@@ -5,17 +5,18 @@ import {
     PrefabRef,
     SceneBuilder
 } from "the-world-engine";
-import { Vector3, Vector2 } from "three/src/Three";
-import { testAnimationTrack2 } from "./animation/TestAnimationTrack";
+import { Vector3, Quaternion } from "three/src/Three";
+import { testAnimationClip1 } from "./animation/TestAnimationClip";
+import { BindInfo } from "./script/animation/BindInfo";
+import { AnimationClipPlayer } from "./script/AnimationClipPlayer";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/AnimationLoopMode";
-import { AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
         const instantiater = this.instantiater;
 
-        const animationPlayer = new PrefabRef<AnimationTrackPlayer<unknown>>();
+        const animationPlayer = new PrefabRef<AnimationClipPlayer>();
         
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
@@ -25,14 +26,17 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
-                .withComponent(AnimationTrackPlayer, (c: AnimationTrackPlayer<Vector2>) => {
+                .withComponent(AnimationClipPlayer, c => {
                     const position = c.transform.position;
-                    c.animationTarget = value => { position.x = value.x; position.y = value.y; };
-                    c.animationTrack = testAnimationTrack2;
+                    const rotation = c.transform.rotation;
+                    c.setAnimationAndBind(testAnimationClip1, new BindInfo([
+                        { trackName: "position" as const, target: (value: Vector3) => position.copy(value) },
+                        { trackName: "rotation" as const, target: (value: Quaternion) => rotation.copy(value) }
+                    ]));
                     c.loopMode = AnimationLoopMode.Loop;
                     c.play();
                 })
-                .getComponent(AnimationTrackPlayer, animationPlayer))
+                .getComponent(AnimationClipPlayer, animationPlayer))
 
             .withChild(instantiater.buildGameObject("animation_control")
                 .withComponent(AnimationControl, c => {

@@ -1,10 +1,18 @@
-export class BindInfo {
-    public readonly data: { trackName: string, target: (value: unknown) => void }[];
+export type BindItem<T extends string, U> = { trackName: T, target: (value: U) => void };
+export type BindData = BindItem<any, any>[];
 
-    public constructor(data: { trackName: string, target: (value: unknown) => void }[]) {
-        this.data = [];
+export class BindInfo<T extends BindData> {
+    public readonly data: [...T];
+
+    public constructor(data: [...T]) {
+        this.data = [] as any;
         for (let i = 0; i < data.length; i++) {
             this.data.push({ trackName: data[i].trackName, target: data[i].target });
         }
     }
 }
+
+// new BindInfo([
+//     { trackName: "position", target: (value: Vector3) => { } },
+//     { trackName: "rotation", target: (value: Quaternion) => { } },
+// ])

@@ -1,14 +1,32 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
-import { AnimationClip } from "./animation/AnimationClip";
+import { AnimationClip, InferedBindData, TrackData } from "./animation/AnimationClip";
 import { AnimationClipInstance } from "./animation/AnimationClipInstance";
 import { BindInfo } from "./animation/BindInfo";
 import { AnimationLoopMode } from "./AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
 
+// type UnwrapAnimationClip<T extends AnimationClip<any, any>> = T extends AnimationClip<infer U, any> ? U : never;
+
+// // type unwrapTest = UnwrapAnimationClip<AnimationClip<TrackData, any>>;
+
+// export class AnimationClipBind<T extends TrackData, U extends InferedBindData<T>> {
+//     public readonly clip: AnimationClip<T, U>;
+//     private _bind: BindInfo<U>;
+
+//     public constructor(clip: AnimationClip<T, U>, bind: BindInfo<U>) {
+//         this.clip = clip;
+//         this._bind = bind;
+//     }
+
+//     public get bindInfo(): BindInfo<U> {
+//         return this._bind;
+//     }
+// }
+
 export class AnimationClipPlayer extends Component implements IAnimationPlayer {
-    private _animationClip: AnimationClip|null = null;
-    private _bindInfo: BindInfo|null = null;
-    private _animationClipInstace: AnimationClipInstance|null = null;
+    private _animationClip: AnimationClip<any, any>|null = null;
+    private _bindInfo: BindInfo<any>|null = null;
+    private _animationClipInstace: AnimationClipInstance<any, any>|null = null;
     private _elapsedTime = 0;
     private _frameRate = 60;
     private _isPlaying = false;
@@ -82,22 +100,16 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
-    public get animationClip(): AnimationClip|null {
+    public get animationClip(): AnimationClip<any, any>|null {
         return this._animationClip;
     }
 
-    public set animationClip(animationClip: AnimationClip|null) {
+    public get animationContainer(): AnimationClip<any, any>|null {
+        return this._animationClip;
+    }
+
+    public setAnimationAndBind<T extends TrackData, U extends InferedBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: BindInfo<U>) {
         this._animationClip = animationClip;
-        if (!animationClip) return;
-        if (!this._bindInfo || !this._animationClipInstace) return;
-        this._animationClipInstace = animationClip.createInstance(this._bindInfo);
-    }
-
-    public get animationContainer(): AnimationClip|null {
-        return this._animationClip;
-    }
-
-    public set bindInfo(bindInfo: BindInfo) {
         this._bindInfo = bindInfo;
         if (!this._animationClipInstace) return;
         this._animationClipInstace.bindInfo = bindInfo;
