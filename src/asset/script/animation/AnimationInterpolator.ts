@@ -188,7 +188,7 @@ export const QuaternionInterpolator = new class QuaternionInterpolator implement
         out.x = start.x * part1 + end.x * part2 + inTangent.x * part3 + outTangent.x * part4;
         out.y = start.y * part1 + end.y * part2 + inTangent.y * part3 + outTangent.y * part4;
         out.z = start.z * part1 + end.z * part2 + inTangent.z * part3 + outTangent.z * part4;
-
+        out.normalize();
         return out;
     }
 

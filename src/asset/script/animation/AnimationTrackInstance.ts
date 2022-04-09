@@ -64,7 +64,7 @@ export class AnimationTrackInstance<T> {
         const interpolator = this._animationTrack.interpolator;
         const gradient = (frameTime - startKey.frame) / (endKey.frame - startKey.frame);
         
-        if (startKey.interpolation === InterpolationKind.Linear && endKey.interpolation === InterpolationKind.Linear) {
+        if (startKey.interpolation === InterpolationKind.Linear && (endKey.interpolation === InterpolationKind.Linear || endKey.interpolation === InterpolationKind.Step)) {
             const value = interpolator.lerp(startKey.value, endKey.value, gradient, interpolator.tempInstance);
             this._targetSetFunction(value);
             return;

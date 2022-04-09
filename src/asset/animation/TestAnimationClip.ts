@@ -6,6 +6,7 @@ import { AnimationTrack } from "../script/animation/AnimationTrack";
 export const testAnimationClip1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroQuaternion = new Quaternion(0, 0, 0, 0);
+    const zAxis = new Vector3(0, 0, 1);
     let acc = 0;
     return new AnimationClip([
         {
@@ -34,24 +35,24 @@ export const testAnimationClip1 = (() => {
         {
             name: "rotation" as const,
             track: AnimationTrack.createQuaternionTrack([
-                AnimationKey.createRefType(acc = 0.00, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Linear),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step),
-                AnimationKey.createRefType(acc += 100, new Quaternion( 0,  0,  0,  1), InterpolationKind.Step)
+                AnimationKey.createRefType(acc = 0.00, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Linear),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Step),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Step),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Step),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Step),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Step),
+                AnimationKey.createRefType(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Step)
             ])
         },
     ]);
