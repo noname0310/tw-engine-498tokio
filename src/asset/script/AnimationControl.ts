@@ -17,6 +17,8 @@ export class AnimationControl extends Component {
 
         if (this._slider) {
             this._slider.removeEventListener("input", this.onSliderInput);
+            this._slider.removeEventListener("onmousedown", this.onSliderMouseDown);
+            this._slider.removeEventListener("onmouseup", this.onSliderMouseUp);
         }
 
         if (this._playButton) {
@@ -66,6 +68,8 @@ export class AnimationControl extends Component {
         if (!this._slider) return;
         if (this._player) this._slider.max = this._player.animationTrack?.keys[this._player.animationTrack.keys.length - 1].frame.toString() ?? "0";
         this._slider.addEventListener("input", this.onSliderInput);
+        this._slider.addEventListener("mousedown", this.onSliderMouseDown);
+        this._slider.addEventListener("mouseup", this.onSliderMouseUp);
     }
 
     public get playButton(): HTMLButtonElement|null {
@@ -100,6 +104,25 @@ export class AnimationControl extends Component {
             this._player.frameTime = value;
         } else {
             this._player.process(value);
+            this._player.frameTime = value;
+        }
+    };
+
+    private _pausedBySlider = false;
+
+    private onSliderMouseDown = (_event: Event): void => {
+        if (!this._player) return;
+        if (this._player.isPlaying) {
+            this._pausedBySlider = true;
+            this._player.pause();
+        }
+    };
+
+    private onSliderMouseUp = (_event: Event): void => {
+        if (!this._player) return;
+        if (this._pausedBySlider) {
+            this._pausedBySlider = false;
+            this._player.play();
         }
     };
 
@@ -125,6 +148,7 @@ export class AnimationControl extends Component {
 
     private onAnimationPaused = (): void => {
         if (!this._playButton) return;
+        if (this._pausedBySlider) return;
         this._playButton.textContent = "Play";
     };
 
