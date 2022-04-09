@@ -8,7 +8,8 @@ import {
 import { Vector3, Vector2 } from "three/src/Three";
 import { testAnimationTrack2 } from "./animation/TestAnimationTrack";
 import { AnimationControl } from "./script/AnimationControl";
-import { AnimationLoopMode, AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
+import { AnimationLoopMode } from "./script/AnimationLoopMode";
+import { AnimationTrackPlayer } from "./script/AnimationTrackPlayer";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
