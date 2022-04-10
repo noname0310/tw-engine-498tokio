@@ -39,8 +39,23 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
 
         if (frameTime < 0) frameTime = 0;
 
-        while (0 < startKeyIndex && frameTime < keys[startKeyIndex].frame) startKeyIndex -= 1;
-        while (startKeyIndex < keys.length - 1 && frameTime >= keys[startKeyIndex + 1].frame) startKeyIndex += 1;
+        if (1024 < keys.length && 60 < Math.abs(frameTime - startKeyIndex)) {
+            // use binary search for large key count
+            let min = 0;
+            let max = keys.length - 1;
+            while (min < max) {
+                const mid = (min + max) >> 1;
+                if (frameTime < keys[mid + 1].frame) {
+                    max = mid;
+                } else {
+                    min = mid + 1;
+                }
+            }
+            startKeyIndex = min;
+        } else {
+            while (0 < startKeyIndex && frameTime < keys[startKeyIndex].frame) startKeyIndex -= 1;
+            while (startKeyIndex < keys.length - 1 && frameTime >= keys[startKeyIndex + 1].frame) startKeyIndex += 1;
+        }
 
         this._currentFrameIndex = startKeyIndex;
 
