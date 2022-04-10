@@ -18,7 +18,7 @@ export type InferedBindData<T extends TrackData> = {
 // type convA = ConvertTrackData<trackA>;
 // type defaultInfer = InferedBindData<TrackData>;
 
-export class AnimationClip<T extends TrackData, U extends InferedBindData<T>> implements IAnimationContainer {
+export class AnimationClip<T extends TrackData, U extends InferedBindData<T>> implements IAnimationContainer<BindInfo<U>> {
     public readonly tracks: AnimationTrack<unknown>[];
     public readonly startFrame: number;
     public readonly endFrame: number;

@@ -1,7 +1,8 @@
 import { InterpolationKind } from "./AnimationKey";
 import { AnimationTrack } from "./AnimationTrack";
+import { IAnimationInstance } from "./IAniamtionInstance";
 
-export class AnimationTrackInstance<T> {
+export class AnimationTrackInstance<T> implements IAnimationInstance {
     private _targetSetFunction: (value: T) => void;
 
     private _currentFrameIndex: number;

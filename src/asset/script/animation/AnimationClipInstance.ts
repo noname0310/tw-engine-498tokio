@@ -1,11 +1,12 @@
 import { AnimationClip, InferedBindData, TrackData } from "./AnimationClip";
 import { AnimationTrackInstance } from "./AnimationTrackInstance";
 import { BindInfo } from "./BindInfo";
+import { IAnimationInstance } from "./IAniamtionInstance";
 
-export class AnimationClipInstance<T extends TrackData, U extends InferedBindData<T>> {
+export class AnimationClipInstance<T extends TrackData, U extends InferedBindData<T>> implements IAnimationInstance {
     private _bindInfo: BindInfo<U>;
 
-    private _animationClip: AnimationClip<T, U>;
+    private readonly _animationClip: AnimationClip<T, U>;
     private _animationTrackInstances: AnimationTrackInstance<unknown>[];
 
     public constructor(animationClip: AnimationClip<T, U>, bindInfo: BindInfo<U>) {
@@ -27,7 +28,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedBindDat
     }
 
     public set bindInfo(bindInfo: BindInfo<U>) {
-        this._animationTrackInstances = [];
+        this._animationTrackInstances.length = 0;
         const bindData = bindInfo.data;
         for (let i = 0; i < bindData.length; ++i) {
             const track = this._animationClip.getTrackFromName(bindData[i].trackName);

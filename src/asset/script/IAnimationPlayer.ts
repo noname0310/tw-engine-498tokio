@@ -19,7 +19,7 @@ export interface IAnimationPlayer {
 
     process(frameTime: number): void;
 
-    get animationContainer(): IAnimationContainer|null
+    get animationContainer(): IAnimationContainer<unknown>|null
 
     get isPlaying(): boolean;
 

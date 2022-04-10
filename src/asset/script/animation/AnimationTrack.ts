@@ -4,7 +4,7 @@ import { AnimationKey } from "./AnimationKey";
 import { AnimationTrackInstance } from "./AnimationTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 
-export class AnimationTrack<T> implements IAnimationContainer {
+export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void> {
     /**
      * this member must be sorted by frame member
      */
