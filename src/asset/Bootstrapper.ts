@@ -7,10 +7,8 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3, Quaternion } from "three/src/Three";
-import { testAnimationClip1 } from "./animation/TestAnimationClip";
 import { testAnimationSequnace1 } from "./animation/TestAnimationSequnace";
 import { BindInfo } from "./script/animation/BindInfo";
-import { AnimationClipPlayer } from "./script/AnimationClipPlayer";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/AnimationLoopMode";
 import { AnimationSequnacePlayer } from "./script/AnimationSequnacePlayer";
@@ -32,20 +30,6 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
-                .withComponent(AnimationClipPlayer, c => {
-                    c.enabled = false;
-                    const position = c.transform.position;
-                    const rotation = c.transform.rotation;
-                    c.setAnimationAndBind(
-                        testAnimationClip1, 
-                        new BindInfo([
-                            { trackName: "position" as const, target: (value: Vector3) => position.copy(value) },
-                            { trackName: "rotation" as const, target: (value: Quaternion) => rotation.copy(value) }
-                        ])
-                    );
-                    c.loopMode = AnimationLoopMode.Loop;
-                    c.play();
-                })
                 .getGameObject(animatedObject1))
 
             .withChild(instantiater.buildGameObject("test_object2")
