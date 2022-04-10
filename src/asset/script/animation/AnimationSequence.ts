@@ -1,7 +1,30 @@
+import { AnimationClip } from "./AnimationClip";
 import { AnimationSequenceInstance } from "./AnimationSequenceInstance";
+import { AnimationTrack } from "./AnimationTrack";
+import { BindInfo } from "./BindInfo";
 import { IAnimationContainer } from "./IAnimationContainer";
 
-export class RangedAnimation<T extends IAnimationContainer<U>, U> {
+type UnwrapRangedAnimation<T extends RangedAnimation<any>> = T extends RangedAnimation<infer U> ? U : never;
+
+export type InferedSequenceBindData<T extends ContainerData> = 
+    any[] extends T
+        ? NonRecursiveSequenceBindItem[]
+        : {
+            [key in keyof T]: 
+                any extends T[key]
+                    ? NonRecursiveSequenceBindItem
+                    : T[key] extends RangedAnimation<any>
+                        ? UnwrapRangedAnimation<T[key]> extends AnimationClip<infer _, infer U>
+                            ? BindInfo<U>
+                            : UnwrapRangedAnimation<T[key]> extends AnimationTrack<infer U>
+                                ? (value: U) => void
+                                : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
+                                    ? U
+                                    : never
+                        : never;
+        };
+
+export class RangedAnimation<T extends IAnimationContainer<unknown>> {
     public readonly offset: number;
     public readonly startFrame: number;
     public readonly endFrame: number;
@@ -23,9 +46,15 @@ export class RangedAnimation<T extends IAnimationContainer<U>, U> {
     }
 }
 
-export type ContainerData = RangedAnimation<IAnimationContainer<any>, any>[];
+export type ContainerData = RangedAnimation<IAnimationContainer<unknown>>[];
 
-export class AnimationSequence<T extends ContainerData> implements IAnimationContainer<T> {
+export type SequenceBindItem = BindInfo<any>|((value: any) => void)|SequenceBindInfo;
+
+export type NonRecursiveSequenceBindItem = (BindInfo<any>|((value: any) => void)|any[]);
+
+export type SequenceBindInfo = SequenceBindItem[];
+
+export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T>> implements IAnimationContainer<SequenceBindItem> {
     public readonly animationContainers: T;
     public readonly startFrame: number;
     public readonly endFrame: number;
@@ -47,7 +76,7 @@ export class AnimationSequence<T extends ContainerData> implements IAnimationCon
         this.endFrame = maxEndFrame;
     }
 
-    public createInstance(bindData: any[]): AnimationSequenceInstance<T> {
+    public createInstance(bindData: U): AnimationSequenceInstance<T, U> {
         return new AnimationSequenceInstance(this, bindData);
     }
 }

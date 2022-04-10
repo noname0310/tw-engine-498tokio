@@ -2,21 +2,27 @@ import {
     Bootstrapper as BaseBootstrapper,
     Camera,
     CssSpriteRenderer,
+    GameObject,
     PrefabRef,
     SceneBuilder
 } from "the-world-engine";
 import { Vector3, Quaternion } from "three/src/Three";
 import { testAnimationClip1 } from "./animation/TestAnimationClip";
+import { testAnimationSequnace1 } from "./animation/TestAnimationSequnace";
 import { BindInfo } from "./script/animation/BindInfo";
 import { AnimationClipPlayer } from "./script/AnimationClipPlayer";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/AnimationLoopMode";
+import { AnimationSequnacePlayer } from "./script/AnimationSequnacePlayer";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
         const instantiater = this.instantiater;
 
-        const animationPlayer = new PrefabRef<AnimationClipPlayer>();
+        const animationPlayer = new PrefabRef<AnimationSequnacePlayer>();
+
+        const animatedObject1 = new PrefabRef<GameObject>();
+        const animatedObject2 = new PrefabRef<GameObject>();
         
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
@@ -27,6 +33,7 @@ export class Bootstrapper extends BaseBootstrapper {
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
                 .withComponent(AnimationClipPlayer, c => {
+                    c.enabled = false;
                     const position = c.transform.position;
                     const rotation = c.transform.rotation;
                     c.setAnimationAndBind(
@@ -39,7 +46,29 @@ export class Bootstrapper extends BaseBootstrapper {
                     c.loopMode = AnimationLoopMode.Loop;
                     c.play();
                 })
-                .getComponent(AnimationClipPlayer, animationPlayer))
+                .getGameObject(animatedObject1))
+
+            .withChild(instantiater.buildGameObject("test_object2")
+                .withComponent(CssSpriteRenderer)
+                .getGameObject(animatedObject2))
+            
+            .withChild(instantiater.buildGameObject("sequence_player")
+                .withComponent(AnimationSequnacePlayer, c => {
+                    const object1_position = animatedObject1.ref!.transform.position;
+                    const object1_rotation = animatedObject1.ref!.transform.rotation;
+                    const object2_position = animatedObject2.ref!.transform.position;
+
+                    c.setAnimationAndBind(testAnimationSequnace1, [
+                        (value: Vector3) => object2_position.copy(value),
+                        new BindInfo([
+                            { trackName: "position" as const, target: (value: Vector3) => object1_position.copy(value) },
+                            { trackName: "rotation" as const, target: (value: Quaternion) => object1_rotation.copy(value) },
+                        ]),
+                    ]);
+                    c.loopMode = AnimationLoopMode.Loop;
+                    c.play();
+                })
+                .getComponent(AnimationSequnacePlayer, animationPlayer))
 
             .withChild(instantiater.buildGameObject("animation_control")
                 .withComponent(AnimationControl, c => {
