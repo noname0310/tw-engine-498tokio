@@ -11,17 +11,15 @@ export type InferedSequenceBindData<T extends ContainerData> =
         ? NonRecursiveSequenceBindItem[]
         : {
             [key in keyof T]: 
-                any extends T[key]
-                    ? NonRecursiveSequenceBindItem
-                    : T[key] extends RangedAnimation<any>
-                        ? UnwrapRangedAnimation<T[key]> extends AnimationClip<infer _, infer U>
-                            ? BindInfo<U>
-                            : UnwrapRangedAnimation<T[key]> extends AnimationTrack<infer U>
-                                ? (value: U) => void
-                                : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
-                                    ? U
-                                    : never
-                        : never;
+                T[key] extends RangedAnimation<any>
+                    ? UnwrapRangedAnimation<T[key]> extends AnimationClip<infer _, infer U>
+                        ? BindInfo<U>
+                        : UnwrapRangedAnimation<T[key]> extends AnimationTrack<infer U>
+                            ? (value: U) => void
+                            : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
+                                ? U
+                                : never
+                    : never;
         };
 
 export class RangedAnimation<T extends IAnimationContainer<unknown>> {
