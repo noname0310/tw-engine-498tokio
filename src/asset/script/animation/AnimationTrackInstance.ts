@@ -23,7 +23,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
     }
 
     public frameIndexHint(frameIndex: number): void {
-        this._currentFrameIndex = frameIndex;
+        this._currentFrameIndex = frameIndex < 0 ? 0 : frameIndex;
     }
 
     public process(frameTime: number): void {
@@ -39,7 +39,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
 
         if (frameTime < 0) frameTime = 0;
 
-        if (1024 < keys.length && 60 < Math.abs(frameTime - startKeyIndex)) {
+        if (2048 < keys.length && 540 < Math.abs(frameTime - keys[startKeyIndex].frame)) {
             // use binary search for large key count
             let min = 0;
             let max = keys.length - 1;
