@@ -63,11 +63,14 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
         let minStartFrame = Number.MAX_SAFE_INTEGER;
         let maxEndFrame = 0;
         for (let i = 0; i < animationContainers.length; i++) {
-            if (animationContainers[i].startFrame < minStartFrame) {
-                minStartFrame = animationContainers[i].startFrame;
+            const animationContainer = animationContainers[i];
+            const startFrame = animationContainer.startFrame + animationContainer.offset;
+            const endFrame = animationContainer.endFrame + animationContainer.offset;
+            if (startFrame < minStartFrame) {
+                minStartFrame = startFrame;
             }
-            if (animationContainers[i].endFrame > maxEndFrame) {
-                maxEndFrame = animationContainers[i].endFrame;
+            if (endFrame > maxEndFrame) {
+                maxEndFrame = endFrame;
             }
         }
         this.startFrame = minStartFrame;
