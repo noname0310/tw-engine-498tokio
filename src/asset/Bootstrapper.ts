@@ -7,7 +7,7 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3, Quaternion } from "three/src/Three";
-import { testAnimationSequnace1 } from "./animation/TestAnimationSequnace";
+import { testRandomSequence1 } from "./animation/TestAnimationSequnace";
 import { BindInfo } from "./script/animation/BindInfo";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/AnimationLoopMode";
@@ -42,7 +42,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     const object1_rotation = animatedObject1.ref!.transform.rotation;
                     const object2_position = animatedObject2.ref!.transform.position;
 
-                    c.setAnimationAndBind(testAnimationSequnace1, [
+                    c.setAnimationAndBind(testRandomSequence1, [
                         (value: Vector3) => object2_position.copy(value),
                         new BindInfo([
                             { trackName: "position" as const, target: (value: Vector3) => object1_position.copy(value) },
