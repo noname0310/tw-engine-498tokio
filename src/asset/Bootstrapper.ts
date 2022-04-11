@@ -9,10 +9,10 @@ import {
 import { Vector3, Quaternion } from "three/src/Three";
 import { testRandomSequence1 } from "./animation/TestAnimationSequnace";
 import { AnimationClipBindInfo } from "./script/animation/AnimationClipBindInfo";
-import { AnimationEventBindInfo } from "./script/animation/AnimationEventKey";
+import { AnimationEventBindInfo } from "./script/animation/key/AnimationEventKey";
 import { AnimationControl } from "./script/AnimationControl";
-import { AnimationLoopMode } from "./script/AnimationLoopMode";
-import { AnimationSequnacePlayer } from "./script/AnimationSequnacePlayer";
+import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
+import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {

@@ -1,7 +1,7 @@
 import { Vector2, Vector3, Quaternion } from "three/src/Three";
-import { IAnimationInterpolator, QuaternionInterpolator, ScalarInterpolator, Vector2Interpolator, Vector3Interpolator } from "./AnimationInterpolator";
-import { AnimationKey } from "./AnimationKey";
-import { AnimationTrackInstance } from "./AnimationTrackInstance";
+import { IAnimationInterpolator, QuaternionInterpolator, ScalarInterpolator, Vector2Interpolator, Vector3Interpolator } from "../AnimationInterpolator";
+import { AnimationKey } from "../key/AnimationKey";
+import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
 

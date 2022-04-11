@@ -1,5 +1,5 @@
 import { Component } from "the-world-engine";
-import { IAnimationPlayer } from "./IAnimationPlayer";
+import { IAnimationPlayer } from "./animation/player/IAnimationPlayer";
 
 export class AnimationControl extends Component {
     private _player: IAnimationPlayer|null = null;

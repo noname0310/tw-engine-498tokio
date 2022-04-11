@@ -1,10 +1,10 @@
 import { Vector3, Quaternion } from "three/src/Three";
-import { AnimationClip } from "../script/animation/AnimationClip";
-import { AnimationEventKey } from "../script/animation/AnimationEventKey";
-import { AnimationEventTrack } from "../script/animation/AnimationEventTrack";
-import { AnimationKey, InterpolationKind } from "../script/animation/AnimationKey";
-import { AnimationSequence, RangedAnimation } from "../script/animation/AnimationSequence";
-import { AnimationTrack } from "../script/animation/AnimationTrack";
+import { AnimationClip } from "../script/animation/container/AnimationClip";
+import { AnimationEventKey } from "../script/animation/key/AnimationEventKey";
+import { AnimationEventTrack } from "../script/animation/container/AnimationEventTrack";
+import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
+import { AnimationSequence, RangedAnimation } from "../script/animation/container/AnimationSequence";
+import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 //import { BindInfo } from "../script/animation/BindInfo";
 
 export const testAnimationSequnace1 = (() => {

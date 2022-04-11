@@ -1,4 +1,4 @@
-import { IAnimationInstance } from "./IAniamtionInstance";
+import { IAnimationInstance } from "../instance/IAniamtionInstance";
 
 export interface IAnimationContainer<T> {
     get startFrame(): number;

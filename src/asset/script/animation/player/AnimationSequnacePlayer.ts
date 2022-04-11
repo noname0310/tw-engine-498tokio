@@ -1,8 +1,8 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
-import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "./animation/AnimationSequence";
-import { AnimationSequenceInstance } from "./animation/AnimationSequenceInstance";
-import { AnimationLoopMode } from "./AnimationLoopMode";
-import { IAnimationPlayer } from "./IAnimationPlayer";
+import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "../container/AnimationSequence";
+import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
+import { AnimationLoopMode } from "../AnimationLoopMode";
+import { IAnimationPlayer } from "../player/IAnimationPlayer";
 
 export class AnimationSequnacePlayer extends Component implements IAnimationPlayer {
     private _animationSequnace: AnimationSequence<any, any>|null = null;

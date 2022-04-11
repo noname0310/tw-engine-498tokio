@@ -1,11 +1,20 @@
-import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "./AnimationSequence";
+import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "../container/AnimationSequence";
 import { IAnimationInstance } from "./IAniamtionInstance";
+
+// class ActiveAnimationNode {
+
+// }
+
+// class ActivationInfoNode {
+//     public readonly animation: IAnimation;
+// }
 
 export class AnimationSequenceInstance<T extends ContainerData, U extends InferedSequenceBindData<T>> implements IAnimationInstance {
     private _bindInfo: SequenceBindInfo;
 
     private _animationSequence: AnimationSequence<T, U>;
     private _animationContainerInstances: IAnimationInstance[];
+    //private _animationActivationInfo: 
 
     public constructor(animationSequence: AnimationSequence<T, U>, bindInfo: SequenceBindInfo) {
         this._bindInfo = bindInfo.slice();
@@ -17,6 +26,8 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
             const animationContainerInstance = animationContainer.animation.createInstance(slicedBindInfo[i]);
             this._animationContainerInstances.push(animationContainerInstance);
         }
+
+        
     }
 
     public get bindInfo(): SequenceBindInfo {

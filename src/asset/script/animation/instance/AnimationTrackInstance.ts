@@ -1,5 +1,5 @@
-import { InterpolationKind } from "./AnimationKey";
-import { AnimationTrack } from "./AnimationTrack";
+import { InterpolationKind } from "../key/AnimationKey";
+import { AnimationTrack } from "../container/AnimationTrack";
 import { IAnimationInstance } from "./IAniamtionInstance";
 
 export class AnimationTrackInstance<T> implements IAnimationInstance {

@@ -1,8 +1,8 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
-import { AnimationTrack } from "./animation/AnimationTrack";
-import { AnimationTrackInstance } from "./animation/AnimationTrackInstance";
-import { AnimationLoopMode } from "./AnimationLoopMode";
-import { IAnimationPlayer } from "./IAnimationPlayer";
+import { AnimationTrack } from "../container/AnimationTrack";
+import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
+import { AnimationLoopMode } from "../AnimationLoopMode";
+import { IAnimationPlayer } from "../player/IAnimationPlayer";
 
 export class AnimationTrackPlayer<T> extends Component implements IAnimationPlayer {
     private _animationTrack: AnimationTrack<T>|null = null;

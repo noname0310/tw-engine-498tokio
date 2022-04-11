@@ -1,6 +1,6 @@
-import { AnimationClipInstance } from "./AnimationClipInstance";
+import { AnimationClipInstance } from "../instance/AnimationClipInstance";
 import { AnimationTrack } from "./AnimationTrack";
-import { AnimationClipBindInfo, AnimationClipBindItem } from "./AnimationClipBindInfo";
+import { AnimationClipBindInfo, AnimationClipBindItem } from "../AnimationClipBindInfo";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
 import { AnimationEventTrack } from "./AnimationEventTrack";

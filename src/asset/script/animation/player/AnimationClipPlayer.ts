@@ -1,8 +1,8 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
-import { AnimationClip, InferedAnimationClipBindData, TrackData } from "./animation/AnimationClip";
-import { AnimationClipInstance } from "./animation/AnimationClipInstance";
-import { AnimationClipBindInfo } from "./animation/AnimationClipBindInfo";
-import { AnimationLoopMode } from "./AnimationLoopMode";
+import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
+import { AnimationClipInstance } from "../instance/AnimationClipInstance";
+import { AnimationClipBindInfo } from "../AnimationClipBindInfo";
+import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
 
 // type UnwrapAnimationClip<T extends AnimationClip<any, any>> = T extends AnimationClip<infer U, any> ? U : never;

@@ -1,5 +1,5 @@
-import { AnimationEventKey } from "../script/animation/AnimationEventKey";
-import { AnimationEventTrack } from "../script/animation/AnimationEventTrack";
+import { AnimationEventKey } from "../script/animation/key/AnimationEventKey";
+import { AnimationEventTrack } from "../script/animation/container/AnimationEventTrack";
 
 export const testAnimationEventTrack1 = new AnimationEventTrack([
     new AnimationEventKey("test1", 0),

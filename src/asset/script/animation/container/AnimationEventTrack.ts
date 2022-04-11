@@ -1,5 +1,5 @@
-import { AnimationEventBindInfo, AnimationEventKey } from "./AnimationEventKey";
-import { AnimationEventTrackInstance } from "./AnimationEventTrackInstance";
+import { AnimationEventBindInfo, AnimationEventKey } from "../key/AnimationEventKey";
+import { AnimationEventTrackInstance } from "../instance/AnimationEventTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
 

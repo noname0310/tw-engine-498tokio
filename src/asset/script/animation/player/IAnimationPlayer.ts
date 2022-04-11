@@ -1,6 +1,6 @@
 import { IEventContainer } from "the-world-engine";
-import { IAnimationContainer } from "./animation/IAnimationContainer";
-import { AnimationLoopMode } from "./AnimationLoopMode";
+import { IAnimationContainer } from "../container/IAnimationContainer";
+import { AnimationLoopMode } from "../AnimationLoopMode";
 
 export interface IAnimationPlayer {
     get onAnimationProcess(): IEventContainer<(frameTime: number) => void>;

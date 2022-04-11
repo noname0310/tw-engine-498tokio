@@ -1,7 +1,7 @@
 import { Vector3, Quaternion } from "three/src/Three";
-import { AnimationClip } from "../script/animation/AnimationClip";
-import { AnimationKey, InterpolationKind } from "../script/animation/AnimationKey";
-import { AnimationTrack } from "../script/animation/AnimationTrack";
+import { AnimationClip } from "../script/animation/container/AnimationClip";
+import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
+import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 
 export const testAnimationClip1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);

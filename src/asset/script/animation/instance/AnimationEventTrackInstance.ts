@@ -1,5 +1,5 @@
-import { AnimationEventBindInfo } from "./AnimationEventKey";
-import { AnimationEventTrack, EventTrackData, InferedEventTrackBindData } from "./AnimationEventTrack";
+import { AnimationEventBindInfo } from "../key/AnimationEventKey";
+import { AnimationEventTrack, EventTrackData, InferedEventTrackBindData } from "../container/AnimationEventTrack";
 import { IAnimationInstance } from "./IAniamtionInstance";
 
 export class AnimationEventTrackInstance<T extends EventTrackData, U extends InferedEventTrackBindData<T>> implements IAnimationInstance {

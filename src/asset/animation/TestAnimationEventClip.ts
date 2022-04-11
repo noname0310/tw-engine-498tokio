@@ -1,9 +1,9 @@
 import { Vector3 } from "three/src/Three";
-import { AnimationClip } from "../script/animation/AnimationClip";
-import { AnimationEventKey } from "../script/animation/AnimationEventKey";
-import { AnimationEventTrack } from "../script/animation/AnimationEventTrack";
-import { AnimationKey, InterpolationKind } from "../script/animation/AnimationKey";
-import { AnimationTrack } from "../script/animation/AnimationTrack";
+import { AnimationClip } from "../script/animation/container/AnimationClip";
+import { AnimationEventKey } from "../script/animation/key/AnimationEventKey";
+import { AnimationEventTrack } from "../script/animation/container/AnimationEventTrack";
+import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
+import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 
 export const testAnimationEventClip1 = new AnimationClip([
     {

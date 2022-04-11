@@ -1,5 +1,5 @@
-import { AnimationClip, InferedAnimationClipBindData, TrackData } from "./AnimationClip";
-import { AnimationClipBindData, AnimationClipBindInfo } from "./AnimationClipBindInfo";
+import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
+import { AnimationClipBindData, AnimationClipBindInfo } from "../AnimationClipBindInfo";
 import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
 
