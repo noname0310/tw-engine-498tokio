@@ -19,27 +19,6 @@ export type InferedAnimationClipBindData<T extends TrackData> = {
         : never
 };
 
-// export type InferedAnimationClipBindData<T extends TrackData> = { 
-//     [key in keyof T]: T[key] extends TrackItem<infer TrackName, any>
-//         ? T[key]['track'] extends AnimationEventTrack<any, infer BindData>
-//             ? AnimationClipBindItem<TrackName, BindData>
-//             : T[key]['track'] extends AnimationTrack<infer BindType>
-//             ? AnimationClipBindItem<TrackName, (value: BindType) => void>
-//             : never
-//         : never
-// };
-
-// TrackItem에서 Track이 추론되고 있지 않고 있음
-// export type TestInfer<T extends TrackData> = {
-//     [key in keyof T]: T[key] extends TrackItem<infer TrackName, any>
-//         ? T[key]['track'] extends AnimationEventTrack<infer TrackData, infer BindData>
-//             ? TrackItem<TrackName, AnimationEventTrack<TrackData, BindData>>
-//             : T[key]['track'] extends AnimationTrack<infer BindType>
-//                 ? AnimationTrack<BindType>
-//                 : never
-//         : never
-// }
-
 // function inferTestFunction<T extends string, U>(trackitem: TrackItem<T, U>): AnimationEventBindInfo {
 //     return {
 //         event: () => {},
