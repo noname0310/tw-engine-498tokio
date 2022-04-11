@@ -1,8 +1,9 @@
 import { AnimationClip } from "./AnimationClip";
 import { AnimationSequenceInstance } from "./AnimationSequenceInstance";
 import { AnimationTrack } from "./AnimationTrack";
-import { BindInfo } from "./BindInfo";
+import { AnimationClipBindInfo } from "./AnimationClipBindInfo";
 import { IAnimationContainer } from "./IAnimationContainer";
+import { AnimationEventTrack } from "./AnimationEventTrack";
 
 type UnwrapRangedAnimation<T extends RangedAnimation<any>> = T extends RangedAnimation<infer U> ? U : never;
 
@@ -13,12 +14,14 @@ export type InferedSequenceBindData<T extends ContainerData> =
             [key in keyof T]: 
                 T[key] extends RangedAnimation<any>
                     ? UnwrapRangedAnimation<T[key]> extends AnimationClip<infer _, infer U>
-                        ? BindInfo<U>
+                        ? AnimationClipBindInfo<U>
                         : UnwrapRangedAnimation<T[key]> extends AnimationTrack<infer U>
                             ? (value: U) => void
-                            : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
+                            : UnwrapRangedAnimation<T[key]> extends AnimationEventTrack<infer _, infer U>
                                 ? U
-                                : never
+                                : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
+                                    ? U
+                                    : never
                     : never;
         };
 
@@ -46,9 +49,9 @@ export class RangedAnimation<T extends IAnimationContainer<unknown>> {
 
 export type ContainerData = RangedAnimation<IAnimationContainer<unknown>>[];
 
-export type SequenceBindItem = BindInfo<any>|((value: any) => void)|SequenceBindInfo;
+export type SequenceBindItem = AnimationClipBindInfo<any>|((value: any) => void)|SequenceBindInfo;
 
-export type NonRecursiveSequenceBindItem = (BindInfo<any>|((value: any) => void)|any[]);
+export type NonRecursiveSequenceBindItem = (AnimationClipBindInfo<any>|((value: any) => void)|any[]);
 
 export type SequenceBindInfo = SequenceBindItem[];
 

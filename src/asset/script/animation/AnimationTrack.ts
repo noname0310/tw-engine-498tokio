@@ -3,8 +3,9 @@ import { IAnimationInterpolator, QuaternionInterpolator, ScalarInterpolator, Vec
 import { AnimationKey } from "./AnimationKey";
 import { AnimationTrackInstance } from "./AnimationTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
+import { IAnimationTrack } from "./IAnimationTrack";
 
-export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void> {
+export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void>, IAnimationTrack {
     /**
      * this member must be sorted by frame member
      */

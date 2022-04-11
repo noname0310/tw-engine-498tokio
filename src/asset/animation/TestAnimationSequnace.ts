@@ -1,5 +1,7 @@
 import { Vector3, Quaternion } from "three/src/Three";
 import { AnimationClip } from "../script/animation/AnimationClip";
+import { AnimationEventKey } from "../script/animation/AnimationEventKey";
+import { AnimationEventTrack } from "../script/animation/AnimationEventTrack";
 import { AnimationKey, InterpolationKind } from "../script/animation/AnimationKey";
 import { AnimationSequence, RangedAnimation } from "../script/animation/AnimationSequence";
 import { AnimationTrack } from "../script/animation/AnimationTrack";
@@ -83,7 +85,7 @@ export const testAnimationSequnace1 = (() => {
                     ])
                 },
             ])
-        ),
+        )
     ]);
 })();
 
@@ -251,6 +253,31 @@ export const testRandomSequence1 = (() => {
                 },
             ])
         ),
+        new RangedAnimation(
+            new AnimationEventTrack([
+                new AnimationEventKey("event1", 0.00),
+                new AnimationEventKey("event2", 100.00),
+                new AnimationEventKey("event3", 200.00),
+                new AnimationEventKey("event4", 300.00),
+                new AnimationEventKey("event5", 400.00),
+                new AnimationEventKey("event6", 500.00),
+                new AnimationEventKey("event7", 600.00),
+                new AnimationEventKey("event8", 700.00),
+                new AnimationEventKey("event9", 800.00),
+                new AnimationEventKey("event10", 900.00),
+                new AnimationEventKey("event11", 1000.00),
+                new AnimationEventKey("event12", 1100.00),
+                new AnimationEventKey("event13", 1200.00),
+                new AnimationEventKey("event14", 1300.00),
+                new AnimationEventKey("event15", 1400.00),
+                new AnimationEventKey("event16", 1500.00),
+                new AnimationEventKey("event17", 1600.00),
+                new AnimationEventKey("event18", 1700.00),
+                new AnimationEventKey("event19", 1800.00),
+                new AnimationEventKey("event20", 1900.00),
+                new AnimationEventKey("event21", 2000.00)
+            ])
+        )
     ]);
 })();
 

@@ -1,7 +1,7 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
-import { AnimationClip, InferedBindData, TrackData } from "./animation/AnimationClip";
+import { AnimationClip, InferedAnimationClipBindData, TrackData } from "./animation/AnimationClip";
 import { AnimationClipInstance } from "./animation/AnimationClipInstance";
-import { BindInfo } from "./animation/BindInfo";
+import { AnimationClipBindInfo } from "./animation/AnimationClipBindInfo";
 import { AnimationLoopMode } from "./AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
 
@@ -25,7 +25,7 @@ import { IAnimationPlayer } from "./IAnimationPlayer";
 
 export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     private _animationClip: AnimationClip<any, any>|null = null;
-    private _bindInfo: BindInfo<any>|null = null;
+    private _bindInfo: AnimationClipBindInfo<any>|null = null;
     private _animationClipInstace: AnimationClipInstance<any, any>|null = null;
     private _elapsedTime = 0;
     private _frameRate = 60;
@@ -56,34 +56,44 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         if (!this._animationClipInstace || !this._isPlaying) return;
         
         this._elapsedTime += this.engine.time.deltaTime;
-        const frameTime = this._elapsedTime * this._frameRate;
-        const frame = Math.floor(frameTime);
-        this._animationClipInstace.process(frame);
-        this._onAnimationProcessEvent.invoke(frame);
+        let frameTime = this._elapsedTime * this._frameRate;
         if (this._animationClip!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();
             } else {
                 this._elapsedTime = (frameTime % this._animationClip!.endFrame) / this._frameRate;
                 this._animationClipInstace.frameIndexHint(0);
+                frameTime = this._elapsedTime * this._frameRate;
+                const frame = Math.floor(frameTime);
+                this._animationClipInstace.process(frame);
+                this._onAnimationProcessEvent.invoke(frame);
             }
+        } else {
+            const frame = Math.floor(frameTime);
+            this._animationClipInstace.process(frame);
+            this._onAnimationProcessEvent.invoke(frame);
         }
     }
 
     public play(): void {
-        if (!this._animationClip) throw new Error("animationClip is not set");
-        if (!this._bindInfo) throw new Error("bindInfo is not set");
-        this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
+        if (this._isPlaying) return;
+        if (!this._animationClipInstace) {
+            if (!this._animationClip) throw new Error("animationClip is not set");
+            if (!this._bindInfo) throw new Error("bindInfo is not set");
+            this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
+        }
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     }
 
     public pause(): void {
+        if (!this._isPlaying) return;
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
     }
 
     public stop(): void {
+        if (!this._isPlaying) return;
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
@@ -108,7 +118,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         return this._animationClip;
     }
 
-    public setAnimationAndBind<T extends TrackData, U extends InferedBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: BindInfo<U>) {
+    public setAnimationAndBind<T extends TrackData, U extends InferedAnimationClipBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
         this._animationClip = animationClip;
         this._bindInfo = bindInfo;
         if (!this._animationClipInstace) return;

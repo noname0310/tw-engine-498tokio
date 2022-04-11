@@ -1,13 +1,13 @@
-export type BindItem<T extends string, U> = { trackName: T, target: (value: U) => void };
-export type BindData = BindItem<any, any>[];
+export type AnimationClipBindItem<T extends string, U> = { trackName: T, target: U };
+export type AnimationClipBindData = AnimationClipBindItem<string, any>[];
 
-export class BindInfo<T extends BindData> {
+export class AnimationClipBindInfo<T extends AnimationClipBindData> {
     public readonly data: [...T];
 
     public constructor(data: [...T]) {
         this.data = [] as any;
         for (let i = 0; i < data.length; i++) {
-            this.data.push({ trackName: data[i].trackName, target: data[i].target });
+            this.data.push({...data[i]});
         }
     }
 }

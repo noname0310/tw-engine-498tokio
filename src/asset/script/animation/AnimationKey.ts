@@ -1,10 +1,12 @@
+import { IAnimationKey } from "./IAnimationKey";
+
 export const enum InterpolationKind {
     Cubic,
     Linear,
     Step
 }
 
-export class AnimationKey<T> {
+export class AnimationKey<T> implements IAnimationKey {
     public readonly value: T;
     public readonly frame: number;
     public readonly inTangent?: T;

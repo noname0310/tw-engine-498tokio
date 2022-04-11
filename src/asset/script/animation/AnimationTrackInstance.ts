@@ -14,12 +14,12 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
         this._currentFrameIndex = 0;
     }
 
-    public set targetSetFunction(targetSetFunction: (value: T) => void) {
-        this._targetSetFunction = targetSetFunction;
-    }
-
     public get targetSetFunction(): (value: T) => void {
         return this._targetSetFunction;
+    }
+
+    public set targetSetFunction(targetSetFunction: (value: T) => void) {
+        this._targetSetFunction = targetSetFunction;
     }
 
     public frameIndexHint(frameIndex: number): void {

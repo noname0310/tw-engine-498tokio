@@ -37,34 +37,44 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         if (!this._animationTrackInstace || !this._isPlaying) return;
         
         this._elapsedTime += this.engine.time.deltaTime;
-        const frameTime = this._elapsedTime * this._frameRate;
-        const frame = Math.floor(frameTime);
-        this._animationTrackInstace.process(frame);
-        this._onAnimationProcessEvent.invoke(frame);
+        let frameTime = this._elapsedTime * this._frameRate;
         if (this._animationTrack!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();
             } else {
                 this._elapsedTime = (frameTime % this._animationTrack!.endFrame) / this._frameRate;
                 this._animationTrackInstace.frameIndexHint(0);
+                frameTime = this._elapsedTime * this._frameRate;
+                const frame = Math.floor(frameTime);
+                this._animationTrackInstace.process(frame);
+                this._onAnimationProcessEvent.invoke(frame);
             }
+        } else {
+            const frame = Math.floor(frameTime);
+            this._animationTrackInstace.process(frame);
+            this._onAnimationProcessEvent.invoke(frame);
         }
     }
 
     public play(): void {
-        if (!this._animationTrack) throw new Error("animationTrack is not set");
-        if (!this._animationTarget) throw new Error("animationTarget is not set");
-        this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
+        if (this._isPlaying) return;
+        if (!this._animationTrackInstace) {
+            if (!this._animationTrack) throw new Error("animationTrack is not set");
+            if (!this._animationTarget) throw new Error("animationTarget is not set");
+            this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
+        }
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     }
 
     public pause(): void {
+        if (!this._isPlaying) return;
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
     }
 
     public stop(): void {
+        if (!this._isPlaying) return;
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
