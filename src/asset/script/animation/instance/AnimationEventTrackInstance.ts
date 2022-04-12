@@ -85,18 +85,20 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
 
         this._currentFrameIndex = startKeyIndex;
 
-        for (let i = this._lastInvokedFrameIndex + 1; i <= startKeyIndex; i++) {
+        const invokeFrameIndex = (frameTime === 0 && 0 <= this._lastInvokedFrameIndex) ? -1 : startKeyIndex;
+
+        for (let i = this._lastInvokedFrameIndex + 1; i <= invokeFrameIndex; i++) {
             const key = keys[i];
             ((this._bindInfo as {[key: string]: AnimationEventBindInfo})[key.eventName as string] as AnimationEventBindInfo).event();
         }
 
         if (!this._noRestoreEvent) {
-            for (let i = this._lastInvokedFrameIndex; i > startKeyIndex; i--) {
+            for (let i = this._lastInvokedFrameIndex; i > invokeFrameIndex; i--) {
                 const key = keys[i];
                 ((this._bindInfo as {[key: string]: AnimationEventBindInfo})[key.eventName as string] as AnimationEventBindInfo).eventRestore?.();
             }
         }
 
-        this._lastInvokedFrameIndex = startKeyIndex;
+        this._lastInvokedFrameIndex = invokeFrameIndex;
     }
 }

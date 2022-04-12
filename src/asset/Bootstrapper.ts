@@ -50,7 +50,7 @@ export class Bootstrapper extends BaseBootstrapper {
                             { trackName: "rotation" as const, target: (value: Quaternion) => object1_rotation.copy(value) },
                         ]),
                         {
-                            event1: new AnimationEventBindInfo(() => console.log("event1")),
+                            event1: new AnimationEventBindInfo(() => console.log("event1"), () => console.log("event1 restore")),
                             event2: new AnimationEventBindInfo(() => console.log("event2")),
                             event3: new AnimationEventBindInfo(() => console.log("event3")),
                             event4: new AnimationEventBindInfo(() => console.log("event4")),
