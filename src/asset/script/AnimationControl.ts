@@ -65,11 +65,14 @@ export class AnimationControl extends Component {
 
     public set slider(slider: HTMLInputElement|null) {
         this._slider = slider;
-        if (!this._slider) return;
-        if (this._player) this._slider.max = this._player.animationContainer?.endFrame.toString() ?? "0";
-        this._slider.addEventListener("input", this.onSliderInput);
-        this._slider.addEventListener("mousedown", this.onSliderMouseDown);
-        this._slider.addEventListener("mouseup", this.onSliderMouseUp);
+        if (!slider) return;
+        if (this._player) {
+            slider.min = this._player.animationContainer?.startFrame.toString() ?? "0";
+            slider.max = this._player.animationContainer?.endFrame.toString() ?? "0";
+        }
+        slider.addEventListener("input", this.onSliderInput);
+        slider.addEventListener("mousedown", this.onSliderMouseDown);
+        slider.addEventListener("mouseup", this.onSliderMouseUp);
     }
 
     public get playButton(): HTMLButtonElement|null {
