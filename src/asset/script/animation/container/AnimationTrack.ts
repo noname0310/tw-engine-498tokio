@@ -24,6 +24,9 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
             if (keys[i].frame < previousFrame) {
                 throw new Error("AnimationTrack: keys must be sorted by frame");
             }
+            if (keys[i].frame < 0) {
+                throw new Error("AnimationTrack: keys must be positive");
+            }
             previousFrame = keys[i].frame;
         }
     }
