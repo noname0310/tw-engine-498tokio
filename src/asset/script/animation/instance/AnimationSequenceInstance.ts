@@ -146,7 +146,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         while (0 <= deActivationFrameIndex && frameTime < deActivationInfo[deActivationFrameIndex].frame) {
             runningAnimations.add(deActivationInfo[deActivationFrameIndex].animationInstance);
             deActivationFrameIndex -= 1;
-            console.log(`Activate animation on frame ${frameTime} from deactivation`);
+            // console.log(`Activate animation on frame ${frameTime} from deactivation`);
         }
         while (0 <= activationFrameIndex && frameTime < activationInfo[activationFrameIndex].frame) {
             const animationInstance = activationInfo[activationFrameIndex].animationInstance;
@@ -154,12 +154,12 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
             activationFrameIndex -= 1;
             
             animationInstance.animation.process(animationInstance.start);
-            console.log(`Deactivate animation on frame ${frameTime} from actavation`);
+            // console.log(`Deactivate animation on frame ${frameTime} from actavation`);
         }
         while (activationFrameIndex < activationInfo.length - 1 && activationInfo[activationFrameIndex + 1].frame <= frameTime) {
             runningAnimations.add(activationInfo[activationFrameIndex + 1].animationInstance);
             activationFrameIndex += 1;
-            console.log(`Activate animation on frame ${frameTime} from actavation`);
+            // console.log(`Activate animation on frame ${frameTime} from actavation`);
         }
         while (deActivationFrameIndex < deActivationInfo.length - 1 && deActivationInfo[deActivationFrameIndex + 1].frame <= frameTime) {
             const animationInstance = deActivationInfo[deActivationFrameIndex + 1].animationInstance;
@@ -167,7 +167,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
             deActivationFrameIndex += 1;
 
             animationInstance.animation.process(animationInstance.end);
-            console.log(`Deactivate animation on frame ${frameTime} from deactivation`);
+            // console.log(`Deactivate animation on frame ${frameTime} from deactivation`);
         }
 
         this._currentActivationFrameIndex = activationFrameIndex;
