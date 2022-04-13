@@ -14,6 +14,10 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
         this._currentFrameIndex = 0;
     }
 
+    public get animationContainer(): AnimationTrack<T> {
+        return this._animationTrack;
+    }
+
     public get targetSetFunction(): (value: T) => void {
         return this._targetSetFunction;
     }

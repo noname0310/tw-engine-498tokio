@@ -25,6 +25,10 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
         }
     }
 
+    public get animationContainer(): AnimationEventTrack<T, U> {
+        return this._animationTrack;
+    }
+
     public get bindInfo(): U {
         return this._bindInfo;
     }

@@ -23,6 +23,10 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         }
     }
 
+    public get animationContainer(): AnimationClip<T, U> {
+        return this._animationClip;
+    }
+
     public get bindInfo(): AnimationClipBindInfo<U> {
         return this._bindInfo;
     }
