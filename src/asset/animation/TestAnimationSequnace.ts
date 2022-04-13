@@ -201,7 +201,7 @@ export const testRandomSequence1 = (() => {
                 AnimationKey.createRefType(acc += 100, new Vector3(Math.random() * 4 - 2, Math.random() * 8 - 4, 0), InterpolationKind.Step),
                 AnimationKey.createRefType(acc += 100, new Vector3(Math.random() * 4 - 2, Math.random() * 8 - 4, 0), InterpolationKind.Step),
                 AnimationKey.createRefType(acc += 100, new Vector3(Math.random() * 4 - 2, Math.random() * 8 - 4, 0), InterpolationKind.Step)
-            ])
+            ]), 400
         ),
         new RangedAnimation(
             new AnimationClip([
