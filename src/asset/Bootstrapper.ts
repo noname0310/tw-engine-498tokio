@@ -9,15 +9,15 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3, Quaternion } from "three/src/Three";
-import { testRandomSequence1 } from "./animation/TestAnimationSequnace";
+import { testRandomSequence1 } from "./animation/test/TestAnimationSequnace";
 import { AnimationClipBindInfo } from "./script/animation/AnimationClipBindInfo";
 import { AnimationEventBindInfo } from "./script/animation/key/AnimationEventKey";
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
 import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
 import { AudioPlayer } from "./script/audio/AudioPlayer";
-import Audio498Tokio from "./audio/498 tokio.mp3";
 import { LoadingText } from "./script/LoadingText";
+import Audio498Tokio from "./audio/498 tokio.mp3";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {

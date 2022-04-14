@@ -1,6 +1,6 @@
 import { Vector3, Vector2 } from "three/src/Three";
-import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
-import { AnimationTrack } from "../script/animation/container/AnimationTrack";
+import { AnimationKey, InterpolationKind } from "../../script/animation/key/AnimationKey";
+import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
 
 export const testAnimationTrack1 = (() => {
     const zero = new Vector3(0, 0, 0);
