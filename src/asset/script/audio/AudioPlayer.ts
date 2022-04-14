@@ -1,5 +1,6 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
 import { IAnimationClock } from "../IAnimationClock";
+import { getFileAudioBuffer } from "./DecodeAudioDataFast";
 
 const enum PlayerState {
     Waiting,
@@ -58,13 +59,19 @@ export class AudioPlayer extends Component implements IAnimationClock {
     public asyncSetAudioFromArrayBuffer(buffer: ArrayBuffer, onComplete?: () => void, onError?: (error: DOMException) => void): void {
         const context = this.getContext();
         if (!context) return;
-        context.decodeAudioData(buffer,
-            audioBuffer => {
+        getFileAudioBuffer(buffer, context)
+            .then(audioBuffer => {
                 this.setAudioFromAudioBuffer(audioBuffer);
                 onComplete?.();
-            },
-            error => onError?.(error)
-        );
+            })
+            .catch(error => onError?.(error));
+        // context.decodeAudioData(buffer,
+        //     audioBuffer => {
+        //         this.setAudioFromAudioBuffer(audioBuffer);
+        //         onComplete?.();
+        //     },
+        //     error => onError?.(error)
+        // );
     }
 
     public asyncSetAudioFromUrl(url: string, onComplete?: () => void, onError?: (error: Error) => void): void {
