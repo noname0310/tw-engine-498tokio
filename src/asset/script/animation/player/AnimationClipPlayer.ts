@@ -4,6 +4,7 @@ import { AnimationClipInstance } from "../instance/AnimationClipInstance";
 import { AnimationClipBindInfo } from "../AnimationClipBindInfo";
 import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
+import { IAnimationClock } from "../../IAnimationClock";
 
 // type UnwrapAnimationClip<T extends AnimationClip<any, any>> = T extends AnimationClip<infer U, any> ? U : never;
 
@@ -35,6 +36,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
+    private _animationClock: IAnimationClock|null = null;
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
         return this._onAnimationProcessEvent;
@@ -52,10 +54,24 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         return this._onAnimationEndEvent;
     }
 
+    public onDestroy(): void {
+        const animationClock = this._animationClock;
+        if (animationClock) {
+            animationClock.onPlayed.removeListener(this.playByClock);
+            animationClock.onPaused.removeListener(this.pauseByClock);
+            animationClock.onStopped.removeListener(this.stopByClock);
+            animationClock.onJumped.removeListener(this.processByClock);
+        }
+    }
+
     public update(): void {
         if (!this._animationClipInstace || !this._isPlaying) return;
         
-        this._elapsedTime += this.engine.time.deltaTime;
+        if (this._animationClock) {
+            this._elapsedTime = this._animationClock.currentTime;
+        } else {
+            this._elapsedTime += this.engine.time.deltaTime;
+        }
         let frameTime = this._elapsedTime * this._frameRate;
         if (this._animationClip!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.None) {
@@ -63,10 +79,15 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
             } else {
                 this._elapsedTime = (frameTime % this._animationClip!.endFrame) / this._frameRate;
                 this._animationClipInstace.frameIndexHint(0);
-                frameTime = this._elapsedTime * this._frameRate;
-                const frame = Math.floor(frameTime);
-                this._animationClipInstace.process(frame);
-                this._onAnimationProcessEvent.invoke(frame);
+                
+                if (this._animationClock) {
+                    this._animationClock?.setPosition(this._elapsedTime);
+                } else {
+                    frameTime = this._elapsedTime * this._frameRate;
+                    const frame = Math.floor(frameTime);
+                    this._animationClipInstace.process(frame);
+                    this._onAnimationProcessEvent.invoke(frame);
+                }
             }
         } else {
             const frame = Math.floor(frameTime);
@@ -82,22 +103,54 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
             if (!this._bindInfo) throw new Error("bindInfo is not set");
             this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
         }
+        
+        if (this._animationClock) {
+            this._animationClock.play();
+            return;
+        }
+
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     }
 
+    public playByClock = () => {
+        this._isPlaying = true;
+        this._onAnimationStartEvent.invoke();
+    };
+
     public pause(): void {
+        if (this._animationClock) {
+            this._animationClock.pause();
+            return;
+        }
+
         if (!this._isPlaying) return;
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
     }
 
+    public pauseByClock = (): void => {
+        this._isPlaying = false;
+        this._onAnimationPausedEvent.invoke();
+    };
+
     public stop(): void {
+        if (this._animationClock) {
+            this._animationClock.stop();
+            return;
+        }
+
         if (!this._isPlaying) return;
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
     }
+
+    public stopByClock = (): void => {
+        this._isPlaying = false;
+        this._elapsedTime = 0;
+        this._onAnimationEndEvent.invoke();
+    };
 
     public process(frameTime: number): void {
         if (!this._animationClip) throw new Error("animationClip is not set");
@@ -106,9 +159,21 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         if (!this._animationClipInstace) {
             this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
         }
+
+        if (this._animationClock) {
+            this._animationClock.setPosition(frameTime / this._frameRate);
+            return;
+        }
+
         this._animationClipInstace.process(frameTime);
         this._onAnimationProcessEvent.invoke(frameTime);
     }
+
+    public processByClock = (time: number): void => {
+        const frameTime = time * this._frameRate;
+        this._animationClipInstace?.process(frameTime);
+        this._onAnimationProcessEvent.invoke(frameTime);
+    };
 
     public get animationClip(): AnimationClip<any, any>|null {
         return this._animationClip;
@@ -138,11 +203,12 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
 
     public get elapsedTime(): number {
-        return this._elapsedTime;
+        return this._animationClock ? this._animationClock.currentTime : this._elapsedTime;
     }
 
     public set elapsedTime(elapsedTime: number) {
         this._elapsedTime = elapsedTime;
+        this._animationClock?.setPosition(elapsedTime);
     }
 
     public get frameTime(): number {
@@ -150,7 +216,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
     
     public set frameTime(frameTime: number) {
-        this._elapsedTime = frameTime / this._frameRate;
+        this.elapsedTime = frameTime / this._frameRate;
     }
 
     public get frameRate(): number {
@@ -159,5 +225,28 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
 
     public set frameRate(frameRate: number) {
         this._frameRate = frameRate;
+    }
+
+    public get animationClock(): IAnimationClock|null {
+        return this._animationClock;
+    }
+
+    public set animationClock(animationClock: IAnimationClock|null) {
+        const oldClock = this._animationClock;
+        if (oldClock) {
+            oldClock.onPlayed.removeListener(this.playByClock);
+            oldClock.onPaused.removeListener(this.pauseByClock);
+            oldClock.onStopped.removeListener(this.stopByClock);
+            oldClock.onJumped.removeListener(this.processByClock);
+        }
+
+        this._animationClock = animationClock;
+        
+        if (animationClock) {
+            animationClock.onPlayed.addListener(this.playByClock);
+            animationClock.onPaused.addListener(this.pauseByClock);
+            animationClock.onStopped.addListener(this.stopByClock);
+            animationClock.onJumped.addListener(this.processByClock);
+        }
     }
 }

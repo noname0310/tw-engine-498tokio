@@ -19,7 +19,17 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                type: "asset",
+                loader: "file-loader",
+                options: {
+                    name: "asset/image/[name].[ext]?[hash]"
+                }
+            },
+            {
+                test: /\.(mp3|ogg|wav)$/,
+                loader: "file-loader",
+                options: {
+                    name: "asset/audio/[name].[ext]?[hash]"
+                }
             },
             {
                 test: /\.html$/i,

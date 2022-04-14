@@ -13,11 +13,14 @@ import { AnimationEventBindInfo } from "./script/animation/key/AnimationEventKey
 import { AnimationControl } from "./script/AnimationControl";
 import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
 import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
+import { AudioPlayer } from "./script/audio/AudioPlayer";
+import Audio498Tokio from "./audio/498 tokio.mp3";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
         const instantiater = this.instantiater;
 
+        const audioPlayer = new PrefabRef<AudioPlayer>();
         const animationPlayer = new PrefabRef<AnimationSequnacePlayer>();
 
         const animatedObject1 = new PrefabRef<GameObject>();
@@ -27,7 +30,11 @@ export class Bootstrapper extends BaseBootstrapper {
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
                     c.viewSize = 5;
-                }))
+                })
+                .withComponent(AudioPlayer, c => {
+                    c.asyncSetAudioFromUrl(Audio498Tokio);
+                })
+                .getComponent(AudioPlayer, audioPlayer))
 
             .withChild(instantiater.buildGameObject("test_object")
                 .withComponent(CssSpriteRenderer)
@@ -74,6 +81,7 @@ export class Bootstrapper extends BaseBootstrapper {
                         }
                     ]);
                     c.loopMode = AnimationLoopMode.Loop;
+                    c.animationClock = audioPlayer.ref!;
                     c.play();
                 })
                 .getComponent(AnimationSequnacePlayer, animationPlayer))
