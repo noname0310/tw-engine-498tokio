@@ -13,6 +13,9 @@ const enum PlayerState {
 export class AudioPlayer extends Component implements IAnimationClock {
     private _context: AudioContext|null = null;
     private _source: AudioBufferSourceNode|null = null;
+    private _gain: GainNode|null = null;
+
+    private _volume = 1;
     private _pendingPlay = false;
     private _startTime = 0;
     private _jumpedPosition = -1;
@@ -32,7 +35,30 @@ export class AudioPlayer extends Component implements IAnimationClock {
         return this._context;
     }
 
+    private getGainNode(): GainNode|null {
+        if (this._state === PlayerState.Disposed) return null;
+        const context = this.getContext()!;
+        if (!this._gain) {
+            this._gain = context.createGain();
+            this._gain.gain.value = this._volume;
+            this._gain.connect(context.destination);
+            this._source?.connect(this._gain);
+        }
+        return this._gain;
+    }
+
     public onDestroy(): void {
+        if (this._source) {
+            this._source.stop();
+            this._source.disconnect();
+            this._source = null;
+        }
+
+        if (this._gain) {
+            this._gain.disconnect();
+            this._gain = null;
+        }
+
         if (this._context) {
             this._context.close();
             this._context = null;
@@ -49,6 +75,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         source.onended = this.onEnded;
         source.buffer = audioBuffer;
         source.connect(context.destination);
+        if (this._gain) source.connect(this._gain);
 
         if (this._pendingPlay) {
             this._pendingPlay = false;
@@ -189,11 +216,11 @@ export class AudioPlayer extends Component implements IAnimationClock {
         newSource.onended = this.onEnded;
         newSource.buffer = oldSource.buffer;
         newSource.connect(context.destination);
+        if (this._gain) newSource.connect(this._gain);
         return this._source = newSource;
     }
 
     private onEnded = (): void => {
-        console.log("ended");
         this.getContext()!.suspend();
         this._state = PlayerState.Stopped;
         this._onStoppedEvent.invoke();
@@ -211,6 +238,18 @@ export class AudioPlayer extends Component implements IAnimationClock {
 
     public get isPlaying(): boolean {
         return this._state === PlayerState.Playing;
+    }
+
+    public get volume(): number {
+        return this._volume;
+    }
+
+    public set volume(value: number) {
+        this._volume = value;
+
+        const gainNode = this.getGainNode();
+        if (!gainNode) return;
+        gainNode.gain.value = value;
     }
 
     public get onPlayed(): IEventContainer<() => void> {
