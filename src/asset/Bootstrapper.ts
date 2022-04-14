@@ -1,7 +1,9 @@
 import { 
     Bootstrapper as BaseBootstrapper,
     Camera,
+    Color,
     CssSpriteRenderer,
+    CssTextRenderer,
     GameObject,
     PrefabRef,
     SceneBuilder
@@ -15,6 +17,7 @@ import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
 import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
 import { AudioPlayer } from "./script/audio/AudioPlayer";
 import Audio498Tokio from "./audio/498 tokio.mp3";
+import { LoadingText } from "./script/LoadingText";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -31,8 +34,19 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(Camera, c => {
                     c.viewSize = 5;
                 })
+                .withComponent(CssTextRenderer, c => {
+                    c.text = "Decoding Audio Data";
+                    c.textColor = new Color(0, 0, 0);
+                    c.autoSize = true;
+                })
+                .withComponent(LoadingText, c => {
+                    c.text = "Decoding Audio Data";
+                })
                 .withComponent(AudioPlayer, c => {
-                    c.asyncSetAudioFromUrl(Audio498Tokio);
+                    c.asyncSetAudioFromUrl(Audio498Tokio, () => {
+                        c.gameObject.getComponent(CssTextRenderer)!.destroy();
+                        c.gameObject.getComponent(LoadingText)!.destroy();
+                    });
                 })
                 .getComponent(AudioPlayer, audioPlayer))
 
