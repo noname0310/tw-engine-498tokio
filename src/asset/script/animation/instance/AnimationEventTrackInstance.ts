@@ -67,7 +67,11 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
 
         let startKeyIndex = this._currentFrameIndex;
 
-        if (frameTime < 0) frameTime = 0;
+        let reverseStartState = false;
+        if (frameTime < 0) {
+            frameTime = 0;
+            reverseStartState = true;
+        }
 
         if (2048 < keys.length && 540 < Math.abs(frameTime - keys[startKeyIndex].frame)) {
             // use binary search for large key count
@@ -89,7 +93,7 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
 
         this._currentFrameIndex = startKeyIndex;
 
-        const invokeFrameIndex = (frameTime === 0 && 0 <= this._lastInvokedFrameIndex) ? -1 : startKeyIndex;
+        const invokeFrameIndex = reverseStartState ? -1 : startKeyIndex;
 
         for (let i = this._lastInvokedFrameIndex + 1; i <= invokeFrameIndex; i++) {
             const key = keys[i];

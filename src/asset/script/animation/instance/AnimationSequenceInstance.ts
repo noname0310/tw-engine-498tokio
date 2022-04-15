@@ -153,7 +153,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
             runningAnimations.delete(animationInstance);
             activationFrameIndex -= 1;
             
-            animationInstance.animation.process(animationInstance.start);
+            animationInstance.animation.process(frameTime);
             // console.log(`Deactivate animation on frame ${frameTime} from actavation`);
         }
         while (activationFrameIndex < activationInfo.length - 1 && activationInfo[activationFrameIndex + 1].frame <= frameTime) {

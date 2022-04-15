@@ -50,7 +50,6 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
     }
 
     public process(frameTime: number): void {
-        if (frameTime < this._animationClip.startFrame) frameTime = this._animationClip.startFrame;
         if (this._animationClip.endFrame < frameTime) frameTime = this._animationClip.endFrame;
 
         for (let i = 0; i < this._animationTrackInstances.length; ++i) {
