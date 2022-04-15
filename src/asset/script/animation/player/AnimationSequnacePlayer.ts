@@ -55,20 +55,22 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
         }
         let frameTime = this._elapsedTime * this._frameRate;
         if (this._animationSequnace!.endFrame < frameTime) {
-            if (this._loopMode === AnimationLoopMode.None) {
-                this.stop();
-            } else {
+            if (this._loopMode === AnimationLoopMode.Loop) {
                 this._elapsedTime = (frameTime % this._animationSequnace!.endFrame) / this._frameRate;
                 this._animationSequanceInstace.frameIndexHint(0);
+            }
+            
+            if (this._animationClock) {
+                this._animationClock?.setPosition(this._elapsedTime);
+            } else {
+                frameTime = this._elapsedTime * this._frameRate;
+                const frame = Math.floor(frameTime);
+                this._animationSequanceInstace.process(frame);
+                this._onAnimationProcessEvent.invoke(frame);
+            }
 
-                if (this._animationClock) {
-                    this._animationClock?.setPosition(this._elapsedTime);
-                } else {
-                    frameTime = this._elapsedTime * this._frameRate;
-                    const frame = Math.floor(frameTime);
-                    this._animationSequanceInstace.process(frame);
-                    this._onAnimationProcessEvent.invoke(frame);
-                }
+            if (this._loopMode === AnimationLoopMode.None) {
+                this.stop();
             }
         } else {
             const frame = Math.floor(frameTime);

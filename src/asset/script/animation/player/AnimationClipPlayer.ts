@@ -74,20 +74,22 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         }
         let frameTime = this._elapsedTime * this._frameRate;
         if (this._animationClip!.endFrame < frameTime) {
-            if (this._loopMode === AnimationLoopMode.None) {
-                this.stop();
-            } else {
+            if (this._loopMode === AnimationLoopMode.Loop) {
                 this._elapsedTime = (frameTime % this._animationClip!.endFrame) / this._frameRate;
                 this._animationClipInstace.frameIndexHint(0);
-                
-                if (this._animationClock) {
-                    this._animationClock?.setPosition(this._elapsedTime);
-                } else {
-                    frameTime = this._elapsedTime * this._frameRate;
-                    const frame = Math.floor(frameTime);
-                    this._animationClipInstace.process(frame);
-                    this._onAnimationProcessEvent.invoke(frame);
-                }
+            }
+        
+            if (this._animationClock) {
+                this._animationClock?.setPosition(this._elapsedTime);
+            } else {
+                frameTime = this._elapsedTime * this._frameRate;
+                const frame = Math.floor(frameTime);
+                this._animationClipInstace.process(frame);
+                this._onAnimationProcessEvent.invoke(frame);
+            }
+
+            if (this._loopMode === AnimationLoopMode.None) {
+                this.stop();
             }
         } else {
             const frame = Math.floor(frameTime);
