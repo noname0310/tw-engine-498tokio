@@ -11,9 +11,9 @@ import { AnimationControl } from "./script/AnimationControl";
 import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
 import { AudioPlayer } from "./script/audio/AudioPlayer";
 import { LoadingText } from "./script/LoadingText";
-import Audio498Tokio from "./audio/498 tokio.mp3";
 import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
 import { IntroAnimation } from "./animation/IntroAnimation";
+import Audio498Tokio from "./audio/498 tokio.mp3";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
