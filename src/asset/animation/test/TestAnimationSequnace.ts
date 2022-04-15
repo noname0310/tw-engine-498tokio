@@ -5,7 +5,6 @@ import { AnimationEventTrack } from "../../script/animation/container/AnimationE
 import { AnimationKey, InterpolationKind } from "../../script/animation/key/AnimationKey";
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";
 import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
-//import { BindInfo } from "../script/animation/BindInfo";
 
 export const testAnimationSequnace1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
