@@ -6,6 +6,8 @@ import { AnimationEventTrack } from "../script/animation/container/AnimationEven
 import { AnimationEventBindInfo, AnimationEventKey } from "../script/animation/key/AnimationEventKey";
 import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
 
+type ArrayToTuple<T extends any[]> = T extends [infer U, ...infer U2] ? [U, ...U2] : never;
+
 export class IntroAnimation {
     private static _timeScale = 1;
 
@@ -116,9 +118,51 @@ export class IntroAnimation {
         }
     ]);
 
+    private static _blackScreenAnimationClip = new AnimationClip([
+        {
+            name: "black_screen_opacity" as const, 
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 75, 1, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 180, 0, InterpolationKind.Linear)
+            ])
+        },
+        {
+            name: "black_screen_activation" as const,
+            track: new AnimationEventTrack([
+                new AnimationEventKey("visible", this._timeScale * 0),
+                new AnimationEventKey("invisible", this._timeScale * 190)
+            ])
+        }
+    ]);
+
+    private static _moonAnimationClip = new AnimationClip([
+        {
+            name: "moon_hue" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 0, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 553 - 75, 360 * 4.8, InterpolationKind.Linear)
+            ])
+        }
+    ]);
+
+    private static _zoomOutAnimationClip = new AnimationClip([
+        {
+            name: "scale" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 0, 1, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 384 - 75, 0.5, InterpolationKind.Cubic, 0, 0)
+            ])
+        }
+    ]);
+
     public static sequance = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
-        new RangedAnimation(this._fireworkAnimationClip, 115)
+        new RangedAnimation(this._fireworkAnimationClip, 115),
+        new RangedAnimation(this._fireworkAnimationClip, 222),
+        new RangedAnimation(this._fireworkAnimationClip, 330),
+        new RangedAnimation(this._blackScreenAnimationClip),
+        new RangedAnimation(this._moonAnimationClip, 75),
+        new RangedAnimation(this._zoomOutAnimationClip, 75),
     ]);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
@@ -140,7 +184,12 @@ export class IntroAnimation {
         fireWork3Disable: () => void,
         fireworkSphere: (value: number) => void,
         fireworkSphereEnable: () => void,
-        fireworkSphereDisable: () => void
+        fireworkSphereDisable: () => void,
+        blackScreen: (value: number) => void,
+        blackScreenEnable: () => void,
+        blackScreenDisable: () => void,
+        moon: (value: number) => void,
+        zoomOut: (value: number) => void,
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -165,6 +214,28 @@ export class IntroAnimation {
             }
         ]);
 
-        return [fireworkClipBindInfo, fireworkClipBindInfo] as [typeof fireworkClipBindInfo, typeof fireworkClipBindInfo];
+        const blackScreenClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "black_screen_opacity" as const, target: blackScreen },
+            {
+                trackName: "black_screen_activation" as const,
+                target: IntroAnimation.createActivationBindInfo(blackScreenEnable, blackScreenDisable)
+            }
+        ]);
+
+        const moonClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "moon_hue" as const, target: moon }
+        ]);
+
+        const zoomOutClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "scale" as const, target: zoomOut }
+        ]);
+
+        const bindInfo = [
+            fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo,
+            blackScreenClipBindInfo,
+            moonClipBindInfo,
+            zoomOutClipBindInfo
+        ];
+        return bindInfo as ArrayToTuple<typeof bindInfo>;
     }
 }

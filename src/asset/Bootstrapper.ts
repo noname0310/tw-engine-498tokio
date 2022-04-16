@@ -56,6 +56,10 @@ export class Bootstrapper extends BaseBootstrapper {
                     const firework2Render = introObjects.ref!.fireWork2.ref!;
                     const firework3Render = introObjects.ref!.fireWork3.ref!;
                     const fireworkSphereRender = introObjects.ref!.fireworkSphere.ref!;
+                    const blackScreen = introObjects.ref!.blackScreen.ref!;
+                    const moon = introObjects.ref!.moon.ref!;
+                    const moonFilter = moon.filter;
+                    const moonGroupScale = introObjects.ref!.moonGroup.ref!.transform.localScale;
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
@@ -72,7 +76,12 @@ export class Bootstrapper extends BaseBootstrapper {
                             () => firework3Render.enabled = false,
                             (value: number) => fireworkSphereRender.imageIndex = value,
                             () => fireworkSphereRender.enabled = true,
-                            () => fireworkSphereRender.enabled = false
+                            () => fireworkSphereRender.enabled = false,
+                            (value: number) => blackScreen.element!.style.opacity = value.toString(),
+                            () => blackScreen.enabled = true,
+                            () => blackScreen.enabled = false,
+                            (value: number) => moonFilter.hueRotate = value,
+                            (value: number) => moonGroupScale.setScalar(value)
                         )
                     );
                     c.frameRate = 30;
