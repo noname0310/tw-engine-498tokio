@@ -14,7 +14,7 @@ export class GlowSpriteAtlasRenderer extends Component {
         }
         this._sprite!.viewScale = this._viewScale;
         this._blurSprite!.viewScale = this._viewScale;
-        this._blurSprite!.blur = this._glowScale;
+        this._blurSprite!.filter.blur = this._glowScale;
     }
 
     public onEnable(): void {
