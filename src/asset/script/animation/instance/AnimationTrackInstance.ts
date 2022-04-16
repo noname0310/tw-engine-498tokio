@@ -61,15 +61,21 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
             while (startKeyIndex < keys.length - 1 && frameTime >= keys[startKeyIndex + 1].frame) startKeyIndex += 1;
         }
 
+        // start of frame processing
+        if (frameTime < keys[startKeyIndex].frame) {
+            this._targetSetFunction(keys[startKeyIndex].value);
+            return;
+        }
+
         this._currentFrameIndex = startKeyIndex;
 
         const startKey = keys[startKeyIndex];
         const endKey = keys[startKeyIndex + 1];
         
-        if (startKey === undefined) {
-            this._targetSetFunction(endKey.value);
-            return;
-        }
+        // if (startKey === undefined) {
+        //     this._targetSetFunction(endKey.value);
+        //     return;
+        // }
 
         if (endKey === undefined) {
             this._targetSetFunction(startKey.value);
