@@ -14,6 +14,7 @@ import { LoadingText } from "./script/LoadingText";
 import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
 import { IntroAnimation } from "./animation/IntroAnimation";
 import Audio498Tokio from "./audio/498 tokio.mp3";
+import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -27,7 +28,7 @@ export class Bootstrapper extends BaseBootstrapper {
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
-                    c.viewSize = 8;
+                    c.viewSize = 6;
                     c.backgroundColor = new Color(0, 0, 0);
                 })
                 .withComponent(CssTextRenderer, c => {
@@ -75,6 +76,7 @@ export class Bootstrapper extends BaseBootstrapper {
                         )
                     );
                     c.frameRate = 30;
+                    c.loopMode = AnimationLoopMode.Loop;
                     c.play();
                 })
                 .getComponent(AnimationSequnacePlayer, animationPlayer))
