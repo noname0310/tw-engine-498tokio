@@ -6,7 +6,9 @@ import { AnimationEventTrack } from "../script/animation/container/AnimationEven
 import { AnimationEventBindInfo, AnimationEventKey } from "../script/animation/key/AnimationEventKey";
 import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
 
-type ArrayToTuple<T extends any[]> = T extends [infer U, ...infer U2] ? [U, ...U2] : never;
+type RemoveReadonly<T> = {
+    -readonly [P in keyof T]: T[P];
+};
 
 export class IntroAnimation {
     private static _timeScale = 1;
@@ -28,6 +30,7 @@ export class IntroAnimation {
         {
             name: "firework1_activation" as const,
             track: new AnimationEventTrack([
+                new AnimationEventKey("invisible_norestore", this._timeScale * 0),
                 new AnimationEventKey("visible", this._timeScale * 0),
                 new AnimationEventKey("invisible", this._timeScale * 16)
             ])
@@ -58,7 +61,7 @@ export class IntroAnimation {
         {
             name: "firework2_activation" as const,
             track: new AnimationEventTrack([
-                new AnimationEventKey("invisible", this._timeScale * 0),
+                new AnimationEventKey("invisible_norestore", this._timeScale * 0),
                 new AnimationEventKey("visible", this._timeScale * 16),
                 new AnimationEventKey("invisible", this._timeScale * 70)
             ])
@@ -85,7 +88,7 @@ export class IntroAnimation {
         {
             name: "firework3_activation" as const,
             track: new AnimationEventTrack([
-                new AnimationEventKey("invisible", this._timeScale * 0),
+                new AnimationEventKey("invisible_norestore", this._timeScale * 0),
                 new AnimationEventKey("visible", this._timeScale * 31),
                 new AnimationEventKey("invisible", this._timeScale * 60)
             ])
@@ -111,7 +114,7 @@ export class IntroAnimation {
         {
             name: "firework_sphere_activation" as const,
             track: new AnimationEventTrack([
-                new AnimationEventKey("invisible", this._timeScale * 0),
+                new AnimationEventKey("invisible_norestore", this._timeScale * 0),
                 new AnimationEventKey("visible", this._timeScale * 45),
                 new AnimationEventKey("invisible", this._timeScale * 71)
             ])
@@ -150,7 +153,7 @@ export class IntroAnimation {
             name: "scale" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 0, 1, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 384 - 75, 0.5, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 384 - 75, 0.6, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
@@ -168,7 +171,8 @@ export class IntroAnimation {
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
         return {
             visible: new AnimationEventBindInfo(event, eventRestore),
-            invisible: new AnimationEventBindInfo(eventRestore, event)
+            invisible: new AnimationEventBindInfo(eventRestore, event),
+            invisible_norestore: new AnimationEventBindInfo(eventRestore)
         };
     }
 
@@ -235,7 +239,7 @@ export class IntroAnimation {
             blackScreenClipBindInfo,
             moonClipBindInfo,
             zoomOutClipBindInfo
-        ];
-        return bindInfo as ArrayToTuple<typeof bindInfo>;
+        ] as const;
+        return bindInfo as RemoveReadonly<typeof bindInfo>;
     }
 }
