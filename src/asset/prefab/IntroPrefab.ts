@@ -20,6 +20,7 @@ import ImageMoon from "../image/moon.png";
 import ImageMoonEmission from "../image/moon_emission.png";
 import ImageBackground from "../image/intro_background.jpg";
 import ImageGrass from "../image/grass.png";
+import { HorizontalObjectsAnimator } from "../script/render/HorizontalObjectsAnimator";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -96,7 +97,7 @@ export class IntroPrefab extends Prefab {
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(ImageMoonEmission);
                         c.filter.blur = 1;
-                        c.filter.dropShadow = new CssDropShadow(-0.3, -0.7, 1, new Color(1, 1, 1));
+                        c.filter.dropShadow = new CssDropShadow(-0.3, -0.3, 1, new Color(1, 1, 1));
                     })))
 
             .withChild(this.instantiater.buildGameObject("black_screen", new Vector3(0, 0, 1))
@@ -134,9 +135,18 @@ export class IntroPrefab extends Prefab {
                 }))
 
             .withChild(this.instantiater.buildGameObject("grass", new Vector3(0, -7, 0), undefined, new Vector3().setScalar(6))
-                .withComponent(CssSpriteRenderer, c => {
-                    c.asyncSetImagePath(ImageGrass);
-                    c.centerOffset = new Vector2(0, 0.5);
+                .withComponent(HorizontalObjectsAnimator, c => {
+                    c.prefab = class extends Prefab {
+                        public make(): GameObjectBuilder {
+                            return this.gameObjectBuilder
+                                .withComponent(CssSpriteRenderer, c => {
+                                    c.asyncSetImagePath(ImageGrass);
+                                    c.centerOffset = new Vector2(0, 0.5);
+                                });
+                        }
+                    };
+
+                    c.spawnCount = 4;
                 }))
         ;
     }
