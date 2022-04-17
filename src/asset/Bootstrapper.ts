@@ -15,6 +15,7 @@ import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
 import { IntroAnimation } from "./animation/IntroAnimation";
 import Audio498Tokio from "./audio/498 tokio.mp3";
 import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
+import { ScreenOverlay } from "./script/render/ScreenOverlay";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -44,6 +45,11 @@ export class Bootstrapper extends BaseBootstrapper {
                         c.gameObject.getComponent(CssTextRenderer)!.destroy();
                         c.gameObject.getComponent(LoadingText)!.destroy();
                     });
+                })
+                .withComponent(ScreenOverlay, c => {
+                    const div = document.createElement("div");
+                    div.style.boxShadow = "0 0 20px rgba(0,0,0,0.9) inset";
+                    c.CssHtmlElementRenderer!.element = div;
                 })
                 .getComponent(AudioPlayer, audioPlayer))
 
