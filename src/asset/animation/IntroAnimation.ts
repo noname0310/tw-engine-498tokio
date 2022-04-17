@@ -158,6 +158,23 @@ export class IntroAnimation {
         }
     ]);
 
+    private static _grassAnimationClip = new AnimationClip([
+        {
+            name: "grass1_x" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 541 - 392, -100, InterpolationKind.Linear)
+            ])
+        },
+        {
+            name: "grass1_y" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, -13, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -7, InterpolationKind.Cubic, 0, 0)
+            ])
+        }
+    ]);
+
     public static sequance = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
         new RangedAnimation(this._fireworkAnimationClip, 115),
@@ -166,6 +183,7 @@ export class IntroAnimation {
         new RangedAnimation(this._blackScreenAnimationClip),
         new RangedAnimation(this._moonAnimationClip, 75),
         new RangedAnimation(this._zoomOutAnimationClip, 75),
+        new RangedAnimation(this._grassAnimationClip, 392)
     ]);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
@@ -194,6 +212,8 @@ export class IntroAnimation {
         blackScreenDisable: () => void,
         moon: (value: number) => void,
         zoomOut: (value: number) => void,
+        grassX: (value: number) => void,
+        grassY: (value: number) => void
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -234,11 +254,17 @@ export class IntroAnimation {
             { trackName: "scale" as const, target: zoomOut }
         ]);
 
+        const grassClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "grass1_x" as const, target: grassX },
+            { trackName: "grass1_y" as const, target: grassY }
+        ]);
+
         const bindInfo = [
             fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo,
             blackScreenClipBindInfo,
             moonClipBindInfo,
-            zoomOutClipBindInfo
+            zoomOutClipBindInfo,
+            grassClipBindInfo
         ] as const;
         return bindInfo as RemoveReadonly<typeof bindInfo>;
     }

@@ -60,6 +60,8 @@ export class Bootstrapper extends BaseBootstrapper {
                     const moon = introObjects.ref!.moon.ref!;
                     const moonFilter = moon.filter;
                     const moonGroupScale = introObjects.ref!.moonGroup.ref!.transform.localScale;
+                    const grassPosition = introObjects.ref!.grass.ref!.transform.position;
+                    const grassRender = introObjects.ref!.grassRender.ref!;
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
@@ -81,7 +83,9 @@ export class Bootstrapper extends BaseBootstrapper {
                             () => blackScreen.enabled = true,
                             () => blackScreen.enabled = false,
                             (value: number) => moonFilter.hueRotate = value,
-                            (value: number) => moonGroupScale.setScalar(value)
+                            (value: number) => moonGroupScale.setScalar(value),
+                            (value: number) => grassRender.gradient = value,
+                            (value: number) => grassPosition.y = value,
                         )
                     );
                     c.frameRate = 30;
