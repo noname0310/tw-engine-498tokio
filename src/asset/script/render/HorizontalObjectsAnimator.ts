@@ -88,7 +88,7 @@ export class HorizontalObjectsAnimator extends Component {
 
     public set gradient(value: number) {
         const length = this._padding * this._spawnCount;
-        value = length - Math.abs(value) % length;
+        value = length - value % length;
         this._gradient = value;
 
         if (0 < this._spawnedObjects.length) {

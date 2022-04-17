@@ -30,7 +30,7 @@ export type IntroObjects = {
     fireworkSphere: PrefabRef<GlowSpriteAtlasRenderer>;
     blackScreen: PrefabRef<CssHtmlElementRenderer>;
     moon: PrefabRef<CssSpriteRenderer>;
-    grass: PrefabRef<GameObject>;
+    grass1: PrefabRef<GameObject>;
     grassRender: PrefabRef<HorizontalObjectsAnimator>;
 };
 
@@ -42,7 +42,7 @@ export class IntroPrefab extends Prefab {
     private _fireWorkSphere = new PrefabRef<GlowSpriteAtlasRenderer>();
     private _blackScreen = new PrefabRef<CssHtmlElementRenderer>();
     private _moon = new PrefabRef<CssSpriteRenderer>();
-    private _grass = new PrefabRef<GameObject>();
+    private _grass1 = new PrefabRef<GameObject>();
     private _grassRender = new PrefabRef<HorizontalObjectsAnimator>();
 
     public getObjects(introObjects: PrefabRef<IntroObjects>): this {
@@ -54,7 +54,7 @@ export class IntroPrefab extends Prefab {
             fireworkSphere: this._fireWorkSphere,
             blackScreen: this._blackScreen,
             moon: this._moon,
-            grass: this._grass,
+            grass1: this._grass1,
             grassRender: this._grassRender
         };
 
@@ -140,7 +140,7 @@ export class IntroPrefab extends Prefab {
                     };
                 }))
 
-            .withChild(this.instantiater.buildGameObject("grass", new Vector3(-30, -13, 3), undefined, new Vector3().setScalar(6))
+            .withChild(this.instantiater.buildGameObject("grass1", new Vector3(-30, -13, 3), undefined, new Vector3().setScalar(6))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
@@ -148,6 +148,7 @@ export class IntroPrefab extends Prefab {
                                 .withComponent(CssSpriteRenderer, c => {
                                     c.asyncSetImagePath(ImageGrass);
                                     c.centerOffset = new Vector2(0, 0.5);
+                                    c.filter.blur = 0.1;
                                 });
                         }
                     };
@@ -156,7 +157,7 @@ export class IntroPrefab extends Prefab {
                     c.padding = 1.59;
                 })
                 .getComponent(HorizontalObjectsAnimator, this._grassRender)
-                .getGameObject(this._grass))
+                .getGameObject(this._grass1))
         ;
     }
 }

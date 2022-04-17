@@ -163,7 +163,7 @@ export class IntroAnimation {
             name: "grass1_x" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 541 - 392, -100, InterpolationKind.Linear)
+                AnimationKey.createValueType(this._timeScale * 541 - 392, -40, InterpolationKind.Linear)
             ])
         },
         {
@@ -212,8 +212,8 @@ export class IntroAnimation {
         blackScreenDisable: () => void,
         moon: (value: number) => void,
         zoomOut: (value: number) => void,
-        grassX: (value: number) => void,
-        grassY: (value: number) => void
+        grass1X: (value: number) => void,
+        grass1Y: (value: number) => void
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -255,8 +255,8 @@ export class IntroAnimation {
         ]);
 
         const grassClipBindInfo = new AnimationClipBindInfo([
-            { trackName: "grass1_x" as const, target: grassX },
-            { trackName: "grass1_y" as const, target: grassY }
+            { trackName: "grass1_x" as const, target: grass1X },
+            { trackName: "grass1_y" as const, target: grass1Y }
         ]);
 
         const bindInfo = [
