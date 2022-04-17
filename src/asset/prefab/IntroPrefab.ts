@@ -1,19 +1,25 @@
 import {
+    Color,
     CssDropShadow,
     CssHtmlElementRenderer,
     CssSpriteRenderer,
+    CssTilemapRenderer,
     GameObject,
     GameObjectBuilder,
     Prefab,
-    PrefabRef
+    PrefabRef,
+    TileAtlasItem
 } from "the-world-engine";
-import { Vector3 } from "three/src/Three";
+import { Vector3, Vector2 } from "three/src/Three";
 import { GlowSpriteAtlasRenderer } from "../script/render/GlowSpriteAtlasRenderer";
 import ImageFirework1 from "../image/firework1.png";
 import ImageFirework2 from "../image/firework2.png";
 import ImageFirework3 from "../image/firework3.png";
 import ImageFireworkSphere from "../image/firework_sphere.png";
 import ImageMoon from "../image/moon.png";
+import ImageMoonEmission from "../image/moon_emission.png";
+import ImageBackground from "../image/intro_background.jpg";
+import ImageGrass from "../image/grass.png";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -86,7 +92,12 @@ export class IntroPrefab extends Prefab {
                         c.asyncSetImagePath(ImageMoon);
                         c.filter.dropShadow = new CssDropShadow(0.3, 0.7, 1);
                     })
-                    .getComponent(CssSpriteRenderer, this._moon)))
+                    .getComponent(CssSpriteRenderer, this._moon)
+                    .withComponent(CssSpriteRenderer, c => {
+                        c.asyncSetImagePath(ImageMoonEmission);
+                        c.filter.blur = 1;
+                        c.filter.dropShadow = new CssDropShadow(-0.3, -0.7, 1, new Color(1, 1, 1));
+                    })))
 
             .withChild(this.instantiater.buildGameObject("black_screen", new Vector3(0, 0, 1))
                 .withComponent(CssHtmlElementRenderer, c => {
@@ -97,6 +108,36 @@ export class IntroPrefab extends Prefab {
                     c.elementHeight = 1000;
                 })
                 .getComponent(CssHtmlElementRenderer, this._blackScreen))
+
+            .withChild(this.instantiater.buildGameObject("background", new Vector3(0, 0, -1), undefined, new Vector3().setScalar(1.55))
+                .withComponent(CssTilemapRenderer, c => {
+                    c.tileResolutionX = 4;
+                    c.tileResolutionY = 36;
+                    c.gridCellWidth = 4 / 4;
+                    c.gridCellHeight = 36 / 4;
+
+                    c.columnCount = 40;
+                    c.rowCount = 1;
+                    
+
+                    const tile = new Image();
+                    tile.src = ImageBackground;
+
+                    tile.onload = () => {
+                        c.imageSources = [new TileAtlasItem(tile)];
+                        
+                        const x = { i: 0, a: 0};
+                        c.drawTileFromTwoDimensionalArray([
+                            Array(c.columnCount).fill(x),
+                        ], 0, 0);
+                    };
+                }))
+
+            .withChild(this.instantiater.buildGameObject("grass", new Vector3(0, -7, 0), undefined, new Vector3().setScalar(6))
+                .withComponent(CssSpriteRenderer, c => {
+                    c.asyncSetImagePath(ImageGrass);
+                    c.centerOffset = new Vector2(0, 0.5);
+                }))
         ;
     }
 }

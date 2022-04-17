@@ -28,7 +28,7 @@ export class Bootstrapper extends BaseBootstrapper {
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
-                    c.viewSize = 6;
+                    c.viewSize = 7;
                     c.backgroundColor = new Color(0, 0, 0);
                 })
                 .withComponent(CssTextRenderer, c => {
