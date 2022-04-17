@@ -3,9 +3,10 @@ import { Component, GameObject, PrefabConstructor } from "the-world-engine";
 
 export class HorizontalObjectsAnimator extends Component {
     private _prefab: PrefabConstructor|null = null;
-    private _spawnCount = 0;
+    private _spawnCount = 3;
     private _padding = 1;
     private _spawnedObjects: GameObject[] = [];
+    private _gradient = 0;
 
     public awake(): void {
         this.updateSpawnedObjects(true);
@@ -42,7 +43,7 @@ export class HorizontalObjectsAnimator extends Component {
 
         if (rePosition) {
             for (let i = 0; i < spawnedObjects.length; i++) {
-                spawnedObjects[i].transform.position.x = i * this._padding;
+                spawnedObjects[i].transform.localPosition.x = (i * this._padding + this._gradient) % (this._padding * this._spawnCount);
             }
         }
     }
@@ -75,6 +76,18 @@ export class HorizontalObjectsAnimator extends Component {
 
     public set padding(value: number) {
         this._padding = value;
+
+        if (0 < this._spawnedObjects.length) {
+            this.updateSpawnedObjects(true);
+        }
+    }
+
+    public get gradient(): number {
+        return this._gradient;
+    }
+
+    public set gradient(value: number) {
+        this._gradient = value;
 
         if (0 < this._spawnedObjects.length) {
             this.updateSpawnedObjects(true);

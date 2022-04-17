@@ -134,7 +134,7 @@ export class IntroPrefab extends Prefab {
                     };
                 }))
 
-            .withChild(this.instantiater.buildGameObject("grass", new Vector3(0, -7, 0), undefined, new Vector3().setScalar(6))
+            .withChild(this.instantiater.buildGameObject("grass", new Vector3(-30, -7, 3), undefined, new Vector3().setScalar(6))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
@@ -146,7 +146,8 @@ export class IntroPrefab extends Prefab {
                         }
                     };
 
-                    c.spawnCount = 4;
+                    c.spawnCount = 7;
+                    c.padding = 1.59;
                 }))
         ;
     }
