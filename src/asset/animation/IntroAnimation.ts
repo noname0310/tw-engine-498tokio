@@ -169,8 +169,42 @@ export class IntroAnimation {
         {
             name: "grass1_y" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, -13, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -7, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 392 - 392, -17, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -11, InterpolationKind.Cubic, 0, 0)
+            ])
+        }
+    ]);
+
+    private static _grassAnimationClip2 = new AnimationClip([
+        {
+            name: "grass2_x" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 541 - 392, -30, InterpolationKind.Linear)
+            ])
+        },
+        {
+            name: "grass2_y" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, -14, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -7.3, InterpolationKind.Cubic, 0, 0)
+            ])
+        }
+    ]);
+
+    private static _grassAnimationClip3 = new AnimationClip([
+        {
+            name: "grass3_x" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 541 - 392, -20, InterpolationKind.Linear)
+            ])
+        },
+        {
+            name: "grass3_y" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 392 - 392, -12, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -5.5, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
@@ -180,10 +214,14 @@ export class IntroAnimation {
         new RangedAnimation(this._fireworkAnimationClip, 115),
         new RangedAnimation(this._fireworkAnimationClip, 222),
         new RangedAnimation(this._fireworkAnimationClip, 330),
+
         new RangedAnimation(this._blackScreenAnimationClip),
         new RangedAnimation(this._moonAnimationClip, 75),
         new RangedAnimation(this._zoomOutAnimationClip, 75),
-        new RangedAnimation(this._grassAnimationClip, 392)
+
+        new RangedAnimation(this._grassAnimationClip, 392),
+        new RangedAnimation(this._grassAnimationClip2, 392),
+        new RangedAnimation(this._grassAnimationClip3, 392)
     ]);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
@@ -213,7 +251,11 @@ export class IntroAnimation {
         moon: (value: number) => void,
         zoomOut: (value: number) => void,
         grass1X: (value: number) => void,
-        grass1Y: (value: number) => void
+        grass1Y: (value: number) => void,
+        grass2X: (value: number) => void,
+        grass2Y: (value: number) => void,
+        grass3X: (value: number) => void,
+        grass3Y: (value: number) => void
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -259,12 +301,24 @@ export class IntroAnimation {
             { trackName: "grass1_y" as const, target: grass1Y }
         ]);
 
+        const grassClipBindInfo2 = new AnimationClipBindInfo([
+            { trackName: "grass2_x" as const, target: grass2X },
+            { trackName: "grass2_y" as const, target: grass2Y }
+        ]);
+
+        const grassClipBindInfo3 = new AnimationClipBindInfo([
+            { trackName: "grass3_x" as const, target: grass3X },
+            { trackName: "grass3_y" as const, target: grass3Y }
+        ]);
+
         const bindInfo = [
             fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo,
             blackScreenClipBindInfo,
             moonClipBindInfo,
             zoomOutClipBindInfo,
-            grassClipBindInfo
+            grassClipBindInfo,
+            grassClipBindInfo2,
+            grassClipBindInfo3
         ] as const;
         return bindInfo as RemoveReadonly<typeof bindInfo>;
     }
