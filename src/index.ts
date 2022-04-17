@@ -16,21 +16,25 @@ audioTest.play()
         audioTest = null;
         startGame();
     })
-    .catch(_ => {
-        audioTest!.remove();
-        audioTest = null;
-        const button = document.createElement("button");
-        button.style.position = "absolute";
-        button.style.left = "0";
-        button.style.top = "0";
-        button.style.width = "100%";
-        button.style.height = "100%";
-        button.style.border = "none";
-        button.style.fontSize = "32px";
-        button.innerText = "Play";
-        button.onclick = () => {
-            button.parentElement!.removeChild(button);
-            startGame();
-        };
-        document.body.appendChild(button);
+    .catch(e => {
+        if (e instanceof DOMException && e.name === "NotAllowedError") {
+            audioTest!.remove();
+            audioTest = null;
+            const button = document.createElement("button");
+            button.style.position = "absolute";
+            button.style.left = "0";
+            button.style.top = "0";
+            button.style.width = "100%";
+            button.style.height = "100%";
+            button.style.border = "none";
+            button.style.fontSize = "32px";
+            button.innerText = "Play";
+            button.onclick = () => {
+                button.parentElement!.removeChild(button);
+                startGame();
+            };
+            document.body.appendChild(button);
+        } else {
+            throw e;
+        }
     });
