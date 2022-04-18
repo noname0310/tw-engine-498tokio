@@ -21,6 +21,8 @@ import ImageMoon from "../image/moon.png";
 import ImageMoonEmission from "../image/moon_emission.png";
 import ImageBackground from "../image/intro_background.jpg";
 import ImageGrass from "../image/grass.png";
+import ImageSpaceshipBlue from "../image/spaceship_blue.png";
+import ImageRedHelmet from "../image/red_helmet.png";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -36,6 +38,7 @@ export type IntroObjects = {
     grassRender2: PrefabRef<HorizontalObjectsAnimator>;
     grass3: PrefabRef<GameObject>;
     grassRender3: PrefabRef<HorizontalObjectsAnimator>;
+    spaceship: PrefabRef<GameObject>;
 };
 
 export class IntroPrefab extends Prefab {
@@ -52,6 +55,7 @@ export class IntroPrefab extends Prefab {
     private _grassRender2 = new PrefabRef<HorizontalObjectsAnimator>();
     private _grass3 = new PrefabRef<GameObject>();
     private _grassRender3 = new PrefabRef<HorizontalObjectsAnimator>();
+    private _spaceship = new PrefabRef<GameObject>();
 
     public getObjects(introObjects: PrefabRef<IntroObjects>): this {
         introObjects.ref = {
@@ -67,7 +71,8 @@ export class IntroPrefab extends Prefab {
             grass2: this._grass2,
             grassRender2: this._grassRender2,
             grass3: this._grass3,
-            grassRender3: this._grassRender3
+            grassRender3: this._grassRender3,
+            spaceship: this._spaceship
         };
 
         return this;
@@ -152,7 +157,7 @@ export class IntroPrefab extends Prefab {
                     };
                 }))
 
-            .withChild(this.instantiater.buildGameObject("grass1", new Vector3(-30, -17, -5), undefined, new Vector3().setScalar(6))
+            .withChild(this.instantiater.buildGameObject("grass1", new Vector3(-30, -17, -4), undefined, new Vector3().setScalar(6.1))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
@@ -171,7 +176,7 @@ export class IntroPrefab extends Prefab {
                 .getComponent(HorizontalObjectsAnimator, this._grassRender1)
                 .getGameObject(this._grass1))
                 
-            .withChild(this.instantiater.buildGameObject("grass2", new Vector3(-30, -14, -6), undefined, new Vector3().setScalar(4))
+            .withChild(this.instantiater.buildGameObject("grass2", new Vector3(-30, -14, -5), undefined, new Vector3().setScalar(4))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
@@ -191,7 +196,7 @@ export class IntroPrefab extends Prefab {
                 .getComponent(HorizontalObjectsAnimator, this._grassRender2)
                 .getGameObject(this._grass2))
 
-            .withChild(this.instantiater.buildGameObject("grass3", new Vector3(-30, -12, -7), undefined, new Vector3().setScalar(3))
+            .withChild(this.instantiater.buildGameObject("grass3", new Vector3(-30, -12, -6), undefined, new Vector3().setScalar(2))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
@@ -210,6 +215,18 @@ export class IntroPrefab extends Prefab {
                 })
                 .getComponent(HorizontalObjectsAnimator, this._grassRender3)
                 .getGameObject(this._grass3))
+
+            .withChild(this.instantiater.buildGameObject("space_ship", new Vector3(-0.1, -9, -7), undefined, new Vector3().setScalar(0.4))
+                .withComponent(CssSpriteRenderer, c => {
+                    c.asyncSetImagePath(ImageSpaceshipBlue);
+                    c.filter.brightness = 0;
+                })
+                .withChild(this.instantiater.buildGameObject("red_helmet", new Vector3(-0.45, 0, -1))
+                    .withComponent(CssSpriteRenderer, c => {
+                        c.asyncSetImagePath(ImageRedHelmet);
+                        c.filter.brightness = 0;
+                    }))
+                .getGameObject(this._spaceship))
         ;
     }
 }

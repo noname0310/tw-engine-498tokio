@@ -22,6 +22,7 @@ export class ScreenOverlay extends Component {
         if (this._htmlRenderer) return this._htmlRenderer;
 
         this._htmlRenderer = this.gameObject.addComponent(CssHtmlElementRenderer);
+        this._htmlRenderer!.enabled = this.enabled;
         return this._htmlRenderer!;
     }
 

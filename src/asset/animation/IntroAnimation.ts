@@ -187,7 +187,7 @@ export class IntroAnimation {
             name: "grass2_y" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 392 - 392, -14, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -7.3, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -7.2, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
@@ -204,7 +204,17 @@ export class IntroAnimation {
             name: "grass3_y" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 392 - 392, -12, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -5.5, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 481 - 392, -4, InterpolationKind.Cubic, 0, 0)
+            ])
+        }
+    ]);
+
+    private static _spaceshipAnimationClip = new AnimationClip([
+        {
+            name: "position_y" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 372 - 372, -9, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
@@ -221,7 +231,9 @@ export class IntroAnimation {
 
         new RangedAnimation(this._grassAnimationClip, 392),
         new RangedAnimation(this._grassAnimationClip2, 392),
-        new RangedAnimation(this._grassAnimationClip3, 392)
+        new RangedAnimation(this._grassAnimationClip3, 392),
+
+        new RangedAnimation(this._spaceshipAnimationClip, 372),
     ]);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
@@ -255,7 +267,8 @@ export class IntroAnimation {
         grass2X: (value: number) => void,
         grass2Y: (value: number) => void,
         grass3X: (value: number) => void,
-        grass3Y: (value: number) => void
+        grass3Y: (value: number) => void,
+        spaceshipY: (value: number) => void,
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -311,6 +324,10 @@ export class IntroAnimation {
             { trackName: "grass3_y" as const, target: grass3Y }
         ]);
 
+        const spaceshipClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "position_y" as const, target: spaceshipY }
+        ]);
+
         const bindInfo = [
             fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo,
             blackScreenClipBindInfo,
@@ -318,7 +335,8 @@ export class IntroAnimation {
             zoomOutClipBindInfo,
             grassClipBindInfo,
             grassClipBindInfo2,
-            grassClipBindInfo3
+            grassClipBindInfo3,
+            spaceshipClipBindInfo
         ] as const;
         return bindInfo as RemoveReadonly<typeof bindInfo>;
     }

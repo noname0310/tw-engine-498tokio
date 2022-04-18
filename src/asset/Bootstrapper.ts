@@ -72,6 +72,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     const grass2Render = introObjects.ref!.grassRender2.ref!;
                     const grass3Position = introObjects.ref!.grass3.ref!.transform.position;
                     const grass3Render = introObjects.ref!.grassRender3.ref!;
+                    const spaceshipPosition = introObjects.ref!.spaceship.ref!.transform.position;
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
@@ -99,7 +100,8 @@ export class Bootstrapper extends BaseBootstrapper {
                             (value: number) => grass2Render.gradient = value,
                             (value: number) => grass2Position.y = value,
                             (value: number) => grass3Render.gradient = value,
-                            (value: number) => grass3Position.y = value
+                            (value: number) => grass3Position.y = value,
+                            (value: number) => spaceshipPosition.y = value,
                         )
                     );
                     c.frameRate = 30;
