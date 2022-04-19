@@ -73,6 +73,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     const grass3Position = introObjects.ref!.grass3.ref!.transform.position;
                     const grass3Render = introObjects.ref!.grassRender3.ref!;
                     const spaceshipPosition = introObjects.ref!.spaceship.ref!.transform.position;
+                    const spaceshipRotate = introObjects.ref!.spaceship.ref!.transform.eulerAngles;
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
@@ -102,6 +103,7 @@ export class Bootstrapper extends BaseBootstrapper {
                             (value: number) => grass3Render.gradient = value,
                             (value: number) => grass3Position.y = value,
                             (value: number) => spaceshipPosition.y = value,
+                            (value: number) => spaceshipRotate.z = value
                         )
                     );
                     c.frameRate = 30;

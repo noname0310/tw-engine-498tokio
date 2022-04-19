@@ -216,7 +216,7 @@ export class IntroPrefab extends Prefab {
                 .getComponent(HorizontalObjectsAnimator, this._grassRender3)
                 .getGameObject(this._grass3))
 
-            .withChild(this.instantiater.buildGameObject("space_ship", new Vector3(-0.1, -9, -7), undefined, new Vector3().setScalar(0.4))
+            .withChild(this.instantiater.buildGameObject("space_ship", new Vector3(-0.1, -9, -7), undefined, new Vector3().setScalar(0.5))
                 .withComponent(CssSpriteRenderer, c => {
                     c.asyncSetImagePath(ImageSpaceshipBlue);
                     c.filter.brightness = 0;

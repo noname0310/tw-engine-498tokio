@@ -214,7 +214,16 @@ export class IntroAnimation {
             name: "position_y" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 372 - 372, -9, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
+                AnimationKey.createValueType(this._timeScale * 540 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
+                AnimationKey.createValueType(this._timeScale * 546 - 372, 0.1, InterpolationKind.Cubic, 0, 0)
+            ])
+        },
+        {
+            name: "rotation_z" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 540 - 372, 0, InterpolationKind.Cubic, 0, 0),
+                AnimationKey.createValueType(this._timeScale * 546 - 372, -Math.PI / 4 / 1.5, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
@@ -269,6 +278,7 @@ export class IntroAnimation {
         grass3X: (value: number) => void,
         grass3Y: (value: number) => void,
         spaceshipY: (value: number) => void,
+        spaceshipZ: (value: number) => void,
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -325,7 +335,8 @@ export class IntroAnimation {
         ]);
 
         const spaceshipClipBindInfo = new AnimationClipBindInfo([
-            { trackName: "position_y" as const, target: spaceshipY }
+            { trackName: "position_y" as const, target: spaceshipY },
+            { trackName: "rotation_z" as const, target: spaceshipZ }
         ]);
 
         const bindInfo = [
