@@ -10,7 +10,7 @@ import {
     PrefabRef,
     TileAtlasItem
 } from "the-world-engine";
-import { Vector3, Vector2 } from "three/src/Three";
+import { Vector3, Vector2, Quaternion } from "three/src/Three";
 import { GlowSpriteAtlasRenderer } from "../script/render/GlowSpriteAtlasRenderer";
 import { HorizontalObjectsAnimator } from "../script/render/HorizontalObjectsAnimator";
 import ImageFirework1 from "../image/firework1.png";
@@ -227,6 +227,70 @@ export class IntroPrefab extends Prefab {
                         c.filter.brightness = 0;
                     }))
                 .getGameObject(this._spaceship))
+            
+            .withChild(this.instantiater.buildGameObject("warp_effect",
+                new Vector3(0, 0, 12),
+                new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), -Math.PI / 4 / 1.2),
+                new Vector3().setScalar(2.9 / 2)
+            )
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const div = document.createElement("div");
+                    div.style.filter = "blur(0.3px)";
+                    div.style.backgroundColor = "#FFFFFF";
+                    c.element = div;
+                    c.elementWidth = 100;
+                    c.elementHeight = 0.8;
+                })
+
+                .withChild(this.instantiater.buildGameObject("warp_effect_side_yellow", new Vector3(0, 0.6, 0))
+                    .withComponent(CssHtmlElementRenderer, c => {
+                        const div = document.createElement("div");
+                        div.style.filter = "blur(0.3px)";
+                        div.style.backgroundColor = "#FFFFFF";
+                        c.element = div;
+                        c.elementWidth = 100;
+                        c.elementHeight = 0.2;
+                    })
+
+                    .withChild(this.instantiater.buildGameObject("glow_effect",
+                        new Vector3(0, 0, -1),
+                        undefined,
+                        new Vector3().setScalar(2.5)
+                    )
+                        .withComponent(CssHtmlElementRenderer, c => {
+                            const div = document.createElement("div");
+                            div.style.filter = "blur(0.5px)";
+                            div.style.backgroundColor = "#FFFF00";
+                            div.style.opacity = "0.9";
+                            c.element = div;
+                            c.elementWidth = 100;
+                            c.elementHeight = 0.2;
+                        })))
+
+                .withChild(this.instantiater.buildGameObject("warp_effect_side_blue", new Vector3(0, -0.6, 0))
+                    .withComponent(CssHtmlElementRenderer, c => {
+                        const div = document.createElement("div");
+                        div.style.filter = "blur(0.3px)";
+                        div.style.backgroundColor = "#FFFFFF";
+                        c.element = div;
+                        c.elementWidth = 100;
+                        c.elementHeight = 0.2;
+                    })
+
+                    .withChild(this.instantiater.buildGameObject("glow_effect",
+                        new Vector3(0, 0, -1),
+                        undefined,
+                        new Vector3().setScalar(2.5)
+                    )
+                        .withComponent(CssHtmlElementRenderer, c => {
+                            const div = document.createElement("div");
+                            div.style.filter = "blur(0.5px)";
+                            div.style.backgroundColor = "#0000FF";
+                            div.style.opacity = "0.9";
+                            c.element = div;
+                            c.elementWidth = 100;
+                            c.elementHeight = 0.2;
+                        }))))
         ;
     }
 }

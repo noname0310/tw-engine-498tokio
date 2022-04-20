@@ -223,7 +223,7 @@ export class IntroAnimation {
             name: "rotation_z" as const,
             track: AnimationTrack.createScalarTrack([
                 AnimationKey.createValueType(this._timeScale * 540 - 372, 0, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 546 - 372, -Math.PI / 4 / 1.5, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 546 - 372, -Math.PI / 4 / 1.2, InterpolationKind.Cubic, 0, 0)
             ])
         }
     ]);
