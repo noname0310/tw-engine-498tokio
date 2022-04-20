@@ -119,7 +119,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
                 } else {
                     throw error;
                 }
-            }
+            });
     }
 
     //#endregion
