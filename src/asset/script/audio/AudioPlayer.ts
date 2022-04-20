@@ -91,7 +91,13 @@ export class AudioPlayer extends Component implements IAnimationClock {
                 this.setAudioFromAudioBuffer(audioBuffer);
                 onComplete?.();
             })
-            .catch(error => onError?.(error));
+            .catch(error => {
+                if (error instanceof DOMException) {
+                    onError?.(error);
+                } else {
+                    throw error;
+                }
+            });
         // context.decodeAudioData(buffer,
         //     audioBuffer => {
         //         this.setAudioFromAudioBuffer(audioBuffer);
@@ -101,13 +107,19 @@ export class AudioPlayer extends Component implements IAnimationClock {
         // );
     }
 
-    public asyncSetAudioFromUrl(url: string, onComplete?: () => void, onError?: (error: Error) => void): void {
+    public asyncSetAudioFromUrl(url: string, onComplete?: () => void, onError?: (error: DOMException) => void): void {
         const context = this.getContext();
         if (!context) return;
         fetch(url)
             .then(response => response.arrayBuffer())
             .then(buffer => this.asyncSetAudioFromArrayBuffer(buffer, onComplete, onError))
-            .catch(error => onError?.(error));
+            .catch(error => {
+                if (error instanceof DOMException) {
+                    onError?.(error);
+                } else {
+                    throw error;
+                }
+            }
     }
 
     //#endregion
