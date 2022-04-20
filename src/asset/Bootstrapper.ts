@@ -74,6 +74,8 @@ export class Bootstrapper extends BaseBootstrapper {
                     const grass3Render = introObjects.ref!.grassRender3.ref!;
                     const spaceshipPosition = introObjects.ref!.spaceship.ref!.transform.position;
                     const spaceshipRotate = introObjects.ref!.spaceship.ref!.transform.eulerAngles;
+                    const warpEffect = introObjects.ref!.warpEffect.ref!;
+                    const blackScreen2 = introObjects.ref!.blackScreen2.ref!;
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
@@ -103,7 +105,12 @@ export class Bootstrapper extends BaseBootstrapper {
                             (value: number) => grass3Render.gradient = value,
                             (value: number) => grass3Position.y = value,
                             (value: number) => spaceshipPosition.y = value,
-                            (value: number) => spaceshipRotate.z = value
+                            (value: number) => spaceshipRotate.z = value,
+                            () => warpEffect.activeSelf = true,
+                            () => warpEffect.activeSelf = false,
+                            (value: number) => blackScreen2.element!.style.opacity = value.toString(),
+                            () => blackScreen2.enabled = true,
+                            () => blackScreen2.enabled = false
                         )
                     );
                     c.frameRate = 30;

@@ -39,6 +39,8 @@ export type IntroObjects = {
     grass3: PrefabRef<GameObject>;
     grassRender3: PrefabRef<HorizontalObjectsAnimator>;
     spaceship: PrefabRef<GameObject>;
+    warpEffect: PrefabRef<GameObject>;
+    blackScreen2: PrefabRef<CssHtmlElementRenderer>;
 };
 
 export class IntroPrefab extends Prefab {
@@ -56,6 +58,8 @@ export class IntroPrefab extends Prefab {
     private _grass3 = new PrefabRef<GameObject>();
     private _grassRender3 = new PrefabRef<HorizontalObjectsAnimator>();
     private _spaceship = new PrefabRef<GameObject>();
+    private _warpEffect = new PrefabRef<GameObject>();
+    private _blackScreen2 = new PrefabRef<CssHtmlElementRenderer>();
 
     public getObjects(introObjects: PrefabRef<IntroObjects>): this {
         introObjects.ref = {
@@ -72,7 +76,9 @@ export class IntroPrefab extends Prefab {
             grassRender2: this._grassRender2,
             grass3: this._grass3,
             grassRender3: this._grassRender3,
-            spaceship: this._spaceship
+            spaceship: this._spaceship,
+            warpEffect: this._warpEffect,
+            blackScreen2: this._blackScreen2
         };
 
         return this;
@@ -242,6 +248,8 @@ export class IntroPrefab extends Prefab {
                     c.elementHeight = 0.8;
                 })
 
+                .getGameObject(this._warpEffect)
+
                 .withChild(this.instantiater.buildGameObject("warp_effect_side_yellow", new Vector3(0, 0.6, 0))
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
@@ -291,6 +299,17 @@ export class IntroPrefab extends Prefab {
                             c.elementWidth = 100;
                             c.elementHeight = 0.2;
                         }))))
+
+            
+            .withChild(this.instantiater.buildGameObject("black_screen_2", new Vector3(0, 0, -3))
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const div = document.createElement("div");
+                    div.style.backgroundColor = "#000000";
+                    c.element = div;
+                    c.elementWidth = 1000;
+                    c.elementHeight = 1000;
+                })
+                .getComponent(CssHtmlElementRenderer, this._blackScreen2))
         ;
     }
 }

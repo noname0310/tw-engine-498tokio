@@ -228,21 +228,53 @@ export class IntroAnimation {
         }
     ]);
 
+    private static _warpEffectAnimationClip = new AnimationClip([
+        {
+            name: "warp_effect_activation" as const,
+            track: new AnimationEventTrack([
+                new AnimationEventKey("invisible_norestore", this._timeScale * 0),
+                new AnimationEventKey("visible", this._timeScale * 547),
+                new AnimationEventKey("invisible", this._timeScale * 558)
+            ])
+        }
+    ]);
+
+    private static _blackScreen2AnimationClip = new AnimationClip([
+        {
+            name: "black_screen2_opacity" as const, 
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 547, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 558, 1, InterpolationKind.Linear)
+            ])
+        },
+        {
+            name: "black_screen2_activation" as const,
+            track: new AnimationEventTrack([
+                new AnimationEventKey("invisible", this._timeScale * 0),
+                new AnimationEventKey("visible", this._timeScale * 547),
+                new AnimationEventKey("invisible", this._timeScale * 558)
+            ])
+        }
+    ]);
+
     public static sequance = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
-        new RangedAnimation(this._fireworkAnimationClip, 115),
-        new RangedAnimation(this._fireworkAnimationClip, 222),
-        new RangedAnimation(this._fireworkAnimationClip, 330),
+        new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 115),
+        new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 222),
+        new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 330),
 
         new RangedAnimation(this._blackScreenAnimationClip),
-        new RangedAnimation(this._moonAnimationClip, 75),
-        new RangedAnimation(this._zoomOutAnimationClip, 75),
+        new RangedAnimation(this._moonAnimationClip, this._timeScale * 75),
+        new RangedAnimation(this._zoomOutAnimationClip, this._timeScale * 75),
 
-        new RangedAnimation(this._grassAnimationClip, 392),
-        new RangedAnimation(this._grassAnimationClip2, 392),
-        new RangedAnimation(this._grassAnimationClip3, 392),
+        new RangedAnimation(this._grassAnimationClip, this._timeScale * 392),
+        new RangedAnimation(this._grassAnimationClip2, this._timeScale * 392),
+        new RangedAnimation(this._grassAnimationClip3, this._timeScale * 392),
 
-        new RangedAnimation(this._spaceshipAnimationClip, 372),
+        new RangedAnimation(this._spaceshipAnimationClip, this._timeScale * 372),
+
+        new RangedAnimation(this._warpEffectAnimationClip),
+        new RangedAnimation(this._blackScreen2AnimationClip)
     ]);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
@@ -279,6 +311,11 @@ export class IntroAnimation {
         grass3Y: (value: number) => void,
         spaceshipY: (value: number) => void,
         spaceshipZ: (value: number) => void,
+        warpEffectEnable: () => void,
+        warpEffectDisable: () => void,
+        blackScreen2: (value: number) => void,
+        blackScreen2Enable: () => void,
+        blackScreen2Disable: () => void
     ) {
         const fireworkClipBindInfo = new AnimationClipBindInfo([
             { trackName: "firework1" as const, target: firework1 },
@@ -339,6 +376,21 @@ export class IntroAnimation {
             { trackName: "rotation_z" as const, target: spaceshipZ }
         ]);
 
+        const warpEffectClipBindInfo = new AnimationClipBindInfo([
+            { 
+                trackName: "warp_effect_activation" as const,
+                target: IntroAnimation.createActivationBindInfo(warpEffectEnable, warpEffectDisable)
+            }
+        ]);
+
+        const blackScreen2ClipBindInfo = new AnimationClipBindInfo([
+            { trackName: "black_screen2_opacity" as const, target: blackScreen2 },
+            {
+                trackName: "black_screen2_activation" as const,
+                target: IntroAnimation.createActivationBindInfo(blackScreen2Enable, blackScreen2Disable)
+            }
+        ]);
+
         const bindInfo = [
             fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo, fireworkClipBindInfo,
             blackScreenClipBindInfo,
@@ -347,7 +399,9 @@ export class IntroAnimation {
             grassClipBindInfo,
             grassClipBindInfo2,
             grassClipBindInfo3,
-            spaceshipClipBindInfo
+            spaceshipClipBindInfo,
+            warpEffectClipBindInfo,
+            blackScreen2ClipBindInfo
         ] as const;
         return bindInfo as RemoveReadonly<typeof bindInfo>;
     }
