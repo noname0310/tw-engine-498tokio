@@ -23,6 +23,12 @@ import ImageBackground from "../image/intro_background.jpg";
 import ImageGrass from "../image/grass.png";
 import ImageSpaceshipBlue from "../image/spaceship_blue.png";
 import ImageRedHelmet from "../image/red_helmet.png";
+import { RuntimeAimationContainer } from "../script/RuntimeAnimationContainer";
+import { AnimationClip } from "../script/animation/container/AnimationClip";
+import { AnimationTrack } from "../script/animation/container/AnimationTrack";
+import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
+import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
+import { NumberStringPool } from "../script/NumberStringPool";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -40,6 +46,7 @@ export type IntroObjects = {
     grassRender3: PrefabRef<HorizontalObjectsAnimator>;
     spaceship: PrefabRef<GameObject>;
     warpEffect: PrefabRef<GameObject>;
+    warpEffectAnim: PrefabRef<RuntimeAimationContainer>;
     blackScreen2: PrefabRef<CssHtmlElementRenderer>;
 };
 
@@ -59,6 +66,7 @@ export class IntroPrefab extends Prefab {
     private _grassRender3 = new PrefabRef<HorizontalObjectsAnimator>();
     private _spaceship = new PrefabRef<GameObject>();
     private _warpEffect = new PrefabRef<GameObject>();
+    private _warpEffectAnim = new PrefabRef<RuntimeAimationContainer>();
     private _blackScreen2 = new PrefabRef<CssHtmlElementRenderer>();
 
     public getObjects(introObjects: PrefabRef<IntroObjects>): this {
@@ -78,6 +86,7 @@ export class IntroPrefab extends Prefab {
             grassRender3: this._grassRender3,
             spaceship: this._spaceship,
             warpEffect: this._warpEffect,
+            warpEffectAnim: this._warpEffectAnim,
             blackScreen2: this._blackScreen2
         };
 
@@ -85,6 +94,12 @@ export class IntroPrefab extends Prefab {
     }
 
     public override make(): GameObjectBuilder {
+        const warpEffectCenterRenderer = new PrefabRef<CssHtmlElementRenderer>();
+        const warpEffectSide1 = new PrefabRef<GameObject>();
+        const warpEffectSide2 = new PrefabRef<GameObject>();
+        const warpEffectSide1Renderer = new PrefabRef<CssHtmlElementRenderer>();
+        const warpEffectSide2Renderer = new PrefabRef<CssHtmlElementRenderer>();
+
         return this.gameObjectBuilder
             .withChild(this.instantiater.buildGameObject("moon_group", new Vector3(0, 0, -7))
                 .getGameObject(this._moonGroup)
@@ -247,10 +262,64 @@ export class IntroPrefab extends Prefab {
                     c.elementWidth = 100;
                     c.elementHeight = 0.8;
                 })
+                .getComponent(CssHtmlElementRenderer, warpEffectCenterRenderer)
+
+                .withComponent(RuntimeAimationContainer, c => {
+                    const warpEffectCenterDeref = warpEffectCenterRenderer.ref!;
+                    const warpSide1Deref = warpEffectSide1.ref!.transform.localScale;
+                    const warpSide2Deref = warpEffectSide2.ref!.transform.localScale;
+                    const warpSide1RendererDeref = warpEffectSide1Renderer.ref!;
+                    const warpSide2RendererDeref = warpEffectSide2Renderer.ref!;
+
+                    c.animationInstance = new AnimationClip([
+                        {
+                            name: "center" as const,
+                            track: AnimationTrack.createScalarTrack([
+                                AnimationKey.createValueType(0, 0.8, InterpolationKind.Linear),
+                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                            ])
+                        },
+                        {
+                            name: "side" as const,
+                            track: AnimationTrack.createScalarTrack([
+                                AnimationKey.createValueType(0, 1, InterpolationKind.Linear),
+                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                            ])
+                        },
+                        {
+                            name: "glow_opacity" as const,
+                            track: AnimationTrack.createScalarTrack([
+                                AnimationKey.createValueType(0, 0.9, InterpolationKind.Linear),
+                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                            ])
+                        }
+                    ]).createInstance(new AnimationClipBindInfo([
+                        {
+                            trackName: "center" as const,
+                            target: (value: number) => warpEffectCenterDeref.elementHeight = value
+                        },
+                        {
+                            trackName: "side" as const,
+                            target: (value: number) => {
+                                warpSide1Deref.y = value;
+                                warpSide2Deref.y = value;
+                            }
+                        },
+                        {
+                            trackName: "glow_opacity" as const,
+                            target: (value: number) => {
+                                warpSide1RendererDeref.element!.style.opacity = NumberStringPool.get(value);
+                                warpSide2RendererDeref.element!.style.opacity = NumberStringPool.get(value);
+                            }
+                        }
+                    ]));
+                })
+                .getComponent(RuntimeAimationContainer, this._warpEffectAnim)
 
                 .getGameObject(this._warpEffect)
 
                 .withChild(this.instantiater.buildGameObject("warp_effect_side_yellow", new Vector3(0, 0.6, 0))
+                    .getGameObject(warpEffectSide1)
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
                         div.style.filter = "blur(0.3px)";
@@ -273,9 +342,11 @@ export class IntroPrefab extends Prefab {
                             c.element = div;
                             c.elementWidth = 100;
                             c.elementHeight = 0.2;
-                        })))
+                        })
+                        .getComponent(CssHtmlElementRenderer, warpEffectSide1Renderer)))
 
                 .withChild(this.instantiater.buildGameObject("warp_effect_side_blue", new Vector3(0, -0.6, 0))
+                    .getGameObject(warpEffectSide2)
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
                         div.style.filter = "blur(0.3px)";
@@ -298,7 +369,8 @@ export class IntroPrefab extends Prefab {
                             c.element = div;
                             c.elementWidth = 100;
                             c.elementHeight = 0.2;
-                        }))))
+                        })
+                        .getComponent(CssHtmlElementRenderer, warpEffectSide2Renderer))))
 
             
             .withChild(this.instantiater.buildGameObject("black_screen_2", new Vector3(0, 0, -3))

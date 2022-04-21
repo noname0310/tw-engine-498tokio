@@ -16,6 +16,7 @@ import { IntroAnimation } from "./animation/IntroAnimation";
 import Audio498Tokio from "./audio/498 tokio.mp3";
 import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
 import { ScreenOverlay } from "./script/render/ScreenOverlay";
+import { NumberStringPool } from "./script/NumberStringPool";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -75,6 +76,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     const spaceshipPosition = introObjects.ref!.spaceship.ref!.transform.position;
                     const spaceshipRotate = introObjects.ref!.spaceship.ref!.transform.eulerAngles;
                     const warpEffect = introObjects.ref!.warpEffect.ref!;
+                    const warpEffectAnim = introObjects.ref!.warpEffectAnim.ref!.animationInstance!;
                     const blackScreen2 = introObjects.ref!.blackScreen2.ref!;
 
                     c.animationClock = audioPlayer.ref!;
@@ -93,7 +95,7 @@ export class Bootstrapper extends BaseBootstrapper {
                             (value: number) => fireworkSphereRender.imageIndex = value,
                             () => fireworkSphereRender.enabled = true,
                             () => fireworkSphereRender.enabled = false,
-                            (value: number) => blackScreen.element!.style.opacity = value.toString(),
+                            (value: number) => blackScreen.element!.style.opacity = NumberStringPool.get(value),
                             () => blackScreen.enabled = true,
                             () => blackScreen.enabled = false,
                             (value: number) => moonFilter.hueRotate = value,
@@ -108,13 +110,14 @@ export class Bootstrapper extends BaseBootstrapper {
                             (value: number) => spaceshipRotate.z = value,
                             () => warpEffect.activeSelf = true,
                             () => warpEffect.activeSelf = false,
-                            (value: number) => blackScreen2.element!.style.opacity = value.toString(),
+                            (value: number) => warpEffectAnim.process(value),
+                            (value: number) => blackScreen2.element!.style.opacity = NumberStringPool.get(value),
                             () => blackScreen2.enabled = true,
                             () => blackScreen2.enabled = false
                         )
                     );
                     c.frameRate = 30;
-                    c.loopMode = AnimationLoopMode.Loop;
+                    c.loopMode = AnimationLoopMode.None;
                     c.play();
                 })
                 .getComponent(AnimationSequnacePlayer, animationPlayer))

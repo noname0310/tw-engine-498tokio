@@ -236,6 +236,13 @@ export class IntroAnimation {
                 new AnimationEventKey("visible", this._timeScale * 547),
                 new AnimationEventKey("invisible", this._timeScale * 558)
             ])
+        },
+        {
+            name: "warp_effect_anim" as const,
+            track: AnimationTrack.createScalarTrack([
+                AnimationKey.createValueType(this._timeScale * 547, 0, InterpolationKind.Linear),
+                AnimationKey.createValueType(this._timeScale * 558, 12, InterpolationKind.Linear)
+            ])
         }
     ]);
 
@@ -252,7 +259,7 @@ export class IntroAnimation {
             track: new AnimationEventTrack([
                 new AnimationEventKey("invisible", this._timeScale * 0),
                 new AnimationEventKey("visible", this._timeScale * 547),
-                new AnimationEventKey("invisible", this._timeScale * 558)
+                new AnimationEventKey("visible", this._timeScale * 558)
             ])
         }
     ]);
@@ -313,6 +320,7 @@ export class IntroAnimation {
         spaceshipZ: (value: number) => void,
         warpEffectEnable: () => void,
         warpEffectDisable: () => void,
+        warpEffectAnim: (value: number) => void,
         blackScreen2: (value: number) => void,
         blackScreen2Enable: () => void,
         blackScreen2Disable: () => void
@@ -380,7 +388,8 @@ export class IntroAnimation {
             { 
                 trackName: "warp_effect_activation" as const,
                 target: IntroAnimation.createActivationBindInfo(warpEffectEnable, warpEffectDisable)
-            }
+            },
+            { trackName: "warp_effect_anim" as const, target: warpEffectAnim }
         ]);
 
         const blackScreen2ClipBindInfo = new AnimationClipBindInfo([
