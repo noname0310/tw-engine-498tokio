@@ -216,7 +216,8 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 372 - 372, -9, InterpolationKind.Linear),
                 AnimationKey.createValueType(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
                 AnimationKey.createValueType(this._timeScale * 540 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 546 - 372, 0.1, InterpolationKind.Cubic, 0, 0)
+                AnimationKey.createValueType(this._timeScale * 546 - 372, 0.1, InterpolationKind.Cubic, 0, 0),
+                AnimationKey.createValueType(this._timeScale * 547 - 372, -9, InterpolationKind.Step)
             ])
         },
         {
