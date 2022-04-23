@@ -31,7 +31,7 @@ import { IAnimationInstance } from "tw-engine-498tokio";
 class AnimationPlayer {
     public frameRate = 60;
     private _startTime = 0;
-    private _currentTime = 0;
+    private _time = 0;
     private _animationInstance: IAnimationInstance;
 
     public constructor(animationInstance: IAnimationInstance) {
@@ -39,14 +39,15 @@ class AnimationPlayer {
     }
 
     public start() {
-        this._startTime = performance.now();
+        this._time = performance.now();
         this._currentTime = 0;
         this.animate();
     }
 
     private animate = () => {
         const now = performance.now();
-        const delta = now - this._startTime;
+        const delta = now - this._time;
+        this._time = now;
         this._currentTime += delta;
         const frameTime = this._currentTime * this.frameRate;
         this._animationInstance.process(frameTime);
