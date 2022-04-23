@@ -77,7 +77,7 @@ export const Vector2Interpolator = new class implements IAnimationInterpolator<V
     }
 };
 
-export const Vector3Interpolator = new class Vector3Interpolator implements IAnimationInterpolator<Vector3> {
+export const Vector3Interpolator = new class implements IAnimationInterpolator<Vector3> {
     public readonly tangentTempInstance = new Vector3();
     public readonly tempInstance = new Vector3();
 
@@ -127,7 +127,7 @@ export const Vector3Interpolator = new class Vector3Interpolator implements IAni
     }
 };
 
-export const QuaternionInterpolator = new class QuaternionInterpolator implements IAnimationInterpolator<Quaternion> {
+export const QuaternionInterpolator = new class implements IAnimationInterpolator<Quaternion> {
     public readonly tangentTempInstance = new Quaternion();
     public readonly tempInstance = new Quaternion();
 
