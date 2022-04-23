@@ -66,6 +66,10 @@ export class AudioPlayer extends Component implements IAnimationClock {
         this._state = PlayerState.Disposed;
     }
 
+    public onDisable(): void {
+        this.stop();
+    }
+
     //#region load methods
 
     public setAudioFromAudioBuffer(audioBuffer: AudioBuffer): void {
@@ -126,6 +130,9 @@ export class AudioPlayer extends Component implements IAnimationClock {
 
     public play(): void {
         if (this._state === PlayerState.Disposed) return;
+        if (!this.enabled || !this.gameObject.activeInHierarchy) {
+            throw new Error("Cannot play audio when audio player is disabled");
+        }
 
         if (!this._source) {
             this._pendingPlay = true;
