@@ -1,4 +1,4 @@
-export const NumberStringPool = new class {
+class NumberStringPoolInternal {
     private _pool: Map<number, string> = new Map();
 
     public get(value: number): string {
@@ -11,3 +11,5 @@ export const NumberStringPool = new class {
         }
     }
 };
+
+export const NumberStringPool = new NumberStringPoolInternal();
