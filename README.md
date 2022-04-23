@@ -1,5 +1,7 @@
 # tw-engine-498tokio
-![License: MIT](https://img.shields.io/github/license/noname0310/tw-engine-498tokio)
+![license: MIT](https://img.shields.io/github/license/noname0310/tw-engine-498tokio)
+![version](https://img.shields.io/npm/v/tw-engine-498tokio)
+![npm](https://img.shields.io/npm/dw/tw-engine-498tokio)
 
 implementation of a keyframe animation for web game.
 
