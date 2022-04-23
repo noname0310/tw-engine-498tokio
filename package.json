@@ -1,11 +1,13 @@
 {
     "name": "tw-engine-498tokio",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "web game animation example",
+    "main": "dist/asset/index.js",
     "scripts": {
         "start": "webpack serve --mode development",
         "watch": "webpack --watch",
-        "build": "webpack --mode production"
+        "build": "webpack --mode production",
+        "tsc": "tsc --declaration"
     },
     "repository": {
         "type": "git",
@@ -32,8 +34,10 @@
         "webpack-cli": "^4.9.2",
         "webpack-dev-server": "^4.8.1"
     },
-    "dependencies": {
-        "mp3-parser": "^0.3.0",
+    "peerDependencies": {
         "the-world-engine": "^0.3.13"
+    },
+    "dependencies": {
+        "mp3-parser": "^0.3.0"
     }
 }

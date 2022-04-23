@@ -1,0 +1,14 @@
+.cache
+node_modules
+src
+docs
+.eslintrc.js
+.gitattributes
+.gitignore
+package-lock.json
+package.json
+build
+tsconfig.json
+webpack.config.js
+dist/index.d.ts
+dist/index.js
