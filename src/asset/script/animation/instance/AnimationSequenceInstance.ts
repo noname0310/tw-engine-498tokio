@@ -131,7 +131,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         }
     }
 
-    public process(frameTime: number): void {
+    public process(frameTime: number, unTrimmedFrameTime = frameTime): void {
         if (frameTime < this._animationSequence.startFrame) frameTime = this._animationSequence.startFrame;
         if (this._animationSequence.endFrame < frameTime) frameTime = this._animationSequence.endFrame;
 
@@ -154,7 +154,8 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
             activationFrameIndex -= 1;
             
             const offsetedFrameTime = frameTime - animationInstance.offset;
-            animationInstance.animation.process(offsetedFrameTime);
+            const offsetedUnTrimmedFrameTime = unTrimmedFrameTime - animationInstance.offset;
+            animationInstance.animation.process(offsetedFrameTime, offsetedUnTrimmedFrameTime);
             // console.log(`Deactivate animation on frame ${frameTime} from actavation`);
         }
         while (activationFrameIndex < activationInfo.length - 1 && activationInfo[activationFrameIndex + 1].frame <= frameTime) {
@@ -176,11 +177,12 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         
         for (const animationInstance of runningAnimations) {
             let offsetedFrameTime = frameTime - animationInstance.offset;
+            const offsetedUnTrimmedFrameTime = unTrimmedFrameTime - animationInstance.offset;
 
             if (offsetedFrameTime < animationInstance.start) offsetedFrameTime = animationInstance.start;
             if (animationInstance.end < offsetedFrameTime) offsetedFrameTime = animationInstance.end;
 
-            animationInstance.animation.process(offsetedFrameTime);
+            animationInstance.animation.process(offsetedFrameTime, offsetedUnTrimmedFrameTime);
         }
     }
 }

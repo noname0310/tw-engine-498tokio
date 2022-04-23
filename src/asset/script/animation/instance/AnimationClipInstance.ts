@@ -49,11 +49,13 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         }
     }
 
-    public process(frameTime: number): void {
+    public process(frameTime: number, unTrimmedFrameTime = frameTime): void {
+        if (frameTime < this._animationClip.startFrame) frameTime = this._animationClip.startFrame;
+        //console.log(`AnimationClipInstance: process: ${frameTime} ${this._animationClip.startFrame} ${this._animationClip.endFrame}`);
         if (this._animationClip.endFrame < frameTime) frameTime = this._animationClip.endFrame;
 
         for (let i = 0; i < this._animationTrackInstances.length; ++i) {
-            this._animationTrackInstances[i].process(frameTime);
+            this._animationTrackInstances[i].process(frameTime, unTrimmedFrameTime);
         }
     }
 }

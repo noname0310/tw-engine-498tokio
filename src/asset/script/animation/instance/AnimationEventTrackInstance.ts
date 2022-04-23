@@ -49,7 +49,7 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
         this._currentFrameIndex = frameIndex < 0 ? 0 : frameIndex;
     }
 
-    public process(frameTime: number): void {
+    public process(frameTime: number, unTrimmedFrameTime = frameTime): void {
         const keys = this._animationTrack.keys;
 
         if (keys.length === 0) return;
@@ -68,8 +68,7 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
         let startKeyIndex = this._currentFrameIndex;
 
         let reverseStartState = false;
-        if (frameTime < 0) {
-            frameTime = 0;
+        if (unTrimmedFrameTime < 0) {
             reverseStartState = true;
         }
 
