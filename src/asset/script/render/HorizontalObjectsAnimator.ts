@@ -28,7 +28,7 @@ export class HorizontalObjectsAnimator extends Component {
                         "horizontal_animated_object_" + i,
                         this._prefab!,
                         new Vector3(i * this._padding, 0, 0),
-                        undefined,
+                        undefined
                         //new Vector3()
                     ).make()
                 );

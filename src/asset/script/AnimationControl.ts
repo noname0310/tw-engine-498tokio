@@ -100,7 +100,7 @@ export class AnimationControl extends Component {
         this._frameDisplayText = frameDisplayText;
     }
 
-    private onSliderInput = (event: Event): void => {
+    private readonly onSliderInput = (event: Event): void => {
         if (!this._player) return;
         const value = (event.target as HTMLInputElement).valueAsNumber;
         if (this._player.isPlaying) {
@@ -113,7 +113,7 @@ export class AnimationControl extends Component {
 
     private _pausedBySlider = false;
 
-    private onSliderMouseDown = (_event: Event): void => {
+    private readonly onSliderMouseDown = (_event: Event): void => {
         if (!this._player) return;
         if (this._player.isPlaying) {
             this._pausedBySlider = true;
@@ -121,7 +121,7 @@ export class AnimationControl extends Component {
         }
     };
 
-    private onSliderMouseUp = (_event: Event): void => {
+    private readonly onSliderMouseUp = (_event: Event): void => {
         if (!this._player) return;
         if (this._pausedBySlider) {
             this._pausedBySlider = false;
@@ -129,7 +129,7 @@ export class AnimationControl extends Component {
         }
     };
 
-    private onPlayButtonClick = (_event: Event): void => {
+    private readonly onPlayButtonClick = (_event: Event): void => {
         if (!this._player) return;
         if (this._player.isPlaying) {
             this._player.pause();
@@ -138,24 +138,24 @@ export class AnimationControl extends Component {
         }
     };
 
-    private onAnimationProcess = (frameTime: number): void => {
+    private readonly onAnimationProcess = (frameTime: number): void => {
         if (!this._slider) return;
         this._slider.value = frameTime.toString();
         if (this._frameDisplayText) this._frameDisplayText.textContent = Math.floor(frameTime).toString();
     };
 
-    private onAnimationStart = (): void => {
+    private readonly onAnimationStart = (): void => {
         if (!this._playButton) return;
         this._playButton.textContent = "Stop";
     };
 
-    private onAnimationPaused = (): void => {
+    private readonly onAnimationPaused = (): void => {
         if (!this._playButton) return;
         if (this._pausedBySlider) return;
         this._playButton.textContent = "Play";
     };
 
-    private onAnimationEnd = (): void => {
+    private readonly onAnimationEnd = (): void => {
         if (!this._playButton) return;
         this._playButton.textContent = "Play";
     };

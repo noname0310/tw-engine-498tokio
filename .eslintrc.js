@@ -10,15 +10,16 @@ module.exports = {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
         "@typescript-eslint"
     ],
     "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/explicit-member-accessibility": [
             "error",
             {
@@ -29,6 +30,28 @@ module.exports = {
                     "methods": "explicit",
                     "properties": "explicit",
                     "parameterProperties": "explicit"
+                }
+            }
+        ],
+        "@typescript-eslint/prefer-readonly": [ "error" ],
+        "@typescript-eslint/explicit-function-return-type": [ "error" ],
+        "@typescript-eslint/array-type": [ "error" ],
+        "@typescript-eslint/brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "@typescript-eslint/prefer-includes": [ "error" ],
+        "@typescript-eslint/space-before-blocks": [ "error" ],
+        "@typescript-eslint/type-annotation-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true,
+                "overrides": {
+                    "arrow": {
+                        "before": true,
+                        "after": true
+                    }
                 }
             }
         ],
@@ -48,6 +71,10 @@ module.exports = {
         "semi": [
             "error",
             "always"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
         ]
     }
 };

@@ -96,7 +96,7 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
         this._onAnimationStartEvent.invoke();
     }
 
-    public playByClock = () => {
+    public playByClock = (): void => {
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     };

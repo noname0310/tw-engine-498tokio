@@ -239,7 +239,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         return this._source = newSource;
     }
 
-    private onEnded = (): void => {
+    private readonly onEnded = (): void => {
         this.getContext()!.suspend();
         this._state = PlayerState.Stopped;
         this._onStoppedEvent.invoke();

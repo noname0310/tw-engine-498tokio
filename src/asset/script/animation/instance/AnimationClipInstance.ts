@@ -4,7 +4,7 @@ import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
 
 export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T>> implements IAnimationInstance {
-    private _bindInfo: AnimationClipBindInfo<U>;
+    private readonly _bindInfo: AnimationClipBindInfo<U>;
 
     private readonly _animationClip: AnimationClip<T, U>;
     private _animationTrackInstances: IAnimationTrackInstance[];

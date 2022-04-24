@@ -2,7 +2,7 @@ import { Game } from "the-world-engine";
 import { Bootstrapper } from "./asset/Bootstrapper";
 import TestAudio from "./asset/audio/audioTest.mp3";
 
-function startGame() {
+function startGame(): void {
     const game = new Game(document.getElementById("game_view")!, true);
     game.run(Bootstrapper);
     game.inputHandler.startHandleEvents();
@@ -29,7 +29,7 @@ audioTest.play()
             button.style.border = "none";
             button.style.fontSize = "32px";
             button.innerText = "Play";
-            button.onclick = () => {
+            button.onclick = (): void => {
                 button.parentElement!.removeChild(button);
                 startGame();
             };

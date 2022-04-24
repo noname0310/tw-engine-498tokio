@@ -22,7 +22,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
     private _animationDeActivationInfo: ActivationInfoNode[];
     private _currentActivationFrameIndex: number;
     private _currentDeActivationFrameIndex: number;
-    private _runningAnimations: Set<RangedAnimationInstance>;
+    private readonly _runningAnimations: Set<RangedAnimationInstance>;
 
     public constructor(animationSequence: AnimationSequence<T, U>, bindInfo: SequenceBindInfo) {
         this._bindInfo = bindInfo.slice();

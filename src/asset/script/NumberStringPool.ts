@@ -1,5 +1,5 @@
 class NumberStringPoolInternal {
-    private _pool: Map<number, string> = new Map();
+    private readonly _pool: Map<number, string> = new Map();
 
     public get(value: number): string {
         if (this._pool.has(value)) {

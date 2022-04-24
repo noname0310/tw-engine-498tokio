@@ -51,23 +51,23 @@ export type IntroObjects = {
 };
 
 export class IntroPrefab extends Prefab {
-    private _moonGroup = new PrefabRef<GameObject>();
-    private _fireWork1 = new PrefabRef<GlowSpriteAtlasRenderer>();
-    private _fireWork2 = new PrefabRef<GlowSpriteAtlasRenderer>();
-    private _fireWork3 = new PrefabRef<GlowSpriteAtlasRenderer>();
-    private _fireWorkSphere = new PrefabRef<GlowSpriteAtlasRenderer>();
-    private _blackScreen = new PrefabRef<CssHtmlElementRenderer>();
-    private _moon = new PrefabRef<CssSpriteRenderer>();
-    private _grass1 = new PrefabRef<GameObject>();
-    private _grassRender1 = new PrefabRef<HorizontalObjectsAnimator>();
-    private _grass2 = new PrefabRef<GameObject>();
-    private _grassRender2 = new PrefabRef<HorizontalObjectsAnimator>();
-    private _grass3 = new PrefabRef<GameObject>();
-    private _grassRender3 = new PrefabRef<HorizontalObjectsAnimator>();
-    private _spaceship = new PrefabRef<GameObject>();
-    private _warpEffect = new PrefabRef<GameObject>();
-    private _warpEffectAnim = new PrefabRef<RuntimeAimationContainer>();
-    private _blackScreen2 = new PrefabRef<CssHtmlElementRenderer>();
+    private readonly _moonGroup = new PrefabRef<GameObject>();
+    private readonly  _fireWork1 = new PrefabRef<GlowSpriteAtlasRenderer>();
+    private readonly _fireWork2 = new PrefabRef<GlowSpriteAtlasRenderer>();
+    private readonly _fireWork3 = new PrefabRef<GlowSpriteAtlasRenderer>();
+    private readonly _fireWorkSphere = new PrefabRef<GlowSpriteAtlasRenderer>();
+    private readonly _blackScreen = new PrefabRef<CssHtmlElementRenderer>();
+    private readonly _moon = new PrefabRef<CssSpriteRenderer>();
+    private readonly _grass1 = new PrefabRef<GameObject>();
+    private readonly _grassRender1 = new PrefabRef<HorizontalObjectsAnimator>();
+    private readonly _grass2 = new PrefabRef<GameObject>();
+    private readonly _grassRender2 = new PrefabRef<HorizontalObjectsAnimator>();
+    private readonly _grass3 = new PrefabRef<GameObject>();
+    private readonly _grassRender3 = new PrefabRef<HorizontalObjectsAnimator>();
+    private readonly _spaceship = new PrefabRef<GameObject>();
+    private readonly _warpEffect = new PrefabRef<GameObject>();
+    private readonly _warpEffectAnim = new PrefabRef<RuntimeAimationContainer>();
+    private readonly _blackScreen2 = new PrefabRef<CssHtmlElementRenderer>();
 
     public getObjects(introObjects: PrefabRef<IntroObjects>): this {
         introObjects.ref = {
@@ -168,12 +168,12 @@ export class IntroPrefab extends Prefab {
                     const tile = new Image();
                     tile.src = ImageBackground;
 
-                    tile.onload = () => {
+                    tile.onload = (): void => {
                         c.imageSources = [new TileAtlasItem(tile)];
                         
                         const x = { i: 0, a: 0};
                         c.drawTileFromTwoDimensionalArray([
-                            Array(c.columnCount).fill(x),
+                            Array(c.columnCount).fill(x)
                         ], 0, 0);
                     };
                 }))
@@ -296,18 +296,20 @@ export class IntroPrefab extends Prefab {
                     ]).createInstance(new AnimationClipBindInfo([
                         {
                             trackName: "center" as const,
-                            target: (value: number) => warpEffectCenterDeref.elementHeight = value
+                            target: (value: number): void => {
+                                warpEffectCenterDeref.elementHeight = value;
+                            }
                         },
                         {
                             trackName: "side" as const,
-                            target: (value: number) => {
+                            target: (value: number): void => {
                                 warpSide1Deref.y = value;
                                 warpSide2Deref.y = value;
                             }
                         },
                         {
                             trackName: "glow_opacity" as const,
-                            target: (value: number) => {
+                            target: (value: number): void => {
                                 warpSide1RendererDeref.element!.style.opacity = NumberStringPool.get(value);
                                 warpSide2RendererDeref.element!.style.opacity = NumberStringPool.get(value);
                             }

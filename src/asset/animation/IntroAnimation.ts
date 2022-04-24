@@ -11,9 +11,9 @@ type RemoveReadonly<T> = {
 };
 
 export class IntroAnimation {
-    private static _timeScale = 1;
+    private static readonly _timeScale = 1;
 
-    private static _fireworkAnimationClip = new AnimationClip([
+    private static readonly _fireworkAnimationClip = new AnimationClip([
         {
             name: "firework1" as const, 
             track: AnimationTrack.createScalarTrack([
@@ -55,7 +55,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 58, 14, InterpolationKind.Step),
                 AnimationKey.createValueType(this._timeScale * 61, 15, InterpolationKind.Step),
                 AnimationKey.createValueType(this._timeScale * 64, 16, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 67, 17, InterpolationKind.Step),
+                AnimationKey.createValueType(this._timeScale * 67, 17, InterpolationKind.Step)
             ])
         },
         {
@@ -82,7 +82,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 51, 10, InterpolationKind.Step),
                 AnimationKey.createValueType(this._timeScale * 53, 11, InterpolationKind.Step),
                 AnimationKey.createValueType(this._timeScale * 55, 12, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 57, 13, InterpolationKind.Step),
+                AnimationKey.createValueType(this._timeScale * 57, 13, InterpolationKind.Step)
             ])
         },
         {
@@ -121,7 +121,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _blackScreenAnimationClip = new AnimationClip([
+    private static readonly _blackScreenAnimationClip = new AnimationClip([
         {
             name: "black_screen_opacity" as const, 
             track: AnimationTrack.createScalarTrack([
@@ -138,7 +138,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _moonAnimationClip = new AnimationClip([
+    private static readonly _moonAnimationClip = new AnimationClip([
         {
             name: "moon_hue" as const,
             track: AnimationTrack.createScalarTrack([
@@ -148,7 +148,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _zoomOutAnimationClip = new AnimationClip([
+    private static readonly _zoomOutAnimationClip = new AnimationClip([
         {
             name: "scale" as const,
             track: AnimationTrack.createScalarTrack([
@@ -158,7 +158,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _grassAnimationClip = new AnimationClip([
+    private static readonly _grassAnimationClip = new AnimationClip([
         {
             name: "grass1_x" as const,
             track: AnimationTrack.createScalarTrack([
@@ -175,7 +175,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _grassAnimationClip2 = new AnimationClip([
+    private static readonly _grassAnimationClip2 = new AnimationClip([
         {
             name: "grass2_x" as const,
             track: AnimationTrack.createScalarTrack([
@@ -192,7 +192,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _grassAnimationClip3 = new AnimationClip([
+    private static readonly _grassAnimationClip3 = new AnimationClip([
         {
             name: "grass3_x" as const,
             track: AnimationTrack.createScalarTrack([
@@ -209,7 +209,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _spaceshipAnimationClip = new AnimationClip([
+    private static readonly _spaceshipAnimationClip = new AnimationClip([
         {
             name: "position_y" as const,
             track: AnimationTrack.createScalarTrack([
@@ -229,7 +229,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _warpEffectAnimationClip = new AnimationClip([
+    private static readonly _warpEffectAnimationClip = new AnimationClip([
         {
             name: "warp_effect_activation" as const,
             track: new AnimationEventTrack([
@@ -247,7 +247,7 @@ export class IntroAnimation {
         }
     ]);
 
-    private static _blackScreen2AnimationClip = new AnimationClip([
+    private static readonly _blackScreen2AnimationClip = new AnimationClip([
         {
             name: "black_screen2_opacity" as const, 
             track: AnimationTrack.createScalarTrack([
@@ -265,7 +265,7 @@ export class IntroAnimation {
         }
     ]);
 
-    public static sequance = new AnimationSequence([
+    public static readonly sequance = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
         new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 115),
         new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 222),
@@ -285,7 +285,11 @@ export class IntroAnimation {
         new RangedAnimation(this._blackScreen2AnimationClip)
     ]);
 
-    private static createActivationBindInfo(event: () => void, eventRestore: () => void) {
+    private static createActivationBindInfo(event: () => void, eventRestore: () => void): {
+        visible: AnimationEventBindInfo;
+        invisible: AnimationEventBindInfo;
+        invisible_norestore: AnimationEventBindInfo;
+    } {
         return {
             visible: new AnimationEventBindInfo(event, eventRestore),
             invisible: new AnimationEventBindInfo(eventRestore, event),
@@ -293,6 +297,7 @@ export class IntroAnimation {
         };
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     public static createBindInfo(
         firework1: (value: number) => void,
         fireWork1Enable: () => void,

@@ -4,7 +4,7 @@ export class GlowSpriteAtlasRenderer extends Component {
     private _sprite: CssSpriteAtlasRenderer|null = null;
     private _blurSprite: CssSpriteAtlasRenderer|null = null;
     private _viewScale = 1;
-    private _glowScale = 1;
+    private readonly _glowScale = 1;
     private _imageIndex = 0;
 
     public awake(): void {
