@@ -288,11 +288,13 @@ export class IntroAnimation {
     private static createActivationBindInfo(event: () => void, eventRestore: () => void): {
         visible: AnimationEventBindInfo;
         invisible: AnimationEventBindInfo;
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         invisible_norestore: AnimationEventBindInfo;
     } {
         return {
             visible: new AnimationEventBindInfo(event, eventRestore),
             invisible: new AnimationEventBindInfo(eventRestore, event),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             invisible_norestore: new AnimationEventBindInfo(eventRestore)
         };
     }

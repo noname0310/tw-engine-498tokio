@@ -8,6 +8,7 @@ export interface IAnimationInterpolator<T> {
     linearTangent: (start: T, end: T, out?: T) => T;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ScalarInterpolator = new class implements IAnimationInterpolator<number> {
     public lerp(start: number, end: number, gradient: number): number {
         return start + (end - start) * gradient;
@@ -30,6 +31,7 @@ export const ScalarInterpolator = new class implements IAnimationInterpolator<nu
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Vector2Interpolator = new class implements IAnimationInterpolator<Vector2> {
     public readonly tangentTempInstance = new Vector2();
     public readonly tempInstance = new Vector2();
@@ -77,6 +79,7 @@ export const Vector2Interpolator = new class implements IAnimationInterpolator<V
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Vector3Interpolator = new class implements IAnimationInterpolator<Vector3> {
     public readonly tangentTempInstance = new Vector3();
     public readonly tempInstance = new Vector3();
@@ -127,6 +130,7 @@ export const Vector3Interpolator = new class implements IAnimationInterpolator<V
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const QuaternionInterpolator = new class implements IAnimationInterpolator<Quaternion> {
     public readonly tangentTempInstance = new Quaternion();
     public readonly tempInstance = new Quaternion();

@@ -56,7 +56,7 @@ export class ScreenOverlay extends Component {
         }
     };
 
-    public get CssHtmlElementRenderer(): CssHtmlElementRenderer {
+    public get cssHtmlElementRenderer(): CssHtmlElementRenderer {
         return this.createRenderer();
     }
 }

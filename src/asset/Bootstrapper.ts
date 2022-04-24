@@ -50,7 +50,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(ScreenOverlay, c => {
                     const div = document.createElement("div");
                     div.style.boxShadow = "0 0 20px rgba(0,0,0,0.9) inset";
-                    c.CssHtmlElementRenderer!.element = div;
+                    c.cssHtmlElementRenderer!.element = div;
                 })
                 .getComponent(AudioPlayer, audioPlayer))
 
