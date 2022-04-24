@@ -134,12 +134,12 @@ export class IntroPrefab extends Prefab {
                     
                 .withChild(this.instantiater.buildGameObject("moon", new Vector3(0, 0, -2), undefined, new Vector3().setScalar(2))
                     .withComponent(CssSpriteRenderer, c => {
-                        c.asyncSetImagePath(ImageMoon);
+                        c.asyncSetImageFromPath(ImageMoon);
                         c.filter.dropShadow = new CssDropShadow(0.3, 0.7, 1);
                     })
                     .getComponent(CssSpriteRenderer, this._moon)
                     .withComponent(CssSpriteRenderer, c => {
-                        c.asyncSetImagePath(ImageMoonEmission);
+                        c.asyncSetImageFromPath(ImageMoonEmission);
                         c.filter.blur = 1;
                         c.filter.dropShadow = new CssDropShadow(-0.3, -0.3, 1, new Color(1, 1, 1));
                     })))
@@ -184,7 +184,7 @@ export class IntroPrefab extends Prefab {
                         public make(): GameObjectBuilder {
                             return this.gameObjectBuilder
                                 .withComponent(CssSpriteRenderer, c => {
-                                    c.asyncSetImagePath(ImageGrass);
+                                    c.asyncSetImageFromPath(ImageGrass);
                                     c.centerOffset = new Vector2(0, 0.5);
                                     c.filter.blur = 0.1;
                                 });
@@ -203,7 +203,7 @@ export class IntroPrefab extends Prefab {
                         public make(): GameObjectBuilder {
                             return this.gameObjectBuilder
                                 .withComponent(CssSpriteRenderer, c => {
-                                    c.asyncSetImagePath(ImageGrass);
+                                    c.asyncSetImageFromPath(ImageGrass);
                                     c.centerOffset = new Vector2(0, 0.5);
                                     c.filter.blur = 0.1;
                                     c.filter.brightness = 0.7;
@@ -223,7 +223,7 @@ export class IntroPrefab extends Prefab {
                         public make(): GameObjectBuilder {
                             return this.gameObjectBuilder
                                 .withComponent(CssSpriteRenderer, c => {
-                                    c.asyncSetImagePath(ImageGrass);
+                                    c.asyncSetImageFromPath(ImageGrass);
                                     c.centerOffset = new Vector2(0, 0.5);
                                     c.filter.blur = 0.05;
                                     c.filter.brightness = 0.6;
@@ -239,12 +239,12 @@ export class IntroPrefab extends Prefab {
 
             .withChild(this.instantiater.buildGameObject("space_ship", new Vector3(-0.1, -9, -7), undefined, new Vector3().setScalar(0.5))
                 .withComponent(CssSpriteRenderer, c => {
-                    c.asyncSetImagePath(ImageSpaceshipBlue);
+                    c.asyncSetImageFromPath(ImageSpaceshipBlue);
                     c.filter.brightness = 0;
                 })
                 .withChild(this.instantiater.buildGameObject("red_helmet", new Vector3(-0.45, 0, -1))
                     .withComponent(CssSpriteRenderer, c => {
-                        c.asyncSetImagePath(ImageRedHelmet);
+                        c.asyncSetImageFromPath(ImageRedHelmet);
                         c.filter.brightness = 0;
                     }))
                 .getGameObject(this._spaceship))

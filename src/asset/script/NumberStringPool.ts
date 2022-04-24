@@ -10,6 +10,6 @@ class NumberStringPoolInternal {
             return result;
         }
     }
-};
+}
 
 export const NumberStringPool = new NumberStringPoolInternal();

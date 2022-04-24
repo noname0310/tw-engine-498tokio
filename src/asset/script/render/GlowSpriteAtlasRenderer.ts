@@ -43,8 +43,8 @@ export class GlowSpriteAtlasRenderer extends Component {
             this._sprite = this.gameObject.addComponent(CssSpriteAtlasRenderer);
             this._blurSprite = this.gameObject.addComponent(CssSpriteAtlasRenderer);
         }
-        this._sprite!.asyncSetImage(src, width, height, onComplete);
-        this._blurSprite!.asyncSetImage(src, width, height, onComplete);
+        this._sprite!.asyncSetImageFromPath(src, width, height, onComplete);
+        this._blurSprite!.asyncSetImageFromPath(src, width, height, onComplete);
     }
 
     public set imageIndex(value: number) {
