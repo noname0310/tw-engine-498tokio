@@ -18,14 +18,14 @@ export class GlowSpriteAtlasRenderer extends Component {
     }
 
     public onEnable(): void {
-        if (this._sprite) {
+        if (this._sprite!.exists) {
             this._sprite!.enabled = true;
             this._blurSprite!.enabled = true;
         }
     }
 
     public onDisable(): void {
-        if (this._sprite) {
+        if (this._sprite!.exists) {
             this._sprite!.enabled = false;
             this._blurSprite!.enabled = false;
         }

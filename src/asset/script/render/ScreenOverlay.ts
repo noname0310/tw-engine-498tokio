@@ -27,14 +27,14 @@ export class ScreenOverlay extends Component {
     }
 
     public onEnable(): void {
-        if (this._htmlRenderer) {
-            this._htmlRenderer.enabled = true;
+        if (this._htmlRenderer!.exists) {
+            this._htmlRenderer!.enabled = true;
         }
     }
 
     public onDisable(): void {
-        if (this._htmlRenderer) {
-            this._htmlRenderer.enabled = false;
+        if (this._htmlRenderer!.exists) {
+            this._htmlRenderer!.enabled = false;
         }
     }
 

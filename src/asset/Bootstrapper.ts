@@ -43,6 +43,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 })
                 .withComponent(AudioPlayer, c => {
                     c.asyncSetAudioFromUrl(Audio498Tokio, () => {
+                        if (!c.exists) return;
                         c.gameObject.getComponent(CssTextRenderer)!.destroy();
                         c.gameObject.getComponent(LoadingText)!.destroy();
                     });
