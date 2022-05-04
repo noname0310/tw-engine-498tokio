@@ -1,25 +1,41 @@
 import { Vector2 } from "three/src/Three";
-import { Component, GameObject, PrefabConstructor, ReadonlyVector2, WritableVector2 } from "the-world-engine";
+import { Component, PrefabConstructor, ReadonlyVector2, WritableVector2 } from "the-world-engine";
 import { Mulberry32 } from "./Mulberry32";
 
-class Particle {
-    public gameObject: GameObject;
-    public linearVelocity: Vector2 = new Vector2();
-    public activeTime: number;
-    public lifeTime = 0;
-    public prefab: PrefabConstructor;
-
-    public constructor(gameObject: GameObject, activeTime: number, prefab: PrefabConstructor) {
-        this.gameObject = gameObject;
-        this.activeTime = activeTime;
-        this.prefab = prefab;
-    }
-}
-
 export class ParticleEmitter extends Component {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private static readonly Particle = class Particle extends Component {
+        public linearVelocity: Vector2 = new Vector2();
+        public activeTime = 0;
+        public lifeTime = 0;
+        public prefab: PrefabConstructor|null = null;
+        public emitter: ParticleEmitter|null = null;
+    
+        public update(): void {
+            //update particle position
+            const linearVelocity = this.linearVelocity;
+            const position = this.gameObject.transform.position;
+            position.x += linearVelocity.x * this.engine.time.deltaTime;
+            position.y += linearVelocity.y * this.engine.time.deltaTime;
+
+            const emitter = this.emitter!;
+    
+            //remove particle if it is dead
+            if (this.activeTime + this.lifeTime < emitter._accumulatedTime) {
+                if (this.prefab === emitter._prefab) {
+                    this.gameObject.activeSelf = false;
+                    emitter._objectPool.push(this);
+                } else {
+                    this.gameObject.destroy();
+                }
+                emitter._activeParticles -= 1;
+            }
+        }
+    };
+
     private _prefab: PrefabConstructor|null = null;
-    private readonly _objectPool: Particle[] = [];
-    private readonly _activeParticles: Particle[] = [];
+    private readonly _objectPool: InstanceType<typeof ParticleEmitter.Particle>[] = [];
+    private _activeParticles = 0;
     private readonly _linearVelocity = new Vector2();
     private _particleCount = 10;
     private _lifeTime = 5;
@@ -32,12 +48,10 @@ export class ParticleEmitter extends Component {
     public update(): void {
         this._accumulatedTime += this.engine.time.deltaTime;
 
-        const activeParticles = this._activeParticles;
-
         //spawn particles
         if (this._prefab) {
             const particleCount = this._particleCount;
-            for (let i = activeParticles.length; i <= particleCount; i++) {
+            for (let i = this._activeParticles; i <= particleCount; i++) {
                 const particle = this.createParticle(this._prefab);
 
                 const velocityNoiseScale = this._velocityNoiseScale;
@@ -48,38 +62,14 @@ export class ParticleEmitter extends Component {
                 const lifeTimeNoiseScale = this._lifetimeNoiseScale;
                 particle.lifeTime = this._lifeTime + (this._randomGenerator.next() - 0.5) * lifeTimeNoiseScale;
 
-                activeParticles.push(particle);
-            }
-        }
-
-        //update particles
-        for (let i = 0; i < activeParticles.length; i++) {
-            const particle = activeParticles[i];
-
-            //update particle position
-            const linearVelocity = particle.linearVelocity;
-            const gameObject = particle.gameObject;
-            const position = gameObject.transform.position;
-            position.x += linearVelocity.x * this.engine.time.deltaTime;
-            position.y += linearVelocity.y * this.engine.time.deltaTime;
-
-            //remove particle if it is dead
-            if (particle.activeTime + particle.lifeTime < this._accumulatedTime) {
-                if (particle.prefab === this._prefab) {
-                    particle.gameObject.activeSelf = false;
-                    this._objectPool.push(particle);
-                } else {
-                    particle.gameObject.destroy();
-                }
-                activeParticles.splice(i, 1);
-                i -= 1;
+                this._activeParticles += 1;
             }
         }
     }
 
     private _patticleNextId = 0;
 
-    private createParticle(prefab: PrefabConstructor): Particle {
+    private createParticle(prefab: PrefabConstructor): InstanceType<typeof ParticleEmitter.Particle> {
         if (0 < this._objectPool.length) {
             const particle = this._objectPool.pop()!;
             particle.gameObject.activeSelf = true;
@@ -99,7 +89,11 @@ export class ParticleEmitter extends Component {
 
         this._patticleNextId += 1;
 
-        return new Particle(gameObject, this._accumulatedTime, prefab);
+        const particle = gameObject.addComponent(ParticleEmitter.Particle)!;
+        particle.emitter = this;
+        particle.prefab = prefab;
+        particle.activeTime = this._accumulatedTime;
+        return particle;
     }
 
     public get prefab(): PrefabConstructor|null {
