@@ -29,6 +29,7 @@ import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
 import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
 import { NumberStringPool } from "../script/NumberStringPool";
+import { ParticleEmitter } from "../script/render/ParticleEmitter";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -384,6 +385,9 @@ export class IntroPrefab extends Prefab {
                     c.elementHeight = 1000;
                 })
                 .getComponent(CssHtmlElementRenderer, this._blackScreen2))
+
+            .withChild(this.instantiater.buildGameObject("particle_emitter_test", new Vector3(0, 0, 100))
+                .withComponent(ParticleEmitter))
         ;
     }
 }
