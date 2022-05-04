@@ -5,7 +5,7 @@ export class Mulberry32 {
         this._a = seed;
     }
 
-    public next() {
+    public next(): number {
         let t = this._a += 0x6D2B79F5;
         t = Math.imul(t ^ t >>> 15, t | 1);
         t ^= t + Math.imul(t ^ t >>> 7, t | 61);
