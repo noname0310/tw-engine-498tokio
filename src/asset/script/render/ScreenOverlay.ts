@@ -47,7 +47,7 @@ export class ScreenOverlay extends Component {
         }
     }
 
-    public onScreenResize = (width: number, height: number): void => {
+    private readonly onScreenResize = (width: number, height: number): void => {
         if (this._htmlRenderer) {
             const viewSize = this._camera!.viewSize;
             const aspect = width / height;
