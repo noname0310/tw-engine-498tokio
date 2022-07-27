@@ -257,11 +257,11 @@ export class IntroPrefab extends Prefab {
             )
                 .withComponent(CssHtmlElementRenderer, c => {
                     const div = document.createElement("div");
-                    div.style.filter = "blur(0.3px)";
                     div.style.backgroundColor = "#FFFFFF";
                     c.element = div;
                     c.elementWidth = 100;
                     c.elementHeight = 0.8;
+                    c.filter.blur = 0.3;
                 })
                 .getComponent(CssHtmlElementRenderer, warpEffectCenterRenderer)
 
@@ -325,11 +325,11 @@ export class IntroPrefab extends Prefab {
                     .getGameObject(warpEffectSide1)
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
-                        div.style.filter = "blur(0.3px)";
                         div.style.backgroundColor = "#FFFFFF";
                         c.element = div;
                         c.elementWidth = 100;
                         c.elementHeight = 0.2;
+                        c.filter.blur = 0.3;
                     })
 
                     .withChild(this.instantiater.buildGameObject("glow_effect",
@@ -339,12 +339,12 @@ export class IntroPrefab extends Prefab {
                     )
                         .withComponent(CssHtmlElementRenderer, c => {
                             const div = document.createElement("div");
-                            div.style.filter = "blur(0.5px)";
                             div.style.backgroundColor = "#FFFF00";
                             div.style.opacity = "0.9";
                             c.element = div;
                             c.elementWidth = 100;
                             c.elementHeight = 0.2;
+                            c.filter.blur = 0.5;
                         })
                         .getComponent(CssHtmlElementRenderer, warpEffectSide1Renderer)))
 
@@ -352,11 +352,11 @@ export class IntroPrefab extends Prefab {
                     .getGameObject(warpEffectSide2)
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
-                        div.style.filter = "blur(0.3px)";
                         div.style.backgroundColor = "#FFFFFF";
                         c.element = div;
                         c.elementWidth = 100;
                         c.elementHeight = 0.2;
+                        c.filter.blur = 0.3;
                     })
 
                     .withChild(this.instantiater.buildGameObject("glow_effect",
@@ -366,12 +366,12 @@ export class IntroPrefab extends Prefab {
                     )
                         .withComponent(CssHtmlElementRenderer, c => {
                             const div = document.createElement("div");
-                            div.style.filter = "blur(0.5px)";
                             div.style.backgroundColor = "#0000FF";
                             div.style.opacity = "0.9";
                             c.element = div;
                             c.elementWidth = 100;
                             c.elementHeight = 0.2;
+                            c.filter.blur = 0.5;
                         })
                         .getComponent(CssHtmlElementRenderer, warpEffectSide2Renderer))))
 
