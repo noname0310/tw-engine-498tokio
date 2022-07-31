@@ -1,6 +1,6 @@
 import { IAnimationKey } from "./IAnimationKey";
 
-export const enum InterpolationKind {
+export enum InterpolationKind {
     Cubic,
     Linear,
     Step
