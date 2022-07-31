@@ -1,4 +1,4 @@
-export const enum AnimationLoopMode {
+export enum AnimationLoopMode {
     None,
     Loop
 }
