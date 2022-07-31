@@ -8,7 +8,7 @@ import {
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
 import { AnimationControl } from "./script/AnimationControl";
-import { AnimationSequnacePlayer } from "./script/animation/player/AnimationSequnacePlayer";
+import { AnimationSequencePlayer } from "./script/animation/player/AnimationSequencePlayer";
 import { AudioPlayer } from "./script/audio/AudioPlayer";
 import { LoadingText } from "./script/LoadingText";
 import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
@@ -25,7 +25,7 @@ export class Bootstrapper extends BaseBootstrapper {
         const introObjects = new PrefabRef<IntroObjects>();
 
         const audioPlayer = new PrefabRef<AudioPlayer>();
-        const animationPlayer = new PrefabRef<AnimationSequnacePlayer>();
+        const animationPlayer = new PrefabRef<AnimationSequencePlayer>();
         
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
@@ -59,7 +59,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 .getObjects(introObjects).make())
             
             .withChild(instantiater.buildGameObject("sequence_player")
-                .withComponent(AnimationSequnacePlayer, c => {
+                .withComponent(AnimationSequencePlayer, c => {
                     const firework1Render = introObjects.ref!.fireWork1.ref!;
                     const firework2Render = introObjects.ref!.fireWork2.ref!;
                     const firework3Render = introObjects.ref!.fireWork3.ref!;
@@ -121,7 +121,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     c.loopMode = AnimationLoopMode.None;
                     c.play();
                 })
-                .getComponent(AnimationSequnacePlayer, animationPlayer))
+                .getComponent(AnimationSequencePlayer, animationPlayer))
 
             .withChild(instantiater.buildGameObject("animation_control")
                 .withComponent(AnimationControl, c => {

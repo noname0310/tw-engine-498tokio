@@ -6,7 +6,7 @@ import { AnimationKey, InterpolationKind } from "../../script/animation/key/Anim
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";
 import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
 
-export const testAnimationSequnace1 = (() => {
+export const testAnimationSequence1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroQuaternion = new Quaternion(0, 0, 0, 0);
     const zAxis = new Vector3(0, 0, 1);
@@ -88,7 +88,7 @@ export const testAnimationSequnace1 = (() => {
     ]);
 })();
 
-export const testAnimationSequnace2 = (() => {
+export const testAnimationSequence2 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroQuaternion = new Quaternion(0, 0, 0, 0);
     const zAxis = new Vector3(0, 0, 1);
@@ -96,7 +96,7 @@ export const testAnimationSequnace2 = (() => {
     
     return new AnimationSequence([
         new RangedAnimation(
-            testAnimationSequnace1
+            testAnimationSequence1
         ),
         new RangedAnimation(
             AnimationTrack.createVector3Track([
@@ -281,7 +281,7 @@ export const testRandomSequence1 = (() => {
 })();
 
 // function bindTypeTest1(): void {
-//     testAnimationSequnace1.createInstance([
+//     testAnimationSequence1.createInstance([
 //         new BindInfo([
 //             { trackName: "position", target: (value: Vector3) => { console.log(value); } },
 //             { trackName: "rotation", target: (value: Vector3) => { console.log(value); } },

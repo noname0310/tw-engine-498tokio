@@ -2,11 +2,11 @@ import { Component, EventContainer, IEventContainer } from "the-world-engine";
 import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "../container/AnimationSequence";
 import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
 import { AnimationLoopMode } from "../AnimationLoopMode";
-import { IAnimationPlayer } from "../player/IAnimationPlayer";
+import { IAnimationPlayer } from "./IAnimationPlayer";
 import { IAnimationClock } from "../../IAnimationClock";
 
-export class AnimationSequnacePlayer extends Component implements IAnimationPlayer {
-    private _animationSequnace: AnimationSequence<any, any>|null = null;
+export class AnimationSequencePlayer extends Component implements IAnimationPlayer {
+    private _animationSequence: AnimationSequence<any, any>|null = null;
     private _bindInfo: SequenceBindInfo|null = null;
     private _animationSequanceInstace: AnimationSequenceInstance<any, any>|null = null;
     private _elapsedTime = 0;
@@ -54,9 +54,9 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
             this._elapsedTime += this.engine.time.deltaTime;
         }
         let frameTime = this._elapsedTime * this._frameRate;
-        if (this._animationSequnace!.endFrame < frameTime) {
+        if (this._animationSequence!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.Loop) {
-                this._elapsedTime = (frameTime % this._animationSequnace!.endFrame) / this._frameRate;
+                this._elapsedTime = (frameTime % this._animationSequence!.endFrame) / this._frameRate;
                 this._animationSequanceInstace.frameIndexHint(0);
             }
             
@@ -82,9 +82,9 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
     public play(): void {
         if (this._isPlaying) return;
         if (!this._animationSequanceInstace) {
-            if (!this._animationSequnace) throw new Error("animationSequnace is not set");
+            if (!this._animationSequence) throw new Error("animationSequence is not set");
             if (!this._bindInfo) throw new Error("bindInfo is not set");
-            this._animationSequanceInstace = this._animationSequnace.createInstance(this._bindInfo);
+            this._animationSequanceInstace = this._animationSequence.createInstance(this._bindInfo);
         }
         
         if (this._animationClock) {
@@ -136,11 +136,11 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
     };
 
     public process(frameTime: number): void {
-        if (!this._animationSequnace) throw new Error("animationSequnace is not set");
+        if (!this._animationSequence) throw new Error("animationSequence is not set");
         if (!this._bindInfo) throw new Error("bindInfo is not set");
 
         if (!this._animationSequanceInstace) {
-            this._animationSequanceInstace = this._animationSequnace.createInstance(this._bindInfo);
+            this._animationSequanceInstace = this._animationSequence.createInstance(this._bindInfo);
         }
 
         if (this._animationClock) {
@@ -158,16 +158,16 @@ export class AnimationSequnacePlayer extends Component implements IAnimationPlay
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 
-    public get animationSequnace(): AnimationSequence<any, any>|null {
-        return this._animationSequnace;
+    public get animationSequence(): AnimationSequence<any, any>|null {
+        return this._animationSequence;
     }
 
     public get animationContainer(): AnimationSequence<any, any>|null {
-        return this._animationSequnace;
+        return this._animationSequence;
     }
 
-    public setAnimationAndBind<T extends ContainerData, U extends InferedSequenceBindData<T>>(animationSequnace: AnimationSequence<T, U>, bindInfo: U): void {
-        this._animationSequnace = animationSequnace;
+    public setAnimationAndBind<T extends ContainerData, U extends InferedSequenceBindData<T>>(animationSequence: AnimationSequence<T, U>, bindInfo: U): void {
+        this._animationSequence = animationSequence;
         this._bindInfo = bindInfo;
         if (!this._animationSequanceInstace) return;
         this._animationSequanceInstace.bindInfo = bindInfo;
