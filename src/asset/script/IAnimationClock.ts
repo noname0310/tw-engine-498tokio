@@ -2,6 +2,7 @@ import { IEventContainer } from "the-world-engine";
 import { IClock } from "./IClock";
 
 export interface IAnimationClock extends IClock {
+    get playbackRate(): number;
     get onPlayed(): IEventContainer<() => void>;
     get onPaused(): IEventContainer<() => void>;
     get onStopped(): IEventContainer<() => void>;

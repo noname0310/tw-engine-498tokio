@@ -16,6 +16,8 @@ export class AudioPlayer extends Component implements IAnimationClock {
     private _gainNode: GainNode|null = null;
 
     private _gain = 0;
+    private _detune = 0;
+    private _playbackRate = 1;
     private _pendingPlay = false;
     private _startTime = 0;
     private _jumpedPosition = -1;
@@ -80,6 +82,8 @@ export class AudioPlayer extends Component implements IAnimationClock {
         source.buffer = audioBuffer;
         source.connect(context.destination);
         if (this._gainNode) source.connect(this._gainNode);
+        source.detune.value = this._detune;
+        source.playbackRate.value = this._playbackRate;
 
         if (this._pendingPlay) {
             this._pendingPlay = false;
@@ -145,7 +149,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
             const context = this.getContext()!;
             const currentTime = context.currentTime;
             if (this._jumpedPosition >= 0) {
-                this._startTime = currentTime - this._jumpedPosition;
+                this._startTime = currentTime - this._jumpedPosition / this._playbackRate;
                 this._source.start(currentTime, this._jumpedPosition);
                 this._jumpedPosition = -1;
             } else {
@@ -158,7 +162,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
                 const context = this.getContext()!;
                 const newSource = this.refreshSource(context);
                 const currentTime = context.currentTime;
-                this._startTime = currentTime - this._jumpedPosition;
+                this._startTime = currentTime - this._jumpedPosition / this._playbackRate;
                 newSource.start(currentTime, this._jumpedPosition);
                 this._jumpedPosition = -1;
                 context.resume();
@@ -170,7 +174,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
             const newSource = this.refreshSource(context);
             const currentTime = context.currentTime;
             if (this._jumpedPosition >= 0) {
-                this._startTime = currentTime - this._jumpedPosition;
+                this._startTime = currentTime - this._jumpedPosition / this._playbackRate;
                 newSource.start(currentTime, this._jumpedPosition);
                 this._jumpedPosition = -1;
             } else {
@@ -218,7 +222,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
             const context = this.getContext()!;
             const newSource = this.refreshSource(context);
             const currentTime = context.currentTime;
-            this._startTime = currentTime - position;
+            this._startTime = currentTime - position / this._playbackRate;
             newSource.start(currentTime, position);
         } else {
             this._jumpedPosition = position;
@@ -236,6 +240,8 @@ export class AudioPlayer extends Component implements IAnimationClock {
         newSource.buffer = oldSource.buffer;
         newSource.connect(context.destination);
         if (this._gainNode) newSource.connect(this._gainNode);
+        newSource.detune.value = this._detune;
+        newSource.playbackRate.value = this._playbackRate;
         return this._source = newSource;
     }
 
@@ -247,7 +253,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     
     public get currentTime(): number {
         if (!this._source) return 0;
-        return this._source.context.currentTime - this._startTime;
+        return (this._source.context.currentTime - this._startTime) * this._playbackRate;
     }
 
     public get duration(): number {
@@ -269,6 +275,36 @@ export class AudioPlayer extends Component implements IAnimationClock {
         const gainNode = this.getGainNode();
         if (!gainNode) return;
         gainNode.gain.value = value;
+    }
+
+    public get detune(): number {
+        return this._detune;
+    }
+
+    public set detune(value: number) {
+        this._detune = value;
+
+        const source = this._source;
+        if (!source) return;
+        source.detune.value = value;
+    }
+
+    public get playbackRate(): number {
+        return this._playbackRate;
+    }
+
+    public set playbackRate(value: number) {
+        if (this._playbackRate === value) return;
+
+        const currentTime = this.currentTime;
+
+        if (this._source) {
+            this._source.playbackRate.value = value;
+            this._playbackRate = value;
+            this.setPosition(currentTime);
+        } else {
+            this._playbackRate = value;
+        }
     }
 
     public get onPlayed(): IEventContainer<() => void> {
