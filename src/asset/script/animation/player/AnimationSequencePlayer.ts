@@ -18,6 +18,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationSequence: AnimationSequence<any, any>) => void>();
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
         return this._onAnimationProcessEvent;
@@ -33,6 +34,10 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
 
     public get onAnimationEnd(): IEventContainer<() => void> {
         return this._onAnimationEndEvent;
+    }
+
+    public get onAnimationChanged(): IEventContainer<(animationSequence: AnimationSequence<any, any>) => void> {
+        return this._onAnimationChangedEvent;
     }
 
     public onDestroy(): void {
@@ -167,10 +172,22 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
     }
 
     public setAnimationAndBind<T extends ContainerData, U extends InferedSequenceBindData<T>>(animationSequence: AnimationSequence<T, U>, bindInfo: U): void {
-        this._animationSequence = animationSequence;
-        this._bindInfo = bindInfo;
-        if (!this._animationSequanceInstace) return;
-        this._animationSequanceInstace.bindInfo = bindInfo;
+        if (this._animationSequence === animationSequence) {
+            this._bindInfo = bindInfo;
+
+            if (this._animationSequanceInstace) {
+                this._animationSequanceInstace.bindInfo = bindInfo;
+            }
+        } else {
+            this._animationSequence = animationSequence;
+            this._bindInfo = bindInfo;
+            
+            if (this._animationSequanceInstace) {
+                this._animationSequanceInstace = animationSequence.createInstance(bindInfo);
+            }
+        }
+
+        this._onAnimationChangedEvent.invoke(animationSequence);
     }
 
     public get isPlaying(): boolean {

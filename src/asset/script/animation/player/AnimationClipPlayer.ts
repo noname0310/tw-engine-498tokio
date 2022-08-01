@@ -36,6 +36,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationClip: AnimationClip<any, any>) => void>();
     private _animationClock: IAnimationClock|null = null;
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
@@ -52,6 +53,10 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
 
     public get onAnimationEnd(): IEventContainer<() => void> {
         return this._onAnimationEndEvent;
+    }
+
+    public get onAnimationChanged(): IEventContainer<(animationClip: AnimationClip<any, any>) => void> {
+        return this._onAnimationChangedEvent;
     }
 
     public onDestroy(): void {
@@ -186,10 +191,22 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
 
     public setAnimationAndBind<T extends TrackData, U extends InferedAnimationClipBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
-        this._animationClip = animationClip;
-        this._bindInfo = bindInfo;
-        if (!this._animationClipInstace) return;
-        this._animationClipInstace.bindInfo = bindInfo;
+        if (this._animationClip === animationClip) {
+            this._bindInfo = bindInfo;
+
+            if (this._animationClipInstace) {
+                this._animationClipInstace.bindInfo = bindInfo;
+            }
+        } else {
+            this._animationClip = animationClip;
+            this._bindInfo = bindInfo;
+            
+            if (this._animationClipInstace) {
+                this._animationClipInstace = animationClip.createInstance(bindInfo);
+            }
+        }
+
+        this._onAnimationChangedEvent.invoke(animationClip);
     }
 
     public get isPlaying(): boolean {

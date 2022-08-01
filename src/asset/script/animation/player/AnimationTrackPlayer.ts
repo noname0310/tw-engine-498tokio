@@ -18,6 +18,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationTrack: AnimationTrack<T>) => void>();
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
         return this._onAnimationProcessEvent;
@@ -33,6 +34,10 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
 
     public get onAnimationEnd(): IEventContainer<() => void> {
         return this._onAnimationEndEvent;
+    }
+
+    public get onAnimationChanged(): IEventContainer<(animationTrack: AnimationTrack<T>) => void> {
+        return this._onAnimationChangedEvent;
     }
 
     public onDestroy(): void {

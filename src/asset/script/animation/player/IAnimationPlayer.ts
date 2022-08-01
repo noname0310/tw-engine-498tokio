@@ -12,6 +12,8 @@ export interface IAnimationPlayer {
 
     get onAnimationEnd(): IEventContainer<() => void>;
 
+    get onAnimationChanged(): IEventContainer<(animationContainer: IAnimationContainer<unknown>) => void>;
+
     play(): void;
 
     pause(): void;

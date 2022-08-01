@@ -34,7 +34,6 @@ export class Bootstrapper extends BaseBootstrapper {
                     c.backgroundColor = new Color(0, 0, 0);
                 })
                 .withComponent(CssTextRenderer, c => {
-                    c.text = "Decoding Audio Data";
                     c.textColor = new Color(1, 1, 1);
                     c.autoSize = true;
                 })
@@ -79,7 +78,7 @@ export class Bootstrapper extends BaseBootstrapper {
                     const warpEffect = introObjects.ref!.warpEffect.ref!;
                     const warpEffectAnim = introObjects.ref!.warpEffectAnim.ref!.animationInstance!;
                     const blackScreen2 = introObjects.ref!.blackScreen2.ref!;
-
+                    (globalThis as any).animationClock = audioPlayer.ref;
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
                         IntroAnimation.sequance,

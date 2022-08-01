@@ -1,4 +1,5 @@
 import { Component } from "the-world-engine";
+import { IAnimationContainer } from "./animation/container/IAnimationContainer";
 import { IAnimationPlayer } from "./animation/player/IAnimationPlayer";
 
 export class AnimationControl extends Component {
@@ -7,12 +8,33 @@ export class AnimationControl extends Component {
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
 
-    public onDestroy(): void {
+    public onEnable(): void {
+        if (this._player) {
+            this._player.onAnimationProcess.addListener(this.onAnimationProcess);
+            this._player.onAnimationStart.addListener(this.onAnimationStart);
+            this._player.onAnimationPaused.addListener(this.onAnimationPaused);
+            this._player.onAnimationEnd.addListener(this.onAnimationEnd);
+            this._player.onAnimationChanged.addListener(this.onAnimationChanged);
+        }
+
+        if (this._slider) {
+            this._slider.addEventListener("input", this.onSliderInput);
+            this._slider.addEventListener("onmousedown", this.onSliderMouseDown);
+            this._slider.addEventListener("onmouseup", this.onSliderMouseUp);
+        }
+
+        if (this._playButton) {
+            this._playButton.addEventListener("click", this.onPlayButtonClick);
+        }
+    }
+
+    public onDisable(): void {
         if (this._player) {
             this._player.onAnimationProcess.removeListener(this.onAnimationProcess);
             this._player.onAnimationStart.removeListener(this.onAnimationStart);
             this._player.onAnimationPaused.removeListener(this.onAnimationPaused);
             this._player.onAnimationEnd.removeListener(this.onAnimationEnd);
+            this._player.onAnimationChanged.removeListener(this.onAnimationChanged);
         }
 
         if (this._slider) {
@@ -24,7 +46,9 @@ export class AnimationControl extends Component {
         if (this._playButton) {
             this._playButton.removeEventListener("click", this.onPlayButtonClick);
         }
+    }
 
+    public onDestroy(): void {
         this._player = null;
         this._slider = null;
         this._playButton = null;
@@ -41,6 +65,7 @@ export class AnimationControl extends Component {
             this._player.onAnimationStart.removeListener(this.onAnimationStart);
             this._player.onAnimationPaused.removeListener(this.onAnimationPaused);
             this._player.onAnimationEnd.removeListener(this.onAnimationEnd);
+            this._player.onAnimationChanged.removeListener(this.onAnimationChanged);
         }
 
         this._player = player;
@@ -50,6 +75,7 @@ export class AnimationControl extends Component {
         player.onAnimationStart.addListener(this.onAnimationStart);
         player.onAnimationPaused.addListener(this.onAnimationPaused);
         player.onAnimationEnd.addListener(this.onAnimationEnd);
+        player.onAnimationChanged.addListener(this.onAnimationChanged);
 
         if (!this._playButton) return;
         if (player.isPlaying) {
@@ -158,5 +184,11 @@ export class AnimationControl extends Component {
     private readonly onAnimationEnd = (): void => {
         if (!this._playButton) return;
         this._playButton.textContent = "Play";
+    };
+
+    private readonly onAnimationChanged = (animationContainer: IAnimationContainer<unknown>): void => {
+        if (!this._slider) return;
+        this._slider.min = animationContainer.startFrame.toString();
+        this._slider.max = animationContainer.endFrame.toString();
     };
 }
