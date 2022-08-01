@@ -5,6 +5,7 @@ import { IAnimationPlayer } from "./animation/player/IAnimationPlayer";
 export class AnimationControl extends Component {
     private _player: IAnimationPlayer|null = null;
     private _slider: HTMLInputElement|null = null;
+    private _playbackRateSlider: HTMLInputElement|null = null;
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
 
@@ -21,6 +22,10 @@ export class AnimationControl extends Component {
             this._slider.addEventListener("input", this.onSliderInput);
             this._slider.addEventListener("onmousedown", this.onSliderMouseDown);
             this._slider.addEventListener("onmouseup", this.onSliderMouseUp);
+        }
+
+        if (this._playbackRateSlider) {
+            this._playbackRateSlider.addEventListener("input", this.onPlaybackRateSliderInput);
         }
 
         if (this._playButton) {
@@ -41,6 +46,10 @@ export class AnimationControl extends Component {
             this._slider.removeEventListener("input", this.onSliderInput);
             this._slider.removeEventListener("onmousedown", this.onSliderMouseDown);
             this._slider.removeEventListener("onmouseup", this.onSliderMouseUp);
+        }
+
+        if (this._playbackRateSlider) {
+            this._playbackRateSlider.removeEventListener("input", this.onPlaybackRateSliderInput);
         }
 
         if (this._playButton) {
@@ -101,6 +110,19 @@ export class AnimationControl extends Component {
         slider.addEventListener("mouseup", this.onSliderMouseUp);
     }
 
+    public get playbackRateSlider(): HTMLInputElement|null {
+        return this._playbackRateSlider;
+    }
+
+    public set playbackRateSlider(playbackRateSlider: HTMLInputElement|null) {
+        this._playbackRateSlider = playbackRateSlider;
+        if (!playbackRateSlider) return;
+        if (this._player && this._player.animationClock) {
+            this._player.animationClock.playbackRate = parseFloat(playbackRateSlider.value);
+        }
+        playbackRateSlider.addEventListener("input", this.onPlaybackRateSliderInput);
+    }
+
     public get playButton(): HTMLButtonElement|null {
         return this._playButton;
     }
@@ -152,6 +174,13 @@ export class AnimationControl extends Component {
         if (this._pausedBySlider) {
             this._pausedBySlider = false;
             this._player.play();
+        }
+    };
+
+    private readonly onPlaybackRateSliderInput = (event: Event): void => {
+        if (!this._player) return;
+        if (this._player.animationClock) {
+            this._player.animationClock.playbackRate = parseFloat((event.target as HTMLInputElement).value);
         }
     };
 

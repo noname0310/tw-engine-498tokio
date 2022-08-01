@@ -16,7 +16,6 @@ export class AudioPlayer extends Component implements IAnimationClock {
     private _gainNode: GainNode|null = null;
 
     private _gain = 0;
-    private _detune = 0;
     private _playbackRate = 1;
     private _pendingPlay = false;
     private _startTime = 0;
@@ -82,7 +81,6 @@ export class AudioPlayer extends Component implements IAnimationClock {
         source.buffer = audioBuffer;
         source.connect(context.destination);
         if (this._gainNode) source.connect(this._gainNode);
-        source.detune.value = this._detune;
         source.playbackRate.value = this._playbackRate;
 
         if (this._pendingPlay) {
@@ -240,7 +238,6 @@ export class AudioPlayer extends Component implements IAnimationClock {
         newSource.buffer = oldSource.buffer;
         newSource.connect(context.destination);
         if (this._gainNode) newSource.connect(this._gainNode);
-        newSource.detune.value = this._detune;
         newSource.playbackRate.value = this._playbackRate;
         return this._source = newSource;
     }
@@ -275,18 +272,6 @@ export class AudioPlayer extends Component implements IAnimationClock {
         const gainNode = this.getGainNode();
         if (!gainNode) return;
         gainNode.gain.value = value;
-    }
-
-    public get detune(): number {
-        return this._detune;
-    }
-
-    public set detune(value: number) {
-        this._detune = value;
-
-        const source = this._source;
-        if (!source) return;
-        source.detune.value = value;
     }
 
     public get playbackRate(): number {
