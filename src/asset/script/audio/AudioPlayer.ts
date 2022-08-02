@@ -280,13 +280,18 @@ export class AudioPlayer extends Component implements IAnimationClock {
 
     public set playbackRate(value: number) {
         if (this._playbackRate === value) return;
+        if (value <= 0) throw new Error("Playback rate must be greater than 0");
 
         const currentTime = this.currentTime;
 
         if (this._source) {
             this._source.playbackRate.value = value;
             this._playbackRate = value;
-            this.setPosition(currentTime);
+            if (this._state === PlayerState.Playing) {
+                this.setPosition(currentTime);
+            } else {
+                this._jumpedPosition = (this._source.context.currentTime - this._startTime);
+            }
         } else {
             this._playbackRate = value;
         }
