@@ -90,7 +90,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
                 frameTime = this._elapsedTime * this._frameRate;
                 const frame = Math.floor(frameTime);
                 this._animationClipInstace.process(frame);
-                this._onAnimationProcessEvent.invoke(frame);
+                this._onAnimationProcessEvent.invoke(frameTime);
             }
 
             if (this._loopMode === AnimationLoopMode.None) {
@@ -99,7 +99,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         } else {
             const frame = Math.floor(frameTime);
             this._animationClipInstace.process(frame);
-            this._onAnimationProcessEvent.invoke(frame);
+            this._onAnimationProcessEvent.invoke(frameTime);
         }
     }
 

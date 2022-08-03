@@ -71,7 +71,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
                 frameTime = this._elapsedTime * this._frameRate;
                 const frame = Math.floor(frameTime);
                 this._animationTrackInstace.process(frame);
-                this._onAnimationProcessEvent.invoke(frame);
+                this._onAnimationProcessEvent.invoke(frameTime);
             }
             
             if (this._loopMode === AnimationLoopMode.None) {
@@ -80,7 +80,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         } else {
             const frame = Math.floor(frameTime);
             this._animationTrackInstace.process(frame);
-            this._onAnimationProcessEvent.invoke(frame);
+            this._onAnimationProcessEvent.invoke(frameTime);
         }
     }
 
