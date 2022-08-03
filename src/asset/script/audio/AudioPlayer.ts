@@ -224,6 +224,10 @@ export class AudioPlayer extends Component implements IAnimationClock {
             newSource.start(currentTime, position);
         } else {
             this._jumpedPosition = position;
+            if (!this._source) return;
+            const context = this.getContext()!;
+            const currentTime = context.currentTime;
+            this._startTime = currentTime - position / this._playbackRate;
         }
         this._onJumpedEvent.invoke(position);
     }
@@ -288,11 +292,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         if (this._source) {
             this._source.playbackRate.value = value;
             this._playbackRate = value;
-            if (this._state === PlayerState.Playing) {
-                this.setPosition(currentTime);
-            } else {
-                this._jumpedPosition = (this._source.context.currentTime - this._startTime);
-            }
+            this.setPosition(currentTime);
         } else {
             this._playbackRate = value;
         }
