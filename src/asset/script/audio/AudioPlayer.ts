@@ -231,6 +231,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     private refreshSource(context: AudioContext): AudioBufferSourceNode {
         const oldSource = this._source!;
         oldSource.onended = null;
+        oldSource.stop();
         oldSource.disconnect();
         
         const newSource = context.createBufferSource();
