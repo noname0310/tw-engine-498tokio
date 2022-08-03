@@ -85,7 +85,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
             }
         
             if (this._animationClock) {
-                this._animationClock?.setPosition(this._elapsedTime);
+                this._animationClock.setPosition(this._elapsedTime);
             } else {
                 frameTime = this._elapsedTime * this._frameRate;
                 const frame = Math.floor(frameTime);
@@ -137,6 +137,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
 
     public pauseByClock = (): void => {
+        this.processByClock(this._animationClock!.currentTime);
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
     };
@@ -172,13 +173,15 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
             return;
         }
 
-        this._animationClipInstace.process(frameTime);
+        const frame = Math.floor(frameTime);
+        this._animationClipInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
     public processByClock = (time: number): void => {
         const frameTime = time * this._frameRate;
-        this._animationClipInstace?.process(frameTime);
+        const frame = Math.floor(frameTime);
+        this._animationClipInstace?.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 

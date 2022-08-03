@@ -66,7 +66,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
             }
 
             if (this._animationClock) {
-                this._animationClock?.setPosition(this._elapsedTime);
+                this._animationClock.setPosition(this._elapsedTime);
             } else {
                 frameTime = this._elapsedTime * this._frameRate;
                 const frame = Math.floor(frameTime);
@@ -118,6 +118,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     }
 
     public pauseByClock = (): void => {
+        this.processByClock(this._animationClock!.currentTime);
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
     };
@@ -153,13 +154,15 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
             return;
         }
 
-        this._animationTrackInstace.process(frameTime);
+        const frame = Math.floor(frameTime);
+        this._animationTrackInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
     public processByClock = (time: number): void => {
         const frameTime = time * this._frameRate;
-        this._animationTrackInstace?.process(frameTime);
+        const frame = Math.floor(frameTime);
+        this._animationTrackInstace?.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 
