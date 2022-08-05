@@ -79,6 +79,22 @@ export class Bootstrapper extends BaseBootstrapper {
                     const warpEffectAnim = introObjects.ref!.warpEffectAnim.ref!.animationInstance!;
                     const blackScreen2 = introObjects.ref!.blackScreen2.ref!;
                     (globalThis as any).animationClock = audioPlayer.ref;
+                    const slider = document.createElement("input");
+                    slider.type = "range";
+                    slider.min = "0.1";
+                    slider.max = "2";
+                    slider.step = "0.1";
+                    slider.value = "1";
+                    slider.style.width = "100px";
+                    slider.style.position = "absolute";
+                    slider.style.top = "0";
+                    slider.style.left = "0";
+                    document.body.appendChild(slider);
+                    slider.addEventListener("input", () => {
+                        const value = parseFloat(slider.value);
+                        audioPlayer.ref!.playbackRate = value;
+                    });
+
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
                         IntroAnimation.sequance,
