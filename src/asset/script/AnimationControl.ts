@@ -23,9 +23,10 @@ export class AnimationControl extends Component {
         }
 
         if (this._slider) {
+            console.log(this._player?.animationContainer?.startFrame);
             this._slider.addEventListener("input", this.onSliderInput);
-            this._slider.addEventListener("onmousedown", this.onSliderMouseDown);
-            this._slider.addEventListener("onmouseup", this.onSliderMouseUp);
+            this._slider.addEventListener("mousedown", this.onSliderMouseDown);
+            this._slider.addEventListener("mouseup", this.onSliderMouseUp);
         }
 
         if (this._playbackRateSlider) {
@@ -50,8 +51,8 @@ export class AnimationControl extends Component {
 
         if (this._slider) {
             this._slider.removeEventListener("input", this.onSliderInput);
-            this._slider.removeEventListener("onmousedown", this.onSliderMouseDown);
-            this._slider.removeEventListener("onmouseup", this.onSliderMouseUp);
+            this._slider.removeEventListener("mousedown", this.onSliderMouseDown);
+            this._slider.removeEventListener("mouseup", this.onSliderMouseUp);
         }
 
         if (this._playbackRateSlider) {
