@@ -23,7 +23,6 @@ export class AnimationControl extends Component {
         }
 
         if (this._slider) {
-            console.log(this._player?.animationContainer?.startFrame);
             this._slider.addEventListener("input", this.onSliderInput);
             this._slider.addEventListener("mousedown", this.onSliderMouseDown);
             this._slider.addEventListener("mouseup", this.onSliderMouseUp);
