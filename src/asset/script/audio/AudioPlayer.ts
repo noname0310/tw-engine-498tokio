@@ -50,7 +50,9 @@ export class AudioPlayer extends Component implements IAnimationClock {
 
     public onDestroy(): void {
         if (this._source) {
-            this._source.stop();
+            if (this._state === PlayerState.Playing) {
+                this._source.stop();
+            }
             this._source.disconnect();
             this._source = null;
         }
