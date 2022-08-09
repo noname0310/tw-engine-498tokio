@@ -8,8 +8,12 @@ export class AnimationControl extends Component {
     private _playbackRateSlider: HTMLInputElement|null = null;
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
+    
+    private _ready = false;
 
     public onEnable(): void {
+        this._ready = true;
+
         if (this._player) {
             this._player.onAnimationProcess.addListener(this.onAnimationProcess);
             this._player.onAnimationStart.addListener(this.onAnimationStart);
@@ -34,6 +38,8 @@ export class AnimationControl extends Component {
     }
 
     public onDisable(): void {
+        this._ready = false;
+
         if (this._player) {
             this._player.onAnimationProcess.removeListener(this.onAnimationProcess);
             this._player.onAnimationStart.removeListener(this.onAnimationStart);
@@ -80,11 +86,13 @@ export class AnimationControl extends Component {
         this._player = player;
         if (!player) return;
 
-        player.onAnimationProcess.addListener(this.onAnimationProcess);
-        player.onAnimationStart.addListener(this.onAnimationStart);
-        player.onAnimationPaused.addListener(this.onAnimationPaused);
-        player.onAnimationEnd.addListener(this.onAnimationEnd);
-        player.onAnimationChanged.addListener(this.onAnimationChanged);
+        if (this._ready) {
+            player.onAnimationProcess.addListener(this.onAnimationProcess);
+            player.onAnimationStart.addListener(this.onAnimationStart);
+            player.onAnimationPaused.addListener(this.onAnimationPaused);
+            player.onAnimationEnd.addListener(this.onAnimationEnd);
+            player.onAnimationChanged.addListener(this.onAnimationChanged);
+        }
 
         if (!this._playButton) return;
         if (player.isPlaying) {
@@ -105,9 +113,12 @@ export class AnimationControl extends Component {
             slider.min = this._player.animationContainer?.startFrame.toString() ?? "0";
             slider.max = this._player.animationContainer?.endFrame.toString() ?? "0";
         }
-        slider.addEventListener("input", this.onSliderInput);
-        slider.addEventListener("mousedown", this.onSliderMouseDown);
-        slider.addEventListener("mouseup", this.onSliderMouseUp);
+
+        if (this._ready) {
+            slider.addEventListener("input", this.onSliderInput);
+            slider.addEventListener("mousedown", this.onSliderMouseDown);
+            slider.addEventListener("mouseup", this.onSliderMouseUp);
+        }
     }
 
     public get playbackRateSlider(): HTMLInputElement|null {
@@ -120,7 +131,10 @@ export class AnimationControl extends Component {
         if (this._player && this._player.animationClock) {
             this._player.animationClock.playbackRate = parseFloat(playbackRateSlider.value);
         }
-        playbackRateSlider.addEventListener("input", this.onPlaybackRateSliderInput);
+
+        if (this._ready) {
+            playbackRateSlider.addEventListener("input", this.onPlaybackRateSliderInput);
+        }
     }
 
     public get playButton(): HTMLButtonElement|null {
@@ -137,7 +151,10 @@ export class AnimationControl extends Component {
                 this._playButton.textContent = "Play";
             }
         }
-        this._playButton.addEventListener("click", this.onPlayButtonClick);
+
+        if (this._ready) {
+            this._playButton.addEventListener("click", this.onPlayButtonClick);
+        }
     }
 
     public get frameDisplayText(): HTMLSpanElement|null {
