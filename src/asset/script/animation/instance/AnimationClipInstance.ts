@@ -50,7 +50,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         for (let i = 0; i < animationTrackInstances.length; ++i) {
             const trackInstance = animationTrackInstances[i];
             const trackFrameRate = trackInstance.animationContainer.frameRate;
-            const frameRateRatio = frameRate / trackFrameRate;
+            const frameRateRatio = trackFrameRate / frameRate;
 
             this._animationTrackInstances[i].frameIndexHint(frameIndex * frameRateRatio);
         }

@@ -130,7 +130,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
 
         for (const animationInstance of this._runningAnimations) {
             const trackFrameRate = animationInstance.animation.animationContainer.frameRate;
-            const frameRateRatio = trackFrameRate / frameRate;
+            const frameRateRatio = frameRate / trackFrameRate;
             animationInstance.animation.frameIndexHint(frameIndex * frameRateRatio);
         }
     }
@@ -182,7 +182,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         const frameRate = this._animationSequence.frameRate;
         
         for (const animationInstance of runningAnimations) {
-            const frameRateRatio = animationInstance.animation.animationContainer.frameRate / frameRate;
+            const frameRateRatio = frameRate / animationInstance.animation.animationContainer.frameRate;
             const scaledFrameTime = frameTime * frameRateRatio;
 
             let offsetedFrameTime = scaledFrameTime - animationInstance.offset;
