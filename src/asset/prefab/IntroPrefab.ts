@@ -387,6 +387,7 @@ export class IntroPrefab extends Prefab {
                 .getComponent(CssHtmlElementRenderer, this._blackScreen2))
 
             .withChild(this.instantiater.buildGameObject("particle_emitter_test", new Vector3(0, 0, 100))
+                .active(false)
                 .withComponent(ParticleEmitter, c => {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
