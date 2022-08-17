@@ -44,8 +44,15 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
     }
 
     public frameIndexHint(frameIndex: number): void {
-        for (let i = 0; i < this._animationTrackInstances.length; ++i) {
-            this._animationTrackInstances[i].frameIndexHint(frameIndex);
+        const frameRate = this._animationClip.frameRate;
+
+        const animationTrackInstances = this._animationTrackInstances;
+        for (let i = 0; i < animationTrackInstances.length; ++i) {
+            const trackInstance = animationTrackInstances[i];
+            const trackFrameRate = trackInstance.animationContainer.frameRate;
+            const frameRateRatio = frameRate / trackFrameRate;
+
+            this._animationTrackInstances[i].frameIndexHint(frameIndex * frameRateRatio);
         }
     }
 
@@ -54,8 +61,15 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         //console.log(`AnimationClipInstance: process: ${frameTime} ${this._animationClip.startFrame} ${this._animationClip.endFrame}`);
         if (this._animationClip.endFrame < frameTime) frameTime = this._animationClip.endFrame;
 
-        for (let i = 0; i < this._animationTrackInstances.length; ++i) {
-            this._animationTrackInstances[i].process(frameTime, unTrimmedFrameTime);
+        const frameRate = this._animationClip.frameRate;
+
+        const animationTrackInstances = this._animationTrackInstances;
+        for (let i = 0; i < animationTrackInstances.length; ++i) {
+            const trackInstance = animationTrackInstances[i];
+            const trackFrameRate = trackInstance.animationContainer.frameRate;
+            const frameRateRatio = frameRate / trackFrameRate;
+
+            animationTrackInstances[i].process(frameTime * frameRateRatio, unTrimmedFrameTime * frameRateRatio);
         }
     }
 }

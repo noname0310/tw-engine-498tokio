@@ -29,7 +29,6 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     private _bindInfo: AnimationClipBindInfo<any>|null = null;
     private _animationClipInstace: AnimationClipInstance<any, any>|null = null;
     private _elapsedTime = 0;
-    private _frameRate = 60;
     private _isPlaying = false;
     private _loopMode = AnimationLoopMode.None;
     private readonly _onAnimationProcessEvent = new EventContainer<(frameTime: number) => void>();
@@ -71,23 +70,25 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
 
     public update(): void {
         if (!this._animationClipInstace || !this._isPlaying) return;
+
+        const frameRate = this._animationClip!.frameRate;
         
         if (this._animationClock) {
             this._elapsedTime = this._animationClock.currentTime;
         } else {
             this._elapsedTime += this.engine.time.deltaTime;
         }
-        let frameTime = this._elapsedTime * this._frameRate;
+        let frameTime = this._elapsedTime * frameRate;
         if (this._animationClip!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.Loop) {
-                this._elapsedTime = (frameTime % this._animationClip!.endFrame) / this._frameRate;
+                this._elapsedTime = (frameTime % this._animationClip!.endFrame) / frameRate;
                 this._animationClipInstace.frameIndexHint(0);
             }
         
             if (this._animationClock) {
                 this._animationClock.setPosition(this._elapsedTime);
             } else {
-                frameTime = this._elapsedTime * this._frameRate;
+                frameTime = this._elapsedTime * frameRate;
                 const frame = Math.floor(frameTime);
                 this._animationClipInstace.process(frame);
                 this._onAnimationProcessEvent.invoke(frameTime);
@@ -169,7 +170,8 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         }
 
         if (this._animationClock) {
-            this._animationClock.setPosition(frameTime / this._frameRate);
+            const frameRate = this._animationClip.frameRate;
+            this._animationClock.setPosition(frameTime / frameRate);
             return;
         }
 
@@ -179,9 +181,17 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
 
     public processByClock = (time: number): void => {
-        const frameTime = time * this._frameRate;
+        if (!this._animationClip) throw new Error("animationClip is not set");
+        if (!this._bindInfo) throw new Error("bindInfo is not set");
+
+        if (!this._animationClipInstace) {
+            this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
+        }
+
+        const frameRate = this._animationClip.frameRate;
+        const frameTime = time * frameRate;
         const frame = Math.floor(frameTime);
-        this._animationClipInstace?.process(frame);
+        this._animationClipInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 
@@ -234,19 +244,13 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     }
 
     public get frameTime(): number {
-        return this._elapsedTime * this._frameRate;
+        if (!this._animationClip) throw new Error("animationClip is not set");
+        return this._elapsedTime * this._animationClip.frameRate;
     }
     
     public set frameTime(frameTime: number) {
-        this.elapsedTime = frameTime / this._frameRate;
-    }
-
-    public get frameRate(): number {
-        return this._frameRate;
-    }
-
-    public set frameRate(frameRate: number) {
-        this._frameRate = frameRate;
+        if (!this._animationClip) throw new Error("animationClip is not set");
+        this.elapsedTime = frameTime / this._animationClip.frameRate;
     }
 
     public get animationClock(): IAnimationClock|null {

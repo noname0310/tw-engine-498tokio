@@ -12,10 +12,15 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
     private readonly _keys: AnimationKey<T>[];
     private readonly _interpolator: IAnimationInterpolator<T>;
 
-    public constructor(keys: AnimationKey<T>[], interpolator: IAnimationInterpolator<T>) {
+    public constructor(keys: AnimationKey<T>[], interpolator: IAnimationInterpolator<T>, frameRate = 60) {
         AnimationTrack.validateKeys(keys);
         this._keys = keys.slice();
         this._interpolator = interpolator;
+
+        if (frameRate <= 0) {
+            throw new Error("AnimationTrack: frameRate must be positive");
+        }
+        this.frameRate = frameRate;
     }
 
     private static validateKeys<T>(keys: AnimationKey<T>[]): void {
@@ -46,6 +51,8 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
     public get endFrame(): number {
         return this._keys[this._keys.length - 1].frame;
     }
+
+    public readonly frameRate: number;
 
     public createInstance(target: (value: T) => void): AnimationTrackInstance<T> {
         return new AnimationTrackInstance<T>(this, target);

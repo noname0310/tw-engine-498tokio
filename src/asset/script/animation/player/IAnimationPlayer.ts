@@ -38,10 +38,6 @@ export interface IAnimationPlayer {
     
     set frameTime(frameTime: number);
 
-    get frameRate(): number;
-
-    set frameRate(frameRate: number);
-
     get animationClock(): IAnimationClock|null;
 
     set animationClock(animationClock: IAnimationClock|null);

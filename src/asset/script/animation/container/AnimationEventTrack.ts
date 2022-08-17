@@ -48,19 +48,24 @@ export class AnimationEventTrack<T extends EventTrackData, U extends InferedEven
      */
     private readonly _keys: T;
 
-    public constructor(keys: [...T]) {
+    public constructor(keys: [...T], frameRate = 60) {
         AnimationEventTrack.validateKeys(keys);
         this._keys = keys.slice() as T;
+
+        if (frameRate <= 0) {
+            throw new Error("AnimationEventTrack: frameRate must be positive");
+        }
+        this.frameRate = frameRate;
     }
 
     private static validateKeys<T extends string>(keys: AnimationEventKey<T>[]): void {
         let previousFrame = 0;
         for (let i = 0; i < keys.length; i++) {
             if (keys[i].frame < previousFrame) {
-                throw new Error("AnimationTrack: keys must be sorted by frame");
+                throw new Error("AnimationEventTrack: keys must be sorted by frame");
             }
             if (keys[i].frame < 0) {
-                throw new Error("AnimationTrack: keys must be positive");
+                throw new Error("AnimationEventTrack: keys must be positive");
             }
             previousFrame = keys[i].frame;
         }
@@ -77,6 +82,8 @@ export class AnimationEventTrack<T extends EventTrackData, U extends InferedEven
     public get endFrame(): number {
         return this._keys[this._keys.length - 1].frame;
     }
+
+    public readonly frameRate: number;
 
     public createInstance(bindInfo: U): AnimationEventTrackInstance<T, U> {
         return new AnimationEventTrackInstance(this, bindInfo);

@@ -61,8 +61,9 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
     public readonly animationContainers: T;
     public readonly startFrame: number;
     public readonly endFrame: number;
+    public readonly frameRate: number;
 
-    public constructor(animationContainers: [...T]) {
+    public constructor(animationContainers: [...T], frameRate = 60) {
         this.animationContainers = animationContainers;
 
         let minStartFrame = Number.MAX_SAFE_INTEGER;
@@ -80,6 +81,11 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
         }
         this.startFrame = minStartFrame;
         this.endFrame = maxEndFrame;
+
+        if (frameRate <= 0) {
+            throw new Error("AnimationSequence: frameRate must be positive");
+        }
+        this.frameRate = frameRate;
     }
 
     public createInstance(bindData: U): AnimationSequenceInstance<T, U> {

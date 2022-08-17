@@ -8,9 +8,8 @@ import { IAnimationClock } from "../../IAnimationClock";
 export class AnimationSequencePlayer extends Component implements IAnimationPlayer {
     private _animationSequence: AnimationSequence<any, any>|null = null;
     private _bindInfo: SequenceBindInfo|null = null;
-    private _animationSequanceInstace: AnimationSequenceInstance<any, any>|null = null;
+    private _animationSequenceInstace: AnimationSequenceInstance<any, any>|null = null;
     private _elapsedTime = 0;
-    private _frameRate = 60;
     private _isPlaying = false;
     private _loopMode = AnimationLoopMode.None;
     private _animationClock: IAnimationClock|null = null;
@@ -51,26 +50,28 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
     }
 
     public update(): void {
-        if (!this._animationSequanceInstace || !this._isPlaying) return;
+        if (!this._animationSequenceInstace || !this._isPlaying) return;
         
+        const frameRate = this._animationSequence!.frameRate;
+
         if (this._animationClock) {
             this._elapsedTime = this._animationClock.currentTime;
         } else {
             this._elapsedTime += this.engine.time.deltaTime;
         }
-        let frameTime = this._elapsedTime * this._frameRate;
+        let frameTime = this._elapsedTime * frameRate;
         if (this._animationSequence!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.Loop) {
-                this._elapsedTime = (frameTime % this._animationSequence!.endFrame) / this._frameRate;
-                this._animationSequanceInstace.frameIndexHint(0);
+                this._elapsedTime = (frameTime % this._animationSequence!.endFrame) / frameRate;
+                this._animationSequenceInstace.frameIndexHint(0);
             }
             
             if (this._animationClock) {
                 this._animationClock.setPosition(this._elapsedTime);
             } else {
-                frameTime = this._elapsedTime * this._frameRate;
+                frameTime = this._elapsedTime * frameRate;
                 const frame = Math.floor(frameTime);
-                this._animationSequanceInstace.process(frame);
+                this._animationSequenceInstace.process(frame);
                 this._onAnimationProcessEvent.invoke(frameTime);
             }
 
@@ -79,17 +80,17 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
             }
         } else {
             const frame = Math.floor(frameTime);
-            this._animationSequanceInstace.process(frame);
+            this._animationSequenceInstace.process(frame);
             this._onAnimationProcessEvent.invoke(frameTime);
         }
     }
 
     public play(): void {
         if (this._isPlaying) return;
-        if (!this._animationSequanceInstace) {
+        if (!this._animationSequenceInstace) {
             if (!this._animationSequence) throw new Error("animationSequence is not set");
             if (!this._bindInfo) throw new Error("bindInfo is not set");
-            this._animationSequanceInstace = this._animationSequence.createInstance(this._bindInfo);
+            this._animationSequenceInstace = this._animationSequence.createInstance(this._bindInfo);
         }
         
         if (this._animationClock) {
@@ -145,24 +146,33 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         if (!this._animationSequence) throw new Error("animationSequence is not set");
         if (!this._bindInfo) throw new Error("bindInfo is not set");
 
-        if (!this._animationSequanceInstace) {
-            this._animationSequanceInstace = this._animationSequence.createInstance(this._bindInfo);
+        if (!this._animationSequenceInstace) {
+            this._animationSequenceInstace = this._animationSequence.createInstance(this._bindInfo);
         }
 
         if (this._animationClock) {
-            this._animationClock.setPosition(frameTime / this._frameRate);
+            const frameRate = this._animationSequence.frameRate;
+            this._animationClock.setPosition(frameTime / frameRate);
             return;
         }
 
         const frame = Math.floor(frameTime);
-        this._animationSequanceInstace.process(frame);
+        this._animationSequenceInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
     public processByClock = (time: number): void => {
-        const frameTime = time * this._frameRate;
+        if (!this._animationSequence) throw new Error("animationSequence is not set");
+        if (!this._bindInfo) throw new Error("bindInfo is not set");
+
+        if (!this._animationSequenceInstace) {
+            this._animationSequenceInstace = this._animationSequence.createInstance(this._bindInfo);
+        }
+
+        const frameRate = this._animationSequence.frameRate;
+        const frameTime = time * frameRate;
         const frame = Math.floor(frameTime);
-        this._animationSequanceInstace?.process(frame);
+        this._animationSequenceInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 
@@ -178,15 +188,15 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         if (this._animationSequence === animationSequence) {
             this._bindInfo = bindInfo;
 
-            if (this._animationSequanceInstace) {
-                this._animationSequanceInstace.bindInfo = bindInfo;
+            if (this._animationSequenceInstace) {
+                this._animationSequenceInstace.bindInfo = bindInfo;
             }
         } else {
             this._animationSequence = animationSequence;
             this._bindInfo = bindInfo;
             
-            if (this._animationSequanceInstace) {
-                this._animationSequanceInstace = animationSequence.createInstance(bindInfo);
+            if (this._animationSequenceInstace) {
+                this._animationSequenceInstace = animationSequence.createInstance(bindInfo);
             }
         }
 
@@ -215,19 +225,13 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
     }
 
     public get frameTime(): number {
-        return this._elapsedTime * this._frameRate;
+        if (!this._animationSequence) throw new Error("animationSequence is not set");
+        return this._elapsedTime * this._animationSequence.frameRate;
     }
     
     public set frameTime(frameTime: number) {
-        this.elapsedTime = frameTime / this._frameRate;
-    }
-
-    public get frameRate(): number {
-        return this._frameRate;
-    }
-
-    public set frameRate(frameRate: number) {
-        this._frameRate = frameRate;
+        if (!this._animationSequence) throw new Error("animationSequence is not set");
+        this.elapsedTime = frameTime / this._animationSequence.frameRate;
     }
 
     public get animationClock(): IAnimationClock|null {

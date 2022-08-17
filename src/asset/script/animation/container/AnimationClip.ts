@@ -63,9 +63,10 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
     public readonly tracks: IAnimationTrack[];
     public readonly startFrame: number;
     public readonly endFrame: number;
+    public readonly frameRate: number;
     private readonly _trackMap: Map<string, number>;
 
-    public constructor(tracks: [...T], startFrame?: number, endFrame?: number) {
+    public constructor(tracks: [...T], startFrame?: number, endFrame?: number, frameRate = 60) {
         this.tracks = [];
         for (let i = 0; i < tracks.length; i++) {
             this.tracks.push(tracks[i].track);
@@ -101,6 +102,11 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
             }
             this.endFrame = maxEndFrame;
         }
+
+        if (frameRate <= 0) {
+            throw new Error("AnimationClip: frameRate must be positive");
+        }
+        this.frameRate = frameRate;
     }
 
     public getTrackFromName(name: string): IAnimationTrack|null {

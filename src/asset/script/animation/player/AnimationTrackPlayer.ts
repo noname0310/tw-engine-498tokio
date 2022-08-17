@@ -10,7 +10,6 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     private _animationTarget: ((value: T) => void)|null = null;
     private _animationTrackInstace: AnimationTrackInstance<T>|null = null;
     private _elapsedTime = 0;
-    private _frameRate = 60;
     private _isPlaying = false;
     private _loopMode = AnimationLoopMode.None;
     private _animationClock: IAnimationClock|null = null;
@@ -53,22 +52,24 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     public update(): void {
         if (!this._animationTrackInstace || !this._isPlaying) return;
 
+        const frameRate = this._animationTrack!.frameRate;
+
         if (this._animationClock) {
             this._elapsedTime = this._animationClock.currentTime;
         } else {
             this._elapsedTime += this.engine.time.deltaTime;
         }
-        let frameTime = this._elapsedTime * this._frameRate;
+        let frameTime = this._elapsedTime * frameRate;
         if (this._animationTrack!.endFrame < frameTime) {
             if (this._loopMode === AnimationLoopMode.Loop) {
-                this._elapsedTime = (frameTime % this._animationTrack!.endFrame) / this._frameRate;
+                this._elapsedTime = (frameTime % this._animationTrack!.endFrame) / frameRate;
                 this._animationTrackInstace.frameIndexHint(0);
             }
 
             if (this._animationClock) {
                 this._animationClock.setPosition(this._elapsedTime);
             } else {
-                frameTime = this._elapsedTime * this._frameRate;
+                frameTime = this._elapsedTime * frameRate;
                 const frame = Math.floor(frameTime);
                 this._animationTrackInstace.process(frame);
                 this._onAnimationProcessEvent.invoke(frameTime);
@@ -150,7 +151,8 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         }
 
         if (this._animationClock) {
-            this._animationClock.setPosition(frameTime / this._frameRate);
+            const frameRate = this._animationTrack.frameRate;
+            this._animationClock.setPosition(frameTime / frameRate);
             return;
         }
 
@@ -160,9 +162,17 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     }
 
     public processByClock = (time: number): void => {
-        const frameTime = time * this._frameRate;
+        if (!this._animationTrack) throw new Error("animationTrack is not set");
+        if (!this._animationTarget) throw new Error("animationTarget is not set");
+
+        if (!this._animationTrackInstace) {
+            this._animationTrackInstace = this._animationTrack.createInstance(this._animationTarget);
+        }
+
+        const frameRate = this._animationTrack.frameRate;
+        const frameTime = time * frameRate;
         const frame = Math.floor(frameTime);
-        this._animationTrackInstace?.process(frame);
+        this._animationTrackInstace.process(frame);
         this._onAnimationProcessEvent.invoke(frameTime);
     };
 
@@ -209,19 +219,13 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     }
 
     public get frameTime(): number {
-        return this._elapsedTime * this._frameRate;
+        if (!this._animationTrack) throw new Error("animationTrack is not set");
+        return this._elapsedTime * this._animationTrack.frameRate;
     }
     
     public set frameTime(frameTime: number) {
-        this.elapsedTime = frameTime / this._frameRate;
-    }
-
-    public get frameRate(): number {
-        return this._frameRate;
-    }
-
-    public set frameRate(frameRate: number) {
-        this._frameRate = frameRate;
+        if (!this._animationTrack) throw new Error("animationTrack is not set");
+        this.elapsedTime = frameTime / this._animationTrack.frameRate;
     }
 
     public get animationClock(): IAnimationClock|null {
