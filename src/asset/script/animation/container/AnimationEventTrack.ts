@@ -42,7 +42,7 @@ type ArrayReadonly<T extends any[]> = readonly [...T];
 
 // type inferTest3 = InferedEventTrackBindData<[AnimationEventKey<"test1">, AnimationEventKey<"test2">, AnimationEventKey<"test3">, AnimationEventKey<"test4">]>;
 
-export class AnimationEventTrack<T extends EventTrackData, U extends InferedEventTrackBindData<T>> implements IAnimationContainer<U>, IAnimationTrack {
+export class AnimationEventTrack<T extends EventTrackData, U extends InferedEventTrackBindData<T> = InferedEventTrackBindData<T>> implements IAnimationContainer<U>, IAnimationTrack {
     /**
      * this member must be sorted by frame member
      */

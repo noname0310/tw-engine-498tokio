@@ -3,7 +3,7 @@ import { AnimationClipBindData, AnimationClipBindInfo } from "../AnimationClipBi
 import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
 
-export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T>> implements IAnimationInstance {
+export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationInstance {
     private readonly _bindInfo: AnimationClipBindInfo<U>;
 
     private readonly _animationClip: AnimationClip<T, U>;

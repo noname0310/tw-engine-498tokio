@@ -2,7 +2,7 @@ import { AnimationEventBindInfo } from "../key/AnimationEventKey";
 import { AnimationEventTrack, EventTrackData, InferedEventTrackBindData } from "../container/AnimationEventTrack";
 import { IAnimationInstance } from "./IAniamtionInstance";
 
-export class AnimationEventTrackInstance<T extends EventTrackData, U extends InferedEventTrackBindData<T>> implements IAnimationInstance {
+export class AnimationEventTrackInstance<T extends EventTrackData, U extends InferedEventTrackBindData<T> = InferedEventTrackBindData<T>> implements IAnimationInstance {
     private _bindInfo: U;
 
     private _currentFrameIndex: number;

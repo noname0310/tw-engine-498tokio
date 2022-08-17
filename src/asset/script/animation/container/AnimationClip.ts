@@ -59,7 +59,7 @@ type testAnimationEventClip1TypeTrackData = [{
 }]
 */
 
-export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBindData<T>> implements IAnimationContainer<AnimationClipBindInfo<U>> {
+export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationContainer<AnimationClipBindInfo<U>> {
     public readonly tracks: IAnimationTrack[];
     public readonly startFrame: number;
     public readonly endFrame: number;

@@ -13,7 +13,7 @@ class ActivationInfoNode {
     }
 }
 
-export class AnimationSequenceInstance<T extends ContainerData, U extends InferedSequenceBindData<T>> implements IAnimationInstance {
+export class AnimationSequenceInstance<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationInstance {
     private _bindInfo: SequenceBindInfo;
 
     private readonly _animationSequence: AnimationSequence<T, U>;

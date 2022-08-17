@@ -55,7 +55,7 @@ export type NonRecursiveSequenceBindItem = (AnimationClipBindInfo<any>|((value: 
 
 export type SequenceBindInfo = SequenceBindItem[];
 
-export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T>> implements IAnimationContainer<SequenceBindItem> {
+export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationContainer<SequenceBindItem> {
     public readonly animationContainers: T;
     public readonly startFrame: number;
     public readonly endFrame: number;
