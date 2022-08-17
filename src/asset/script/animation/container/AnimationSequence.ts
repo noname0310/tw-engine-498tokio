@@ -21,7 +21,9 @@ export type InferedSequenceBindData<T extends ContainerData> =
                                 ? U
                                 : UnwrapRangedAnimation<T[key]> extends AnimationSequence<infer _, infer U>
                                     ? U
-                                    : never
+                                    : UnwrapRangedAnimation<T[key]> extends IAnimationContainer<infer U>
+                                        ? U
+                                        : never
                     : never;
         };
 
@@ -47,7 +49,7 @@ export class RangedAnimation<T extends IAnimationContainer<unknown>> {
     }
 }
 
-export type ContainerData = RangedAnimation<IAnimationContainer<unknown>>[];
+export type ContainerData = RangedAnimation<IAnimationContainer<any>>[];
 
 export type SequenceBindItem = AnimationClipBindInfo<any>|((value: any) => void)|SequenceBindInfo;
 
@@ -55,7 +57,7 @@ export type NonRecursiveSequenceBindItem = (AnimationClipBindInfo<any>|((value: 
 
 export type SequenceBindInfo = SequenceBindItem[];
 
-export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationContainer<SequenceBindItem> {
+export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationContainer<U> {
     public readonly animationContainers: T;
     public readonly startFrame: number;
     public readonly endFrame: number;
