@@ -4,7 +4,7 @@ import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
 
 export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationInstance {
-    private readonly _bindInfo: AnimationClipBindInfo<U>;
+    private _bindInfo: AnimationClipBindInfo<U>;
 
     private readonly _animationClip: AnimationClip<T, U>;
     private _animationTrackInstances: IAnimationTrackInstance[];
@@ -13,14 +13,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         this._bindInfo = bindInfo;
         this._animationClip = animationClip;
         this._animationTrackInstances = [];
-        const bindData = bindInfo.data as AnimationClipBindData;
-        for (let i = 0; i < bindData.length; ++i) {
-            const track = animationClip.getTrackFromName(bindData[i].trackName);
-            if (track === null) {
-                throw new Error(`AnimationClipInstance: track not found: ${bindData[i].trackName}`);
-            }
-            this._animationTrackInstances.push(track.createInstance(bindData[i].target as any) as IAnimationTrackInstance);
-        }
+        this.bindInfo = bindInfo;
     }
 
     public get animationContainer(): AnimationClip<T, U> {
@@ -41,6 +34,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
             }
             this._animationTrackInstances.push(track.createInstance(bindData[i].target as any) as IAnimationTrackInstance);
         }
+        this._bindInfo = bindInfo;
     }
 
     public frameIndexHint(frameIndex: number): void {
@@ -50,9 +44,9 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
         for (let i = 0; i < animationTrackInstances.length; ++i) {
             const trackInstance = animationTrackInstances[i];
             const trackFrameRate = trackInstance.animationContainer.frameRate;
-            const frameRateRatio = trackFrameRate / frameRate;
+            const frameRateRatio = frameRate / trackFrameRate;
 
-            this._animationTrackInstances[i].frameIndexHint(frameIndex * frameRateRatio);
+            this._animationTrackInstances[i].frameIndexHint(frameIndex / frameRateRatio);
         }
     }
 
@@ -69,7 +63,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
             const trackFrameRate = trackInstance.animationContainer.frameRate;
             const frameRateRatio = frameRate / trackFrameRate;
 
-            animationTrackInstances[i].process(frameTime * frameRateRatio, unTrimmedFrameTime * frameRateRatio);
+            animationTrackInstances[i].process(frameTime / frameRateRatio, unTrimmedFrameTime / frameRateRatio);
         }
     }
 }

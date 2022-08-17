@@ -79,13 +79,20 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
 
         const trackArray = this.tracks;
 
+        if (frameRate <= 0) {
+            throw new Error("AnimationClip: frameRate must be positive");
+        }
+        this.frameRate = frameRate;
+
         if (startFrame) {
             this.startFrame = startFrame;
         } else {
             let minStartFrame = Number.MAX_SAFE_INTEGER;
             for (let i = 0; i < trackArray.length; i++) {
-                if (trackArray[i].startFrame < minStartFrame) {
-                    minStartFrame = trackArray[i].startFrame;
+                const frameRateRatio = frameRate / trackArray[i].frameRate;
+                const scaledStartFrame = trackArray[i].startFrame * frameRateRatio;
+                if (scaledStartFrame < minStartFrame) {
+                    minStartFrame = scaledStartFrame;
                 }
             }
             this.startFrame = minStartFrame;
@@ -96,17 +103,14 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
         } else {
             let maxEndFrame = Number.MIN_SAFE_INTEGER;
             for (let i = 0; i < trackArray.length; i++) {
-                if (trackArray[i].endFrame > maxEndFrame) {
-                    maxEndFrame = trackArray[i].endFrame;
+                const frameRateRatio = frameRate / trackArray[i].frameRate;
+                const scaledEndFrame = trackArray[i].endFrame * frameRateRatio;
+                if (scaledEndFrame > maxEndFrame) {
+                    maxEndFrame = scaledEndFrame;
                 }
             }
             this.endFrame = maxEndFrame;
         }
-
-        if (frameRate <= 0) {
-            throw new Error("AnimationClip: frameRate must be positive");
-        }
-        this.frameRate = frameRate;
     }
 
     public getTrackFromName(name: string): IAnimationTrack|null {

@@ -119,7 +119,7 @@ export class IntroAnimation {
                 new AnimationEventKey("invisible", this._timeScale * 71)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _blackScreenAnimationClip = new AnimationClip([
         {
@@ -136,7 +136,7 @@ export class IntroAnimation {
                 new AnimationEventKey("invisible", this._timeScale * 190)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _moonAnimationClip = new AnimationClip([
         {
@@ -146,7 +146,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 553 - 75, 360 * 4.8, InterpolationKind.Linear)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _zoomOutAnimationClip = new AnimationClip([
         {
@@ -156,7 +156,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 384 - 75, 0.6, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _grassAnimationClip = new AnimationClip([
         {
@@ -173,7 +173,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 481 - 392, -11, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _grassAnimationClip2 = new AnimationClip([
         {
@@ -190,7 +190,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 481 - 392, -7.2, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _grassAnimationClip3 = new AnimationClip([
         {
@@ -207,7 +207,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 481 - 392, -4, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _spaceshipAnimationClip = new AnimationClip([
         {
@@ -227,7 +227,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 546 - 372, -Math.PI / 4 / 1.2, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _warpEffectAnimationClip = new AnimationClip([
         {
@@ -245,7 +245,7 @@ export class IntroAnimation {
                 AnimationKey.createValueType(this._timeScale * 558, 12, InterpolationKind.Linear)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     private static readonly _blackScreen2AnimationClip = new AnimationClip([
         {
@@ -263,7 +263,7 @@ export class IntroAnimation {
                 new AnimationEventKey("visible", this._timeScale * 558)
             ], 30)
         }
-    ]);
+    ], undefined, undefined, 30);
 
     public static readonly sequence = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
@@ -283,7 +283,7 @@ export class IntroAnimation {
 
         new RangedAnimation(this._warpEffectAnimationClip),
         new RangedAnimation(this._blackScreen2AnimationClip)
-    ]);
+    ], 30);
 
     private static createActivationBindInfo(event: () => void, eventRestore: () => void): {
         visible: AnimationEventBindInfo;

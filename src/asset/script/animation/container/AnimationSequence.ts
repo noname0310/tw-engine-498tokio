@@ -29,23 +29,15 @@ export type InferedSequenceBindData<T extends ContainerData> =
 
 export class RangedAnimation<T extends IAnimationContainer<unknown>> {
     public readonly offset: number;
-    public readonly startFrame: number;
-    public readonly endFrame: number;
+    public readonly startFrame?: number;
+    public readonly endFrame?: number;
     public readonly animation: T;
 
     public constructor(animation: T, offset = 0, startFrame?: number, endFrame?: number) {
         this.animation = animation;
         this.offset = offset;
-        if (startFrame) {
-            this.startFrame = startFrame;
-        } else {
-            this.startFrame = animation.startFrame;
-        }
-        if (endFrame) {
-            this.endFrame = endFrame;
-        } else {
-            this.endFrame = animation.endFrame;
-        }
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
     }
 }
 
@@ -70,8 +62,9 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
         let maxEndFrame = 0;
         for (let i = 0; i < animationContainers.length; i++) {
             const animationContainer = animationContainers[i];
-            const startFrame = animationContainer.startFrame + animationContainer.offset;
-            const endFrame = animationContainer.endFrame + animationContainer.offset;
+            const frameRateRatio = frameRate / animationContainer.animation.frameRate;
+            const startFrame = (animationContainer.startFrame ?? animationContainer.animation.startFrame * frameRateRatio)  + animationContainer.offset;
+            const endFrame = (animationContainer.endFrame ?? animationContainer.animation.endFrame * frameRateRatio) + animationContainer.offset;
             if (startFrame < minStartFrame) {
                 minStartFrame = startFrame;
             }
