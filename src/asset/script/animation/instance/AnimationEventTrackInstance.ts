@@ -11,18 +11,13 @@ export class AnimationEventTrackInstance<T extends EventTrackData, U extends Inf
     private _noRestoreEvent: boolean;
 
     public constructor(animationTrack: AnimationEventTrack<T, U>, bindInfo: U) {
-        this._bindInfo = { ...bindInfo };
+        this._bindInfo = null!;
         this._animationTrack = animationTrack;
         this._currentFrameIndex = 0;
         this._lastInvokedFrameIndex = -1;
-
         this._noRestoreEvent = true;
-        for (const key in bindInfo) {
-            if (bindInfo[key].eventRestore) {
-                this._noRestoreEvent = false;
-                break;
-            }
-        }
+
+        this.bindInfo = bindInfo;
     }
 
     public get animationContainer(): AnimationEventTrack<T, U> {
