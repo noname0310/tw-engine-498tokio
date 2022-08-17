@@ -265,7 +265,7 @@ export class IntroAnimation {
         }
     ]);
 
-    public static readonly sequance = new AnimationSequence([
+    public static readonly sequence = new AnimationSequence([
         new RangedAnimation(this._fireworkAnimationClip),
         new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 115),
         new RangedAnimation(this._fireworkAnimationClip, this._timeScale * 222),

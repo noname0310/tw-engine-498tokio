@@ -97,7 +97,7 @@ export class Bootstrapper extends BaseBootstrapper {
 
                     c.animationClock = audioPlayer.ref!;
                     c.setAnimationAndBind(
-                        IntroAnimation.sequance,
+                        IntroAnimation.sequence,
                         IntroAnimation.createBindInfo(
                             (value: number) => firework1Render.imageIndex = value,
                             () => firework1Render.enabled = true,
@@ -132,7 +132,6 @@ export class Bootstrapper extends BaseBootstrapper {
                             () => blackScreen2.enabled = false
                         )
                     );
-                    c.frameRate = 30;
                     c.loopMode = AnimationLoopMode.None;
                     c.play();
                 })
