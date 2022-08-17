@@ -58,19 +58,19 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
         return new AnimationTrackInstance<T>(this, target);
     }
 
-    public static createScalarTrack(keys: AnimationKey<number>[]): AnimationTrack<number> {
-        return new AnimationTrack(keys, ScalarInterpolator);
+    public static createScalarTrack(keys: AnimationKey<number>[], frameRate?: number): AnimationTrack<number> {
+        return new AnimationTrack(keys, ScalarInterpolator, frameRate);
     }
 
-    public static createVector2Track(keys: AnimationKey<Vector2>[]): AnimationTrack<Vector2> {
-        return new AnimationTrack(keys, Vector2Interpolator);
+    public static createVector2Track(keys: AnimationKey<Vector2>[], frameRate?: number): AnimationTrack<Vector2> {
+        return new AnimationTrack(keys, Vector2Interpolator, frameRate);
     }
 
-    public static createVector3Track(keys: AnimationKey<Vector3>[]): AnimationTrack<Vector3> {
-        return new AnimationTrack(keys, Vector3Interpolator);
+    public static createVector3Track(keys: AnimationKey<Vector3>[], frameRate?: number): AnimationTrack<Vector3> {
+        return new AnimationTrack(keys, Vector3Interpolator, frameRate);
     }
 
-    public static createQuaternionTrack(keys: AnimationKey<Quaternion>[]): AnimationTrack<Quaternion> {
-        return new AnimationTrack(keys, QuaternionInterpolator);
+    public static createQuaternionTrack(keys: AnimationKey<Quaternion>[], frameRate?: number): AnimationTrack<Quaternion> {
+        return new AnimationTrack(keys, QuaternionInterpolator, frameRate);
     }
 }
