@@ -1,6 +1,6 @@
 import { Vector2 } from "three/src/Three";
 import { AnimationClipBindInfo } from "../../script/animation/AnimationClipBindInfo";
-import { ScalarInterpolator } from "../../script/animation/AnimationInterpolator";
+import { ScalarHermiteInterpolator } from "../../script/animation/AnimationInterpolator";
 import { AnimationClip } from "../../script/animation/container/AnimationClip";
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";
 import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
@@ -9,8 +9,8 @@ import { AnimationKey, InterpolationKind } from "../../script/animation/key/Anim
 
 //define track that has scalar key
 export const track1 = AnimationTrack.createScalarTrack([
-    AnimationKey.createValueType(0, 0, InterpolationKind.Linear), //frame 0, value 0
-    AnimationKey.createValueType(60, 1, InterpolationKind.Linear)  //frame 60, value 1
+    new AnimationKey(0, 0, InterpolationKind.Linear), //frame 0, value 0
+    new AnimationKey(60, 1, InterpolationKind.Linear)  //frame 60, value 1
 ])
 
 const div = document.getElementById("animated-div")!;
@@ -56,17 +56,17 @@ const clip1 = new AnimationClip([
     {
         name: "track1" as const,
         // you can create AnimationTrack to use constructor, in this case, AnimationTrack need interpolator
-        track: new AnimationTrack<number>([
-            AnimationKey.createValueType(0, 0, InterpolationKind.Linear), //frame 0, value 0
-            AnimationKey.createValueType(60, 1, InterpolationKind.Linear)  //frame 60, value 1
-        ], ScalarInterpolator)
+        track: AnimationTrack.createTrack([
+            new AnimationKey(0, 0, InterpolationKind.Linear), //frame 0, value 0
+            new AnimationKey(60, 1, InterpolationKind.Linear)  //frame 60, value 1
+        ], ScalarHermiteInterpolator)
     },
     {
         name: "track2" as const,
         // this track use cubic hermite interpolation
         track: AnimationTrack.createScalarTrack([
-            AnimationKey.createValueType(0, 0, InterpolationKind.Cubic, 0, 0), //frame 0, value 0
-            AnimationKey.createValueType(60, 1, InterpolationKind.Cubic, 0, 0)  //frame 120, value 1
+            new AnimationKey(0, 0, InterpolationKind.Cubic, 0, 0), //frame 0, value 0
+            new AnimationKey(60, 1, InterpolationKind.Cubic, 0, 0)  //frame 120, value 1
         ])
     }
 ])
@@ -97,8 +97,8 @@ const sequence1 = new AnimationSequence([
     new RangedAnimation(clip1, 20, 1, 50), // RangedAnimation that offset 20, start frame 1, end frame 50
     new RangedAnimation(AnimationTrack.createVector2Track([
         //Vector2 is class so you must create key by createRefType
-        AnimationKey.createRefType(0, new Vector2(0, 0), InterpolationKind.Linear), //frame 0, value 0, 0
-        AnimationKey.createRefType(60, new Vector2(1, 1), InterpolationKind.Linear)  //frame 60, value 1, 1
+        new AnimationKey(0, new Vector2(0, 0), InterpolationKind.Linear), //frame 0, value 0, 0
+        new AnimationKey(60, new Vector2(1, 1), InterpolationKind.Linear)  //frame 60, value 1, 1
     ]))
 ]);
 

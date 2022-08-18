@@ -17,14 +17,14 @@ export class IntroAnimation {
         {
             name: "firework1" as const, 
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 0., 0, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 2., 1, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 4., 2, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 6., 3, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 8., 4, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 10, 5, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 12, 6, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 14, 7, InterpolationKind.Step)
+                new AnimationKey(this._timeScale * 0., 0, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 2., 1, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 4., 2, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 6., 3, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 8., 4, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 10, 5, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 12, 6, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 14, 7, InterpolationKind.Step)
             ], 30)
         },
         {
@@ -38,24 +38,24 @@ export class IntroAnimation {
         {
             name: "firework2" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 16, 0., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 19, 1., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 22, 2., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 25, 3., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 28, 4., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 31, 5., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 34, 6., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 37, 7., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 40, 8., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 43, 9., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 46, 10, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 49, 11, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 52, 12, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 55, 13, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 58, 14, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 61, 15, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 64, 16, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 67, 17, InterpolationKind.Step)
+                new AnimationKey(this._timeScale * 16, 0., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 19, 1., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 22, 2., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 25, 3., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 28, 4., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 31, 5., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 34, 6., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 37, 7., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 40, 8., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 43, 9., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 46, 10, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 49, 11, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 52, 12, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 55, 13, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 58, 14, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 61, 15, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 64, 16, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 67, 17, InterpolationKind.Step)
             ], 30)
         },
         {
@@ -69,20 +69,20 @@ export class IntroAnimation {
         {
             name: "firework3" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 31, 0., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 33, 1., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 35, 2., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 37, 3., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 39, 4., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 41, 5., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 43, 6., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 45, 7., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 47, 8., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 49, 9., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 51, 10, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 53, 11, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 55, 12, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 57, 13, InterpolationKind.Step)
+                new AnimationKey(this._timeScale * 31, 0., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 33, 1., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 35, 2., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 37, 3., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 39, 4., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 41, 5., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 43, 6., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 45, 7., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 47, 8., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 49, 9., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 51, 10, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 53, 11, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 55, 12, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 57, 13, InterpolationKind.Step)
             ], 30)
         },
         {
@@ -96,19 +96,19 @@ export class IntroAnimation {
         {
             name: "firework_sphere" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 45, 0., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 47, 1., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 49, 2., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 51, 3., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 53, 4., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 55, 5., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 57, 6., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 59, 7., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 61, 8., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 63, 9., InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 65, 10, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 67, 11, InterpolationKind.Step),
-                AnimationKey.createValueType(this._timeScale * 69, 12, InterpolationKind.Step)
+                new AnimationKey(this._timeScale * 45, 0., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 47, 1., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 49, 2., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 51, 3., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 53, 4., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 55, 5., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 57, 6., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 59, 7., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 61, 8., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 63, 9., InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 65, 10, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 67, 11, InterpolationKind.Step),
+                new AnimationKey(this._timeScale * 69, 12, InterpolationKind.Step)
             ], 30)
         },
         {
@@ -125,8 +125,8 @@ export class IntroAnimation {
         {
             name: "black_screen_opacity" as const, 
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 75, 1, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 180, 0, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 75, 1, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 180, 0, InterpolationKind.Linear)
             ], 30)
         },
         {
@@ -142,8 +142,8 @@ export class IntroAnimation {
         {
             name: "moon_hue" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 0, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 553 - 75, 360 * 4.8, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 0, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 553 - 75, 360 * 4.8, InterpolationKind.Linear)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -152,8 +152,8 @@ export class IntroAnimation {
         {
             name: "scale" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 0, 1, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 384 - 75, 0.6, InterpolationKind.Cubic, 0, 0)
+                new AnimationKey(this._timeScale * 0, 1, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 384 - 75, 0.6, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -162,15 +162,15 @@ export class IntroAnimation {
         {
             name: "grass1_x" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 541 - 392, -40, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 541 - 392, -40, InterpolationKind.Linear)
             ], 30)
         },
         {
             name: "grass1_y" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, -17, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -11, InterpolationKind.Cubic, 0, 0)
+                new AnimationKey(this._timeScale * 392 - 392, -17, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 481 - 392, -11, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -179,15 +179,15 @@ export class IntroAnimation {
         {
             name: "grass2_x" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 541 - 392, -30, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 541 - 392, -30, InterpolationKind.Linear)
             ], 30)
         },
         {
             name: "grass2_y" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, -14, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -7.2, InterpolationKind.Cubic, 0, 0)
+                new AnimationKey(this._timeScale * 392 - 392, -14, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 481 - 392, -7.2, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -196,15 +196,15 @@ export class IntroAnimation {
         {
             name: "grass3_x" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 541 - 392, -20, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 392 - 392, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 541 - 392, -20, InterpolationKind.Linear)
             ], 30)
         },
         {
             name: "grass3_y" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 392 - 392, -12, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 392, -4, InterpolationKind.Cubic, 0, 0)
+                new AnimationKey(this._timeScale * 392 - 392, -12, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 481 - 392, -4, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -213,18 +213,18 @@ export class IntroAnimation {
         {
             name: "position_y" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 372 - 372, -9, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 540 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 546 - 372, 0.1, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 547 - 372, -9, InterpolationKind.Step)
+                new AnimationKey(this._timeScale * 372 - 372, -9, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 481 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
+                new AnimationKey(this._timeScale * 540 - 372, -0.5, InterpolationKind.Cubic, 0, 0),
+                new AnimationKey(this._timeScale * 546 - 372, 0.1, InterpolationKind.Cubic, 0, 0),
+                new AnimationKey(this._timeScale * 547 - 372, -9, InterpolationKind.Step)
             ], 30)
         },
         {
             name: "rotation_z" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 540 - 372, 0, InterpolationKind.Cubic, 0, 0),
-                AnimationKey.createValueType(this._timeScale * 546 - 372, -Math.PI / 4 / 1.2, InterpolationKind.Cubic, 0, 0)
+                new AnimationKey(this._timeScale * 540 - 372, 0, InterpolationKind.Cubic, 0, 0),
+                new AnimationKey(this._timeScale * 546 - 372, -Math.PI / 4 / 1.2, InterpolationKind.Cubic, 0, 0)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -241,8 +241,8 @@ export class IntroAnimation {
         {
             name: "warp_effect_anim" as const,
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 547, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 558, 12, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 547, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 558, 12, InterpolationKind.Linear)
             ], 30)
         }
     ], undefined, undefined, 30);
@@ -251,8 +251,8 @@ export class IntroAnimation {
         {
             name: "black_screen2_opacity" as const, 
             track: AnimationTrack.createScalarTrack([
-                AnimationKey.createValueType(this._timeScale * 547, 0, InterpolationKind.Linear),
-                AnimationKey.createValueType(this._timeScale * 558, 1, InterpolationKind.Linear)
+                new AnimationKey(this._timeScale * 547, 0, InterpolationKind.Linear),
+                new AnimationKey(this._timeScale * 558, 1, InterpolationKind.Linear)
             ], 30)
         },
         {

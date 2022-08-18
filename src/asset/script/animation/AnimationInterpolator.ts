@@ -1,20 +1,20 @@
 import { Vector2, Vector3, Quaternion } from "three/src/Three";
 
-export interface IAnimationInterpolator<T> {
+export interface IAnimationInterpolator<T, U> {
     readonly tangentTempInstance?: T; //if T is value type, this is undefined
     readonly tempInstance?: T; //if T is value type, this is undefined
     lerp: (start: T, end: T, gradient: number, out?: T) => T;
-    hermite: (start: T, end: T, inTangent: T, outTangent: T, gradient: number, out?: T) => T;
+    cubic: (start: T, end: T, inTangent: U, outTangent: U, gradient: number, out?: T) => T;
     linearTangent: (start: T, end: T, out?: T) => T;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const ScalarInterpolator = new class implements IAnimationInterpolator<number> {
+export const ScalarHermiteInterpolator = new class implements IAnimationInterpolator<number, number> {
     public lerp(start: number, end: number, gradient: number): number {
         return start + (end - start) * gradient;
     }
 
-    public hermite(start: number, end: number, inTangent: number, outTangent: number, gradient: number): number {
+    public cubic(start: number, end: number, inTangent: number, outTangent: number, gradient: number): number {
         const squaredGradient = gradient * gradient;
         const cubedGradient = squaredGradient * gradient;
 
@@ -32,7 +32,7 @@ export const ScalarInterpolator = new class implements IAnimationInterpolator<nu
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const Vector2Interpolator = new class implements IAnimationInterpolator<Vector2> {
+export const Vector2HermiteInterpolator = new class implements IAnimationInterpolator<Vector2, Vector2> {
     public readonly tangentTempInstance = new Vector2();
     public readonly tempInstance = new Vector2();
 
@@ -45,7 +45,7 @@ export const Vector2Interpolator = new class implements IAnimationInterpolator<V
         return out;
     }
 
-    public hermite(
+    public cubic(
         start: Vector2,
         end: Vector2,
         inTangent: Vector2,
@@ -80,7 +80,7 @@ export const Vector2Interpolator = new class implements IAnimationInterpolator<V
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const Vector3Interpolator = new class implements IAnimationInterpolator<Vector3> {
+export const Vector3HermiteInterpolator = new class implements IAnimationInterpolator<Vector3, Vector3> {
     public readonly tangentTempInstance = new Vector3();
     public readonly tempInstance = new Vector3();
 
@@ -94,7 +94,7 @@ export const Vector3Interpolator = new class implements IAnimationInterpolator<V
         return out;
     }
 
-    public hermite(
+    public cubic(
         start: Vector3,
         end: Vector3,
         inTangent: Vector3,
@@ -131,7 +131,7 @@ export const Vector3Interpolator = new class implements IAnimationInterpolator<V
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const QuaternionInterpolator = new class implements IAnimationInterpolator<Quaternion> {
+export const QuaternionHermiteInterpolator = new class implements IAnimationInterpolator<Quaternion, Quaternion> {
     public readonly tangentTempInstance = new Quaternion();
     public readonly tempInstance = new Quaternion();
 
@@ -170,7 +170,7 @@ export const QuaternionInterpolator = new class implements IAnimationInterpolato
         return out;
     }
 
-    public hermite(
+    public cubic(
         start: Quaternion,
         end: Quaternion,
         inTangent: Quaternion,
@@ -196,6 +196,7 @@ export const QuaternionInterpolator = new class implements IAnimationInterpolato
         return out;
     }
 
+    // todo: check this implementation
     public linearTangent(start: Quaternion, end: Quaternion, out?: Quaternion): Quaternion {
         if (!out) out = new Quaternion();
 

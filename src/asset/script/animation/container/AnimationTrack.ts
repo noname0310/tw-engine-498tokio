@@ -1,18 +1,20 @@
 import { Vector2, Vector3, Quaternion } from "three/src/Three";
-import { IAnimationInterpolator, QuaternionInterpolator, ScalarInterpolator, Vector2Interpolator, Vector3Interpolator } from "../AnimationInterpolator";
+import { IAnimationInterpolator, QuaternionHermiteInterpolator, ScalarHermiteInterpolator, Vector2HermiteInterpolator, Vector3HermiteInterpolator } from "../AnimationInterpolator";
 import { AnimationKey } from "../key/AnimationKey";
 import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
 
+type GetTangentType<T> = T extends IAnimationInterpolator<infer _, infer U> ? U : never;
+
 export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void>, IAnimationTrack {
     /**
      * this member must be sorted by frame member
      */
-    private readonly _keys: AnimationKey<T>[];
-    private readonly _interpolator: IAnimationInterpolator<T>;
+    private readonly _keys: AnimationKey<T, any>[];
+    private readonly _interpolator: IAnimationInterpolator<T, any>;
 
-    public constructor(keys: AnimationKey<T>[], interpolator: IAnimationInterpolator<T>, frameRate = 60) {
+    private constructor(keys: AnimationKey<T, any>[], interpolator: IAnimationInterpolator<T, any>, frameRate = 60) {
         AnimationTrack.validateKeys(keys);
         this._keys = keys.slice();
         this._interpolator = interpolator;
@@ -23,7 +25,7 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
         this.frameRate = frameRate;
     }
 
-    private static validateKeys<T>(keys: AnimationKey<T>[]): void {
+    private static validateKeys<T>(keys: AnimationKey<T, any>[]): void {
         let previousFrame = 0;
         for (let i = 0; i < keys.length; i++) {
             if (keys[i].frame < previousFrame) {
@@ -36,11 +38,11 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
         }
     }
 
-    public get keys(): readonly AnimationKey<T>[] {
+    public get keys(): readonly AnimationKey<T, any>[] {
         return this._keys;
     }
 
-    public get interpolator(): IAnimationInterpolator<T> {
+    public get interpolator(): IAnimationInterpolator<T, any> {
         return this._interpolator;
     }
 
@@ -58,19 +60,23 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
         return new AnimationTrackInstance<T>(this, target);
     }
 
-    public static createScalarTrack(keys: AnimationKey<number>[], frameRate?: number): AnimationTrack<number> {
-        return new AnimationTrack(keys, ScalarInterpolator, frameRate);
+    public static createTrack<T, U>(keys: AnimationKey<T, U>[], interpolator: IAnimationInterpolator<T, U>, frameRate?: number): AnimationTrack<T> {
+        return new AnimationTrack<T>(keys, interpolator, frameRate);
     }
 
-    public static createVector2Track(keys: AnimationKey<Vector2>[], frameRate?: number): AnimationTrack<Vector2> {
-        return new AnimationTrack(keys, Vector2Interpolator, frameRate);
+    public static createScalarTrack(keys: AnimationKey<number, GetTangentType<typeof ScalarHermiteInterpolator>>[], frameRate?: number): AnimationTrack<number> {
+        return new AnimationTrack(keys, ScalarHermiteInterpolator, frameRate);
     }
 
-    public static createVector3Track(keys: AnimationKey<Vector3>[], frameRate?: number): AnimationTrack<Vector3> {
-        return new AnimationTrack(keys, Vector3Interpolator, frameRate);
+    public static createVector2Track(keys: AnimationKey<Vector2, GetTangentType<typeof Vector2HermiteInterpolator>>[], frameRate?: number): AnimationTrack<Vector2> {
+        return new AnimationTrack(keys, Vector2HermiteInterpolator, frameRate);
     }
 
-    public static createQuaternionTrack(keys: AnimationKey<Quaternion>[], frameRate?: number): AnimationTrack<Quaternion> {
-        return new AnimationTrack(keys, QuaternionInterpolator, frameRate);
+    public static createVector3Track(keys: AnimationKey<Vector3, GetTangentType<typeof Vector3HermiteInterpolator>>[], frameRate?: number): AnimationTrack<Vector3> {
+        return new AnimationTrack(keys, Vector3HermiteInterpolator, frameRate);
+    }
+
+    public static createQuaternionTrack(keys: AnimationKey<Quaternion, GetTangentType<typeof QuaternionHermiteInterpolator>>[], frameRate?: number): AnimationTrack<Quaternion> {
+        return new AnimationTrack(keys, QuaternionHermiteInterpolator, frameRate);
     }
 }

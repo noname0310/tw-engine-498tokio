@@ -114,7 +114,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
                 inTangent = endKey.inTangent!;
             }
         }
-        const value = interpolator.hermite(startKey.value, endKey.value, outTangent, inTangent, gradient, interpolator.tempInstance);
+        const value = interpolator.cubic(startKey.value, endKey.value, outTangent, inTangent, gradient, interpolator.tempInstance);
         this._targetSetFunction(value);
     }
 }

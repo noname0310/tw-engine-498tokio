@@ -6,34 +6,47 @@ export enum InterpolationKind {
     Step
 }
 
-export class AnimationKey<T> implements IAnimationKey {
+export type Cloneable = {
+    clone(): any;
+}
+
+export class AnimationKey<T, U = any> implements IAnimationKey {
     public readonly value: T;
     public readonly frame: number;
-    public readonly inTangent?: T;
-    public readonly outTangent?: T;
+    public readonly inTangent?: U;
+    public readonly outTangent?: U;
     public readonly interpolation: InterpolationKind;
 
-    private constructor(frame: number, value: T, interpolation: InterpolationKind, inTangent?: T, outTangent?: T) {
-        this.value = value;
+    public constructor(frame: number, value: T & Cloneable, interpolation: InterpolationKind.Linear|InterpolationKind.Step);
+
+    public constructor(frame: number, value: T & Cloneable, interpolation: InterpolationKind.Cubic, inTangent: U & Cloneable, outTangent: U & Cloneable);
+
+    public constructor(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: U & Cloneable, outTangent: U & Cloneable);
+
+    public constructor(frame: number, value: T, interpolation: InterpolationKind.Linear|InterpolationKind.Step);
+
+    public constructor(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: U, outTangent: U);
+
+    /**
+     * create a key with a value and a frame
+     * 
+     * if type of "value" implements "clone" method, then they will be cloned
+     * if type of "inTangent", "outTangent" implements "clone" method, then they will be cloned
+     * @param frame 
+     * @param value 
+     * @param interpolation 
+     * @param inTangent 
+     * @param outTangent 
+     */
+    public constructor(frame: number, value: T, interpolation: InterpolationKind, inTangent?: U, outTangent?: U) {
+        this.value = (value as unknown as Cloneable).clone ? (value as unknown as Cloneable).clone() as T : value;
         this.frame = frame;
         this.interpolation = interpolation;
-        this.inTangent = inTangent;
-        this.outTangent = outTangent;
-    }
-
-    public static createRefType<T extends { clone(): T }>(frame: number, value: T, interpolation: InterpolationKind.Linear|InterpolationKind.Step): AnimationKey<T>;
-
-    public static createRefType<T extends { clone(): T }>(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: T, outTangent: T): AnimationKey<T>;
-
-    public static createRefType<T extends { clone(): T }>(frame: number, value: T, interpolation: InterpolationKind, inTangent?: T, outTangent?: T): AnimationKey<T> {
-        return new AnimationKey<T>(frame, value.clone(), interpolation, inTangent?.clone(), outTangent?.clone());
-    }
-
-    public static createValueType<T>(frame: number, value: T, interpolation: InterpolationKind.Linear|InterpolationKind.Step): AnimationKey<T>;
-
-    public static createValueType<T>(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: T, outTangent: T): AnimationKey<T>;
-
-    public static createValueType<T>(frame: number, value: T, interpolation: InterpolationKind, inTangent?: T, outTangent?: T): AnimationKey<T> {
-        return new AnimationKey<T>(frame, value, interpolation, inTangent, outTangent);
+        if (inTangent) {
+            this.inTangent = (inTangent as unknown as Cloneable).clone ? (inTangent as unknown as Cloneable).clone() as U : inTangent;
+        }
+        if (outTangent) {
+            this.outTangent = (outTangent as unknown as Cloneable).clone ? (outTangent as unknown as Cloneable).clone() as U : outTangent;
+        }
     }
 }

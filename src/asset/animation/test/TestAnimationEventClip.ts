@@ -30,10 +30,10 @@ export const testAnimationEventClip2 = new AnimationClip([
     {
         name: "value_track1" as const,
         track: AnimationTrack.createVector3Track([
-            AnimationKey.createRefType(0, new Vector3(0, 0, 0), InterpolationKind.Linear),
-            AnimationKey.createRefType(100, new Vector3(1, 0, 0), InterpolationKind.Linear),
-            AnimationKey.createRefType(200, new Vector3(0, 1, 0), InterpolationKind.Linear),
-            AnimationKey.createRefType(300, new Vector3(0, 0, 1), InterpolationKind.Linear),
+            new AnimationKey(0, new Vector3(0, 0, 0), InterpolationKind.Linear),
+            new AnimationKey(100, new Vector3(1, 0, 0), InterpolationKind.Linear),
+            new AnimationKey(200, new Vector3(0, 1, 0), InterpolationKind.Linear),
+            new AnimationKey(300, new Vector3(0, 0, 1), InterpolationKind.Linear),
         ])
     },
 ]);

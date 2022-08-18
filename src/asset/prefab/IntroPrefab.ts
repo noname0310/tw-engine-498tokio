@@ -276,22 +276,22 @@ export class IntroPrefab extends Prefab {
                         {
                             name: "center" as const,
                             track: AnimationTrack.createScalarTrack([
-                                AnimationKey.createValueType(0, 0.8, InterpolationKind.Linear),
-                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                                new AnimationKey(0, 0.8, InterpolationKind.Linear),
+                                new AnimationKey(12, 0, InterpolationKind.Linear)
                             ])
                         },
                         {
                             name: "side" as const,
                             track: AnimationTrack.createScalarTrack([
-                                AnimationKey.createValueType(0, 1, InterpolationKind.Linear),
-                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                                new AnimationKey(0, 1, InterpolationKind.Linear),
+                                new AnimationKey(12, 0, InterpolationKind.Linear)
                             ])
                         },
                         {
                             name: "glow_opacity" as const,
                             track: AnimationTrack.createScalarTrack([
-                                AnimationKey.createValueType(0, 0.9, InterpolationKind.Linear),
-                                AnimationKey.createValueType(12, 0, InterpolationKind.Linear)
+                                new AnimationKey(0, 0.9, InterpolationKind.Linear),
+                                new AnimationKey(12, 0, InterpolationKind.Linear)
                             ])
                         }
                     ]).createInstance(new AnimationClipBindInfo([

@@ -37,6 +37,6 @@ export type { IAnimationKey } from "./script/animation/key/IAnimationKey";
 export { AnimationClipBindInfo } from "./script/animation/AnimationClipBindInfo";
 
 export type { IAnimationInterpolator } from "./script/animation/AnimationInterpolator";
-export { ScalarInterpolator, Vector2Interpolator, Vector3Interpolator, QuaternionInterpolator } from "./script/animation/AnimationInterpolator";
+export { ScalarHermiteInterpolator as ScalarInterpolator, Vector2HermiteInterpolator as Vector2Interpolator, Vector3HermiteInterpolator as Vector3Interpolator, QuaternionHermiteInterpolator as QuaternionInterpolator } from "./script/animation/AnimationInterpolator";
 
 export { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
