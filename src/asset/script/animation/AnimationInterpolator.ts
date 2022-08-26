@@ -1,15 +1,16 @@
-import { Vector2, Vector3, Quaternion } from "three/src/Three";
+import { Vector2, Vector3, Quaternion, MathUtils } from "three/src/Three";
 
 export interface IAnimationInterpolator<T, U> {
-    readonly tangentTempInstance?: T; //if T is value type, this is undefined
     readonly tempInstance?: T; //if T is value type, this is undefined
+    readonly linearTangent: U;
     lerp: (start: T, end: T, gradient: number, out?: T) => T;
     cubic: (start: T, end: T, inTangent: U, outTangent: U, gradient: number, out?: T) => T;
-    linearTangent: (start: T, end: T, out?: T) => T;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const ScalarHermiteInterpolator = new class implements IAnimationInterpolator<number, number> {
+    public readonly linearTangent = 45 * MathUtils.DEG2RAD;
+
     public lerp(start: number, end: number, gradient: number): number {
         return start + (end - start) * gradient;
     }
@@ -23,18 +24,15 @@ export const ScalarHermiteInterpolator = new class implements IAnimationInterpol
         const part3 = cubedGradient - 2.0 * squaredGradient + gradient;
         const part4 = cubedGradient - squaredGradient;
 
-        return start * part1 + end * part2 + inTangent * part3 + outTangent * part4;
-    }
-
-    public linearTangent(start: number, end: number): number {
-        return end - start;
+        const hermiteGradient = 0 * part1 + 1 * part2 + inTangent * part3 + outTangent * part4;
+        return start + (end - start) * hermiteGradient;
     }
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Vector2HermiteInterpolator = new class implements IAnimationInterpolator<Vector2, Vector2> {
-    public readonly tangentTempInstance = new Vector2();
     public readonly tempInstance = new Vector2();
+    public readonly linearTangent = new Vector2(45 * MathUtils.DEG2RAD, 45 * MathUtils.DEG2RAD);
 
     public lerp(start: Vector2, end: Vector2, gradient: number, out?: Vector2): Vector2 {
         if (!out) out = new Vector2();
@@ -63,26 +61,20 @@ export const Vector2HermiteInterpolator = new class implements IAnimationInterpo
         const part3 = cubedGradient - 2.0 * squaredGradient + gradient;
         const part4 = cubedGradient - squaredGradient;
 
-        out.x = start.x * part1 + end.x * part2 + inTangent.x * part3 + outTangent.x * part4;
-        out.y = start.y * part1 + end.y * part2 + inTangent.y * part3 + outTangent.y * part4;
+        out.x = 0 * part1 + 1 * part2 + inTangent.x * part3 + outTangent.x * part4;
+        out.y = 0 * part1 + 1 * part2 + inTangent.y * part3 + outTangent.y * part4;
 
-        return out;
-    }
+        out.x = start.x + (end.x - start.x) * out.x;
+        out.y = start.y + (end.y - start.y) * out.y;
 
-    public linearTangent(start: Vector2, end: Vector2, out?: Vector2): Vector2 {
-        if (!out) out = new Vector2();
-
-        out.x = end.x - start.x;
-        out.y = end.y - start.y;
-        
         return out;
     }
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Vector3HermiteInterpolator = new class implements IAnimationInterpolator<Vector3, Vector3> {
-    public readonly tangentTempInstance = new Vector3();
     public readonly tempInstance = new Vector3();
+    public readonly linearTangent = new Vector3(45 * MathUtils.DEG2RAD, 45 * MathUtils.DEG2RAD, 45 * MathUtils.DEG2RAD);
 
     public lerp(start: Vector3, end: Vector3, gradient: number, out?: Vector3): Vector3 {
         if (!out) out = new Vector3();
@@ -112,28 +104,22 @@ export const Vector3HermiteInterpolator = new class implements IAnimationInterpo
         const part3 = cubedGradient - 2.0 * squaredGradient + gradient;
         const part4 = cubedGradient - squaredGradient;
 
-        out.x = start.x * part1 + end.x * part2 + inTangent.x * part3 + outTangent.x * part4;
-        out.y = start.y * part1 + end.y * part2 + inTangent.y * part3 + outTangent.y * part4;
-        out.z = start.z * part1 + end.z * part2 + inTangent.z * part3 + outTangent.z * part4;
+        out.x = 0 * part1 + 1 * part2 + inTangent.x * part3 + outTangent.x * part4;
+        out.y = 0 * part1 + 1 * part2 + inTangent.y * part3 + outTangent.y * part4;
+        out.z = 0 * part1 + 1 * part2 + inTangent.z * part3 + outTangent.z * part4;
 
-        return out;
-    }
-
-    public linearTangent(start: Vector3, end: Vector3, out?: Vector3): Vector3 {
-        if (!out) out = new Vector3();
-
-        out.x = end.x - start.x;
-        out.y = end.y - start.y;
-        out.z = end.z - start.z;
+        out.x = start.x + (end.x - start.x) * out.x;
+        out.y = start.y + (end.y - start.y) * out.y;
+        out.z = start.z + (end.z - start.z) * out.z;
 
         return out;
     }
 };
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const QuaternionHermiteInterpolator = new class implements IAnimationInterpolator<Quaternion, Quaternion> {
-    public readonly tangentTempInstance = new Quaternion();
+export const QuaternionHermiteInterpolator = new class implements IAnimationInterpolator<Quaternion, number> {
     public readonly tempInstance = new Quaternion();
+    public readonly linearTangent = 45 * MathUtils.DEG2RAD;
 
     //slerp interpolation
     public lerp(start: Quaternion, end: Quaternion, gradient: number, out?: Quaternion): Quaternion {
@@ -173,8 +159,8 @@ export const QuaternionHermiteInterpolator = new class implements IAnimationInte
     public cubic(
         start: Quaternion,
         end: Quaternion,
-        inTangent: Quaternion,
-        outTangent: Quaternion,
+        inTangent: number,
+        outTangent: number,
         gradient: number,
         out?: Quaternion
     ): Quaternion {
@@ -188,23 +174,7 @@ export const QuaternionHermiteInterpolator = new class implements IAnimationInte
         const part3 = cubedGradient - 2.0 * squaredGradient + gradient;
         const part4 = cubedGradient - squaredGradient;
 
-        out.w = start.w * part1 + end.w * part2 + inTangent.w * part3 + outTangent.w * part4;
-        out.x = start.x * part1 + end.x * part2 + inTangent.x * part3 + outTangent.x * part4;
-        out.y = start.y * part1 + end.y * part2 + inTangent.y * part3 + outTangent.y * part4;
-        out.z = start.z * part1 + end.z * part2 + inTangent.z * part3 + outTangent.z * part4;
-        out.normalize();
-        return out;
-    }
-
-    // todo: check this implementation
-    public linearTangent(start: Quaternion, end: Quaternion, out?: Quaternion): Quaternion {
-        if (!out) out = new Quaternion();
-
-        out.x = end.x - start.x;
-        out.y = end.y - start.y;
-        out.z = end.z - start.z;
-        out.w = end.w - start.w;
-
-        return out;
+        const hermiteGradient = 0 * part1 + 1 * part2 + inTangent * part3 + outTangent * part4;
+        return this.lerp(start, end, hermiteGradient, out);
     }
 };

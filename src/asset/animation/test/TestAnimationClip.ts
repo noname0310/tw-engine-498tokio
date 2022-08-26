@@ -5,7 +5,7 @@ import { AnimationTrack } from "../../script/animation/container/AnimationTrack"
 
 export const testAnimationClip1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
-    const zeroQuaternion = new Quaternion(0, 0, 0, 0);
+    const zeroScalar = 0;
     const zAxis = new Vector3(0, 0, 1);
     let acc = 0;
     return new AnimationClip([
@@ -35,12 +35,12 @@ export const testAnimationClip1 = (() => {
         {
             name: "rotation" as const,
             track: AnimationTrack.createQuaternionTrack([
-                new AnimationKey(acc = 0.00, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
-                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroQuaternion, zeroQuaternion),
+                new AnimationKey(acc = 0.00, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroScalar, zeroScalar),
+                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroScalar, zeroScalar),
+                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroScalar, zeroScalar),
+                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroScalar, zeroScalar),
+                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Cubic, zeroScalar, zeroScalar),
+                new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Cubic, zeroScalar, zeroScalar),
                 new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Linear),

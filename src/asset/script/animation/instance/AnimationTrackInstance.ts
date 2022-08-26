@@ -96,20 +96,21 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
             return;
         }
 
+        //cubic interpolation
         let outTangent: T;
         let inTangent: T;
-        if (startKey.interpolation !== InterpolationKind.Cubic) {
-            const linearTangent = interpolator.linearTangent(startKey.value, endKey.value, interpolator.tangentTempInstance);
+        if (startKey.outTangent === undefined) {
+            const linearTangent = interpolator.linearTangent;
             outTangent = linearTangent;
-            if (endKey.interpolation !== InterpolationKind.Cubic) {
+            if (endKey.inTangent === undefined) {
                 inTangent = linearTangent;
             } else {
                 inTangent = endKey.inTangent!;
             }
         } else {
             outTangent = startKey.outTangent!;
-            if (endKey.interpolation !== InterpolationKind.Cubic) {
-                inTangent = interpolator.linearTangent(startKey.value, endKey.value, interpolator.tangentTempInstance);
+            if (endKey.inTangent === undefined) {
+                inTangent = interpolator.linearTangent;
             } else {
                 inTangent = endKey.inTangent!;
             }

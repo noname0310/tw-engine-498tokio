@@ -17,16 +17,6 @@ export class AnimationKey<T, U = any> implements IAnimationKey {
     public readonly outTangent?: U;
     public readonly interpolation: InterpolationKind;
 
-    public constructor(frame: number, value: T & Cloneable, interpolation: InterpolationKind.Linear|InterpolationKind.Step);
-
-    public constructor(frame: number, value: T & Cloneable, interpolation: InterpolationKind.Cubic, inTangent: U & Cloneable, outTangent: U & Cloneable);
-
-    public constructor(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: U & Cloneable, outTangent: U & Cloneable);
-
-    public constructor(frame: number, value: T, interpolation: InterpolationKind.Linear|InterpolationKind.Step);
-
-    public constructor(frame: number, value: T, interpolation: InterpolationKind.Cubic, inTangent: U, outTangent: U);
-
     /**
      * create a key with a value and a frame
      * 
