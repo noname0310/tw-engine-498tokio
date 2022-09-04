@@ -86,10 +86,11 @@ export class AudioPlayer extends Component implements IAnimationClock {
                 oldSource.stop();
                 context.suspend();
                 this._onStoppedEvent.invoke();
-                this._state = PlayerState.Waiting;
             }
             oldSource.disconnect();
         }
+        
+        this._state = PlayerState.Waiting;
 
         const source = this._source = context.createBufferSource();
         source.onended = this.onEnded;
