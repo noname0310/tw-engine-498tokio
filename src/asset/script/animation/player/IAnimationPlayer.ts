@@ -12,7 +12,7 @@ export interface IAnimationPlayer {
 
     get onAnimationEnd(): IEventContainer<() => void>;
 
-    get onAnimationChanged(): IEventContainer<(animationContainer: IAnimationContainer<unknown>) => void>;
+    get onAnimationChanged(): IEventContainer<(animationContainer: IAnimationContainer<unknown>|null) => void>;
 
     play(): void;
 

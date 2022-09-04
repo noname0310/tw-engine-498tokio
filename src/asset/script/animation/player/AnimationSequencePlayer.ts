@@ -17,7 +17,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
-    private readonly _onAnimationChangedEvent = new EventContainer<(animationSequence: AnimationSequence<any, any>) => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationSequence: AnimationSequence<any, any>|null) => void>();
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
         return this._onAnimationProcessEvent;
@@ -35,7 +35,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         return this._onAnimationEndEvent;
     }
 
-    public get onAnimationChanged(): IEventContainer<(animationSequence: AnimationSequence<any, any>) => void> {
+    public get onAnimationChanged(): IEventContainer<(animationSequence: AnimationSequence<any, any>|null) => void> {
         return this._onAnimationChangedEvent;
     }
 
@@ -201,6 +201,13 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         }
 
         this._onAnimationChangedEvent.invoke(animationSequence);
+    }
+
+    public clearAnimation(): void {
+        this._animationSequence = null;
+        this._bindInfo = null;
+        this._animationSequenceInstace = null;
+        this._onAnimationChangedEvent.invoke(null);
     }
 
     public get isPlaying(): boolean {

@@ -17,7 +17,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
-    private readonly _onAnimationChangedEvent = new EventContainer<(animationTrack: AnimationTrack<T>) => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationTrack: AnimationTrack<T>|null) => void>();
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
         return this._onAnimationProcessEvent;
@@ -35,7 +35,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         return this._onAnimationEndEvent;
     }
 
-    public get onAnimationChanged(): IEventContainer<(animationTrack: AnimationTrack<T>) => void> {
+    public get onAnimationChanged(): IEventContainer<(animationTrack: AnimationTrack<T>|null) => void> {
         return this._onAnimationChangedEvent;
     }
 
@@ -185,6 +185,8 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         if (!animationTrack) return;
         if (!this._animationTarget || !this._animationTrackInstace) return;
         this._animationTrackInstace = animationTrack.createInstance(this._animationTarget);
+
+        this._onAnimationChangedEvent.invoke(animationTrack);
     }
 
     public get animationContainer(): AnimationTrack<T>|null {
@@ -195,6 +197,11 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         this._animationTarget = targetSetFunction;
         if (!this._animationTrackInstace) return;
         this._animationTrackInstace.targetSetFunction = targetSetFunction;
+    }
+
+    public clearAnimationTarget(): void {
+        this._animationTarget = null;
+        this._animationTrackInstace = null;
     }
 
     public get isPlaying(): boolean {

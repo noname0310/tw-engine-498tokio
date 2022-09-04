@@ -35,7 +35,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
     private readonly _onAnimationStartEvent = new EventContainer<() => void>();
     private readonly _onAnimationPausedEvent = new EventContainer<() => void>();
     private readonly _onAnimationEndEvent = new EventContainer<() => void>();
-    private readonly _onAnimationChangedEvent = new EventContainer<(animationClip: AnimationClip<any, any>) => void>();
+    private readonly _onAnimationChangedEvent = new EventContainer<(animationClip: AnimationClip<any, any>|null) => void>();
     private _animationClock: IAnimationClock|null = null;
 
     public get onAnimationProcess(): IEventContainer<(frameTime: number) => void> {
@@ -54,7 +54,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         return this._onAnimationEndEvent;
     }
 
-    public get onAnimationChanged(): IEventContainer<(animationClip: AnimationClip<any, any>) => void> {
+    public get onAnimationChanged(): IEventContainer<(animationClip: AnimationClip<any, any>|null) => void> {
         return this._onAnimationChangedEvent;
     }
 
@@ -220,6 +220,13 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         }
 
         this._onAnimationChangedEvent.invoke(animationClip);
+    }
+
+    public clearAnimation(): void {
+        this._animationClip = null;
+        this._bindInfo = null;
+        this._animationClipInstace = null;
+        this._onAnimationChangedEvent.invoke(null);
     }
 
     public get isPlaying(): boolean {

@@ -232,9 +232,14 @@ export class AnimationControl extends Component {
         this._playButton.textContent = "Play";
     };
 
-    private readonly onAnimationChanged = (animationContainer: IAnimationContainer<unknown>): void => {
+    private readonly onAnimationChanged = (animationContainer: IAnimationContainer<unknown>|null): void => {
         if (!this._slider) return;
-        this._slider.min = animationContainer.startFrame.toString();
-        this._slider.max = animationContainer.endFrame.toString();
+        if (!animationContainer) {
+            this._slider.min = "0";
+            this._slider.max = "0";
+        } else {
+            this._slider.min = animationContainer.startFrame.toString();
+            this._slider.max = animationContainer.endFrame.toString();
+        }
     };
 }
