@@ -70,7 +70,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     }
 
     public onDisable(): void {
-        this.stop();
+        this.pause();
     }
 
     //#region load methods
