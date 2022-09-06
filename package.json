@@ -20,8 +20,8 @@
     },
     "homepage": "https://github.com/noname0310/tw-engine-498tokio#readme",
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^5.36.1",
-        "@typescript-eslint/parser": "^5.36.1",
+        "@typescript-eslint/eslint-plugin": "^5.36.2",
+        "@typescript-eslint/parser": "^5.36.2",
         "eslint": "^8.23.0",
         "eslint-webpack-plugin": "^3.2.0",
         "file-loader": "^6.2.0",
