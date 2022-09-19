@@ -24,6 +24,8 @@ export class Bootstrapper extends BaseBootstrapper {
 
         const introObjects = new PrefabRef<IntroObjects>();
 
+        const textRenderer = new PrefabRef<CssTextRenderer>();
+        const loadingText = new PrefabRef<LoadingText>();
         const audioPlayer = new PrefabRef<AudioPlayer>();
         const animationPlayer = new PrefabRef<AnimationSequencePlayer>();
         
@@ -43,8 +45,8 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(AudioPlayer, c => {
                     c.asyncSetAudioFromUrl(Audio498Tokio, () => {
                         if (!c.exists) return;
-                        c.gameObject.getComponent(CssTextRenderer)!.destroy();
-                        c.gameObject.getComponent(LoadingText)!.destroy();
+                        textRenderer.ref!.destroy();
+                        loadingText.ref!.destroy();
                     });
                 })
                 .withComponent(ScreenOverlay, c => {
@@ -52,6 +54,8 @@ export class Bootstrapper extends BaseBootstrapper {
                     div.style.boxShadow = "0 0 20px rgba(0,0,0,0.9) inset";
                     c.cssHtmlElementRenderer!.element = div;
                 })
+                .getComponent(CssTextRenderer, textRenderer)
+                .getComponent(LoadingText, loadingText)
                 .getComponent(AudioPlayer, audioPlayer))
 
             .withChild(instantiater.buildPrefab("intro", IntroPrefab)
