@@ -3,6 +3,18 @@ import { AnimationClipBindData, AnimationClipBindInfo } from "../AnimationClipBi
 import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
 
+export class AnimationClipBindResult {
+    public bindFailTrackNames: readonly string[];
+
+    public constructor(bindFailTrackNames: readonly string[]) {
+        this.bindFailTrackNames = bindFailTrackNames;
+    }
+
+    public get isBindSuccess(): boolean {
+        return this.bindFailTrackNames.length === 0;
+    }
+}
+
 export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationInstance {
     private _bindInfo: AnimationClipBindInfo<U>;
 
@@ -32,9 +44,27 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
             if (track === null) {
                 throw new Error(`AnimationClipInstance: track not found: ${bindData[i].trackName}`);
             }
-            this._animationTrackInstances.push(track.createInstance(bindData[i].target as any) as IAnimationTrackInstance);
+            this._animationTrackInstances.push(track.createInstance(bindData[i].target) as IAnimationTrackInstance);
         }
         this._bindInfo = bindInfo;
+    }
+
+    public tryBind(bindInfo: AnimationClipBindInfo<U>): AnimationClipBindResult {
+        const bindFailTrackNames: string[] = [];
+
+        this._animationTrackInstances.length = 0;
+        const bindData = bindInfo.data as AnimationClipBindData;
+        for (let i = 0; i < bindData.length; ++i) {
+            const track = this._animationClip.getTrackFromName(bindData[i].trackName);
+            if (track === null) {
+                bindFailTrackNames.push(bindData[i].trackName);
+                continue;
+            }
+            this._animationTrackInstances.push(track.createInstance(bindData[i].target) as IAnimationTrackInstance);
+        }
+        this._bindInfo = bindInfo;
+
+        return new AnimationClipBindResult(bindFailTrackNames);
     }
 
     public frameIndexHint(frameIndex: number): void {
