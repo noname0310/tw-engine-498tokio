@@ -1,3 +1,10 @@
+//bind
+export { AnimationClipBindInfo } from "./script/animation/bind/AnimationClipBindInfo";
+export { AnimationClipBindResult } from "./script/animation/bind/AnimationClipBindResult";
+export { AnimationSequenceBindResult } from "./script/animation/bind/AnimationSequenceBindResult";
+export { BindOk } from "./script/animation/bind/BindOk";
+export type { IBindResult } from "./script/animation/bind/IBindResult";
+
 //container
 export { AnimationClip } from "./script/animation/container/AnimationClip";
 export type { TrackData, InferedAnimationClipBindData } from "./script/animation/container/AnimationClip";
@@ -34,7 +41,6 @@ export { InterpolationKind, AnimationKey } from "./script/animation/key/Animatio
 export type { IAnimationKey } from "./script/animation/key/IAnimationKey";
 
 //other
-export { AnimationClipBindInfo } from "./script/animation/AnimationClipBindInfo";
 
 export type { IAnimationInterpolator } from "./script/animation/AnimationInterpolator";
 export { ScalarHermiteInterpolator as ScalarInterpolator, Vector2HermiteInterpolator as Vector2Interpolator, Vector3HermiteInterpolator as Vector3Interpolator, QuaternionHermiteInterpolator as QuaternionInterpolator } from "./script/animation/AnimationInterpolator";

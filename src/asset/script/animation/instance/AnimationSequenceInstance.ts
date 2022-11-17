@@ -1,3 +1,5 @@
+import { AnimationSequenceBindResult } from "../bind/AnimationSequenceBindResult";
+import { IBindResult } from "../bind/IBindResult";
 import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "../container/AnimationSequence";
 import { IAnimationInstance } from "./IAniamtionInstance";
 
@@ -24,7 +26,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
     private _currentDeActivationFrameIndex: number;
     private readonly _runningAnimations: Set<RangedAnimationInstance>;
 
-    public constructor(animationSequence: AnimationSequence<T, U>, bindInfo: SequenceBindInfo) {
+    private constructor(animationSequence: AnimationSequence<T, U>) {
         this._bindInfo = null!;
         this._animationSequence = animationSequence;
 
@@ -35,8 +37,24 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         this._currentDeActivationFrameIndex = -1;
         
         this._runningAnimations = new Set<RangedAnimationInstance>();
-        
-        this.bindInfo = bindInfo;
+    }
+
+    public static create<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>>(
+        animationSequence: AnimationSequence<T, U>,
+        bindInfo: SequenceBindInfo
+    ): AnimationSequenceInstance<T, U> {
+        const animationSequenceInstance = new AnimationSequenceInstance(animationSequence);
+        animationSequenceInstance.bindInfo = bindInfo;
+        return animationSequenceInstance;
+    }
+
+    public static tryCreate<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>>(
+        animationSequence: AnimationSequence<T, U>,
+        bindInfo: SequenceBindInfo
+    ): [AnimationSequenceInstance<T, U>, AnimationSequenceBindResult] {
+        const animationSequenceInstance = new AnimationSequenceInstance(animationSequence);
+        const animationSequenceBindResult = animationSequenceInstance.tryBind(bindInfo, true);
+        return [animationSequenceInstance, animationSequenceBindResult];
     }
 
     public get animationContainer(): AnimationSequence<T, U> {
@@ -48,22 +66,46 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
     }
 
     public set bindInfo(bindInfo: SequenceBindInfo) {
+        this.tryBind(bindInfo, false);
+    }
+
+    public tryBind(bindInfo: SequenceBindInfo, allowFail = true): typeof allowFail extends true ? void : AnimationSequenceBindResult {
         this._bindInfo = bindInfo.slice();
         
         const frameRate = this._animationSequence.frameRate;
 
         const animationContainerInstances: RangedAnimationInstance[] = [];
         const slicedBindInfo = this._bindInfo;
-        for (let i = 0; i < slicedBindInfo.length; ++i) {
-            const animationContainer = this._animationSequence.animationContainers[i];
-            const animationContainerInstance = animationContainer.animation.createInstance(slicedBindInfo[i]);
-            const frameRateRatio = frameRate / animationContainer.animation.frameRate;
-            animationContainerInstances.push({
-                offset: animationContainer.offset,
-                start: animationContainer.startFrame ?? (animationContainer.animation.startFrame * frameRateRatio),
-                end: animationContainer.endFrame ?? (animationContainer.animation.endFrame * frameRateRatio),
-                animation: animationContainerInstance
-            });
+
+        let animationSequenceBindResult: AnimationSequenceBindResult|undefined = undefined;
+
+        if (allowFail === true) {
+            const results: IBindResult[] = [];
+            for (let i = 0; i < slicedBindInfo.length; ++i) {
+                const animationContainer = this._animationSequence.animationContainers[i];
+                const [animationContainerInstance, bindResult] = animationContainer.animation.tryCreateInstance(slicedBindInfo[i]);
+                results.push(bindResult);
+                const frameRateRatio = frameRate / animationContainer.animation.frameRate;
+                animationContainerInstances.push({
+                    offset: animationContainer.offset,
+                    start: animationContainer.startFrame ?? (animationContainer.animation.startFrame * frameRateRatio),
+                    end: animationContainer.endFrame ?? (animationContainer.animation.endFrame * frameRateRatio),
+                    animation: animationContainerInstance
+                });
+            }
+            animationSequenceBindResult = new AnimationSequenceBindResult(results);
+        } else {
+            for (let i = 0; i < slicedBindInfo.length; ++i) {
+                const animationContainer = this._animationSequence.animationContainers[i];
+                const animationContainerInstance = animationContainer.animation.createInstance(slicedBindInfo[i]);
+                const frameRateRatio = frameRate / animationContainer.animation.frameRate;
+                animationContainerInstances.push({
+                    offset: animationContainer.offset,
+                    start: animationContainer.startFrame ?? (animationContainer.animation.startFrame * frameRateRatio),
+                    end: animationContainer.endFrame ?? (animationContainer.animation.endFrame * frameRateRatio),
+                    animation: animationContainerInstance
+                });
+            }
         }
         
         animationContainerInstances.sort((a, b) => (a.offset + a.start) - (b.offset + b.start));
@@ -94,6 +136,8 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         this._currentDeActivationFrameIndex = -1;
 
         this._runningAnimations.clear();
+
+        return animationSequenceBindResult as AnimationSequenceBindResult;
     }
 
     public frameIndexHint(frameIndex: number): void {

@@ -1,19 +1,8 @@
 import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
-import { AnimationClipBindData, AnimationClipBindInfo } from "../AnimationClipBindInfo";
+import { AnimationClipBindData, AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
 import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
-
-export class AnimationClipBindResult {
-    public bindFailTrackNames: readonly string[];
-
-    public constructor(bindFailTrackNames: readonly string[]) {
-        this.bindFailTrackNames = bindFailTrackNames;
-    }
-
-    public get isBindSuccess(): boolean {
-        return this.bindFailTrackNames.length === 0;
-    }
-}
+import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
 
 export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationInstance {
     private _bindInfo: AnimationClipBindInfo<U>;
@@ -21,11 +10,28 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
     private readonly _animationClip: AnimationClip<T, U>;
     private _animationTrackInstances: IAnimationTrackInstance[];
 
-    public constructor(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
+    private constructor(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
         this._bindInfo = bindInfo;
         this._animationClip = animationClip;
         this._animationTrackInstances = [];
-        this.bindInfo = bindInfo;
+    }
+
+    public static create<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>>(
+        animationClip: AnimationClip<T, U>,
+        bindInfo: AnimationClipBindInfo<U>
+    ): AnimationClipInstance<T, U> {
+        const animationClipInstance = new AnimationClipInstance(animationClip, bindInfo);
+        animationClipInstance.bindInfo = bindInfo;
+        return animationClipInstance;
+    }
+
+    public static tryCreate<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>>(
+        animationClip: AnimationClip<T, U>,
+        bindInfo: AnimationClipBindInfo<U>
+    ): [AnimationClipInstance<T, U>, AnimationClipBindResult] {
+        const animationClipInstance = new AnimationClipInstance(animationClip, bindInfo);
+        const bindResult = animationClipInstance.tryBind(bindInfo);
+        return [animationClipInstance, bindResult];
     }
 
     public get animationContainer(): AnimationClip<T, U> {

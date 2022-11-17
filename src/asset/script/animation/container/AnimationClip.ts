@@ -1,9 +1,10 @@
 import { AnimationClipInstance } from "../instance/AnimationClipInstance";
 import { AnimationTrack } from "./AnimationTrack";
-import { AnimationClipBindInfo, AnimationClipBindItem } from "../AnimationClipBindInfo";
+import { AnimationClipBindInfo, AnimationClipBindItem } from "../bind/AnimationClipBindInfo";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
 import { AnimationEventTrack } from "./AnimationEventTrack";
+import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
 
 type TrackItem<TrackName extends string, Track extends IAnimationTrack> = { name: TrackName, track: Track };
 
@@ -59,7 +60,7 @@ type testAnimationEventClip1TypeTrackData = [{
 }]
 */
 
-export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationContainer<AnimationClipBindInfo<U>> {
+export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationContainer<AnimationClipBindInfo<U>, AnimationClipBindResult> {
     public readonly tracks: IAnimationTrack[];
     public readonly startFrame: number;
     public readonly endFrame: number;
@@ -120,6 +121,10 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
     }
 
     public createInstance(bindInfo: AnimationClipBindInfo<U>): AnimationClipInstance<T, U> {
-        return new AnimationClipInstance(this, bindInfo);
+        return AnimationClipInstance.create(this, bindInfo);
+    }
+
+    public tryCreateInstance(bindInfo: AnimationClipBindInfo<U>): [AnimationClipInstance<T, U>, AnimationClipBindResult] {
+        return AnimationClipInstance.tryCreate(this, bindInfo);
     }
 }

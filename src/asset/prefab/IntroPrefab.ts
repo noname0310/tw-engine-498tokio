@@ -27,7 +27,7 @@ import { RuntimeAimationContainer } from "../script/RuntimeAnimationContainer";
 import { AnimationClip } from "../script/animation/container/AnimationClip";
 import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
-import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
+import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
 import { NumberStringPool } from "../script/NumberStringPool";
 import { ParticleEmitter } from "../script/render/ParticleEmitter";
 

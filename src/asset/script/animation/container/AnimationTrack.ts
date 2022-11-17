@@ -4,6 +4,8 @@ import { AnimationKey } from "../key/AnimationKey";
 import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
+import { IAnimationInstance } from "../instance/IAniamtionInstance";
+import { BindOk } from "../bind/BindOk";
 
 type GetTangentType<T> = T extends IAnimationInterpolator<infer _, infer U> ? U : never;
 
@@ -58,6 +60,10 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
 
     public createInstance(target: (value: T) => void): AnimationTrackInstance<T> {
         return new AnimationTrackInstance<T>(this, target);
+    }
+
+    public tryCreateInstance(target: (value: T) => void): [IAnimationInstance, typeof BindOk] {
+        return [new AnimationTrackInstance<T>(this, target), BindOk];
     }
 
     public static createTrack<T, U>(keys: AnimationKey<T, U>[], interpolator: IAnimationInterpolator<T, U>, frameRate?: number): AnimationTrack<T> {

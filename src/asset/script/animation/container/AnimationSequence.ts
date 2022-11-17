@@ -1,9 +1,11 @@
 import { AnimationClip } from "./AnimationClip";
 import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
 import { AnimationTrack } from "./AnimationTrack";
-import { AnimationClipBindInfo } from "../AnimationClipBindInfo";
+import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { AnimationEventTrack } from "./AnimationEventTrack";
+import { IAnimationInstance } from "../instance/IAniamtionInstance";
+import { AnimationSequenceBindResult } from "../bind/AnimationSequenceBindResult";
 
 type UnwrapRangedAnimation<T extends RangedAnimation<any>> = T extends RangedAnimation<infer U> ? U : never;
 
@@ -49,7 +51,7 @@ export type NonRecursiveSequenceBindItem = (AnimationClipBindInfo<any>|((value: 
 
 export type SequenceBindInfo = SequenceBindItem[];
 
-export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationContainer<U> {
+export class AnimationSequence<T extends ContainerData, U extends InferedSequenceBindData<T> = InferedSequenceBindData<T>> implements IAnimationContainer<U, AnimationSequenceBindResult> {
     public readonly animationContainers: T;
     public readonly startFrame: number;
     public readonly endFrame: number;
@@ -82,6 +84,10 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
     }
 
     public createInstance(bindData: U): AnimationSequenceInstance<T, U> {
-        return new AnimationSequenceInstance(this, bindData);
+        return AnimationSequenceInstance.create(this, bindData);
+    }
+
+    public tryCreateInstance(bindData: U): [IAnimationInstance, AnimationSequenceBindResult] {
+        return AnimationSequenceInstance.tryCreate(this, bindData);
     }
 }

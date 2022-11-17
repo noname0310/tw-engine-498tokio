@@ -1,7 +1,7 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
 import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
 import { AnimationClipInstance } from "../instance/AnimationClipInstance";
-import { AnimationClipBindInfo } from "../AnimationClipBindInfo";
+import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
 import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
 import { IAnimationClock } from "../../IAnimationClock";

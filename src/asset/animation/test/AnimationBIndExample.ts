@@ -1,5 +1,5 @@
 import { Vector2 } from "three/src/Three";
-import { AnimationClipBindInfo } from "../../script/animation/AnimationClipBindInfo";
+import { AnimationClipBindInfo } from "../../script/animation/bind/AnimationClipBindInfo";
 import { ScalarHermiteInterpolator } from "../../script/animation/AnimationInterpolator";
 import { AnimationClip } from "../../script/animation/container/AnimationClip";
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";

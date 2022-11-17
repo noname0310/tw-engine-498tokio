@@ -4,7 +4,7 @@ import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 import { AnimationClip } from "../script/animation/container/AnimationClip";
 import { AnimationEventTrack } from "../script/animation/container/AnimationEventTrack";
 import { AnimationEventBindInfo, AnimationEventKey } from "../script/animation/key/AnimationEventKey";
-import { AnimationClipBindInfo } from "../script/animation/AnimationClipBindInfo";
+import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
 
 type RemoveReadonly<T> = {
     -readonly [P in keyof T]: T[P];

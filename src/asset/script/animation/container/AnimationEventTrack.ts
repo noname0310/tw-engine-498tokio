@@ -2,6 +2,7 @@ import { AnimationEventBindInfo, AnimationEventKey } from "../key/AnimationEvent
 import { AnimationEventTrackInstance } from "../instance/AnimationEventTrackInstance";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
+import { BindOk } from "../bind/BindOk";
 
 type DeDuplicate<Arr extends any[], E = never> =
     Arr extends [infer A, ...infer ArrRest]
@@ -87,5 +88,9 @@ export class AnimationEventTrack<T extends EventTrackData, U extends InferedEven
 
     public createInstance(bindInfo: U): AnimationEventTrackInstance<T, U> {
         return new AnimationEventTrackInstance(this, bindInfo);
+    }
+
+    public tryCreateInstance(bindInfo: U): [AnimationEventTrackInstance<T, U>, typeof BindOk] {
+        return [new AnimationEventTrackInstance(this, bindInfo), BindOk];
     }
 }
