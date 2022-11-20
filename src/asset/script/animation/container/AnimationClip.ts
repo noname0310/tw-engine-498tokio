@@ -62,10 +62,10 @@ type testAnimationEventClip1TypeTrackData = [{
 
 export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationContainer<AnimationClipBindInfo<U>, AnimationClipBindResult> {
     public readonly tracks: IAnimationTrack[];
+    public readonly trackMap: ReadonlyMap<string, number>;
     public readonly startFrame: number;
     public readonly endFrame: number;
     public readonly frameRate: number;
-    private readonly _trackMap: Map<string, number>;
 
     public constructor(tracks: [...T], startFrame?: number, endFrame?: number, frameRate = 60) {
         this.tracks = [];
@@ -73,10 +73,11 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
             this.tracks.push(tracks[i].track);
         }
 
-        this._trackMap = new Map();
+        const trackMap = new Map();
         for (let i = 0; i < this.tracks.length; i++) {
-            this._trackMap.set(tracks[i].name, i);
+            trackMap.set(tracks[i].name, i);
         }
+        this.trackMap = trackMap;
 
         const trackArray = this.tracks;
 
@@ -115,7 +116,7 @@ export class AnimationClip<T extends TrackData, U extends InferedAnimationClipBi
     }
 
     public getTrackFromName(name: string): IAnimationTrack|null {
-        const index = this._trackMap.get(name);
+        const index = this.trackMap.get(name);
         if (index === undefined) return null;
         return this.tracks[index];
     }
