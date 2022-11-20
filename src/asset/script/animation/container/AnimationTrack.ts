@@ -49,10 +49,12 @@ export class AnimationTrack<T> implements IAnimationContainer<(value: T) => void
     }
 
     public get startFrame(): number {
+        if (this._keys.length === 0) return 0;
         return this._keys[0].frame;
     }
 
     public get endFrame(): number {
+        if (this._keys.length === 0) return 0;
         return this._keys[this._keys.length - 1].frame;
     }
 
