@@ -1,6 +1,6 @@
 {
     "name": "tw-engine-498tokio",
-    "version": "0.1.26",
+    "version": "0.1.27",
     "description": "web game animation example",
     "main": "dist/asset/index.js",
     "scripts": {
