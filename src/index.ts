@@ -1,6 +1,7 @@
 import { Game } from "the-world-engine";
-import { Bootstrapper } from "./asset/Bootstrapper";
+
 import TestAudio from "./asset/audio/audioTest.mp3";
+import { Bootstrapper } from "./asset/Bootstrapper";
 
 function startGame(): void {
     const game = new Game(document.getElementById("game_view")!, true);

@@ -1,4 +1,4 @@
-import { Vector2, Vector3, Quaternion, MathUtils } from "three/src/Three";
+import { MathUtils, Quaternion, Vector2, Vector3 } from "three/src/Three";
 
 export interface IAnimationInterpolator<T, U> {
     readonly tempInstance?: T; //if T is value type, this is undefined
@@ -141,7 +141,7 @@ export const QuaternionHermiteInterpolator = new class implements IAnimationInte
             const invSinOmega = 1.0 / Math.sin(omega);
 
             s1 = Math.sin((1.0 - gradient) * omega) * invSinOmega;
-            s2 = flip 
+            s2 = flip
                 ? -Math.sin(gradient * omega) * invSinOmega
                 : Math.sin(gradient * omega) * invSinOmega;
         }

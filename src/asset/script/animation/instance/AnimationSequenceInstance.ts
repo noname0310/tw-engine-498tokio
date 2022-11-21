@@ -8,7 +8,7 @@ type RangedAnimationInstance = { offset: number, start: number, end: number, ani
 class ActivationInfoNode {
     public readonly frame: number;
     public readonly animationInstance: RangedAnimationInstance;
-    
+
     public constructor(frame: number, animationInstance: RangedAnimationInstance) {
         this.frame = frame;
         this.animationInstance = animationInstance;
@@ -35,7 +35,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
 
         this._currentActivationFrameIndex = -1;
         this._currentDeActivationFrameIndex = -1;
-        
+
         this._runningAnimations = new Set<RangedAnimationInstance>();
     }
 
@@ -71,7 +71,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
 
     public tryBind(bindInfo: SequenceBindInfo, allowFail = true): typeof allowFail extends true ? void : AnimationSequenceBindResult {
         this._bindInfo = bindInfo.slice();
-        
+
         const frameRate = this._animationSequence.frameRate;
 
         const animationContainerInstances: RangedAnimationInstance[] = [];
@@ -107,7 +107,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
                 });
             }
         }
-        
+
         animationContainerInstances.sort((a, b) => (a.offset + a.start) - (b.offset + b.start));
         this._animationActivationInfo = [];
         for (let i = 0; i < animationContainerInstances.length; ++i) {
@@ -173,10 +173,10 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
 
             runningAnimations.delete(animationInstance);
             activationFrameIndex -= 1;
-            
+
             const offsetedFrameTime = frameTime - animationInstance.offset;
             const offsetedUnTrimmedFrameTime = unTrimmedFrameTime - animationInstance.offset;
-            
+
             const frameRateRatio = frameRate / animationInstance.animation.animationContainer.frameRate;
             animationInstance.animation.process(offsetedFrameTime / frameRateRatio, offsetedUnTrimmedFrameTime / frameRateRatio);
             // console.log(`Deactivate animation on frame ${frameTime} from actavation`);
@@ -197,7 +197,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
 
         this._currentActivationFrameIndex = activationFrameIndex;
         this._currentDeActivationFrameIndex = deActivationFrameIndex;
-        
+
         for (const animationInstance of runningAnimations) {
             let offsetedFrameTime = frameTime - animationInstance.offset;
             const offsetedUnTrimmedFrameTime = unTrimmedFrameTime - animationInstance.offset;

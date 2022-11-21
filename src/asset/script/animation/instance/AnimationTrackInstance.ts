@@ -1,5 +1,5 @@
-import { InterpolationKind } from "../key/AnimationKey";
 import { AnimationTrack } from "../container/AnimationTrack";
+import { InterpolationKind } from "../key/AnimationKey";
 import { IAnimationInstance } from "./IAniamtionInstance";
 
 export class AnimationTrackInstance<T> implements IAnimationInstance {
@@ -32,7 +32,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
 
     public process(frameTime: number): void {
         const keys = this._animationTrack.keys;
-        
+
         if (keys.length === 0) return;
         if (keys.length === 1) {
             this._targetSetFunction(keys[0].value);
@@ -71,7 +71,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
 
         const startKey = keys[startKeyIndex];
         const endKey = keys[startKeyIndex + 1];
-        
+
         // if (startKey === undefined) {
         //     this._targetSetFunction(endKey.value);
         //     return;
@@ -89,7 +89,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
 
         const interpolator = this._animationTrack.interpolator;
         const gradient = (frameTime - startKey.frame) / (endKey.frame - startKey.frame);
-        
+
         if (startKey.interpolation === InterpolationKind.Linear && (endKey.interpolation === InterpolationKind.Linear || endKey.interpolation === InterpolationKind.Step)) {
             const value = interpolator.lerp(startKey.value, endKey.value, gradient, interpolator.tempInstance);
             this._targetSetFunction(value);

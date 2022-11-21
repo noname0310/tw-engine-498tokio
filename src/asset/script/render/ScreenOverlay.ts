@@ -2,7 +2,7 @@ import { Camera, Component, CssHtmlElementRenderer } from "the-world-engine";
 
 export class ScreenOverlay extends Component {
     public override readonly requiredComponents = [Camera];
-    
+
     private _camera: Camera|null = null;
     private _htmlRenderer: CssHtmlElementRenderer|null = null;
 

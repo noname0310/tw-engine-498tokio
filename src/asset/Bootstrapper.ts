@@ -1,4 +1,4 @@
-import { 
+import {
     Bootstrapper as BaseBootstrapper,
     Camera,
     Color,
@@ -7,16 +7,17 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
-import { AnimationControl } from "./script/AnimationControl";
-import { AnimationSequencePlayer } from "./script/animation/player/AnimationSequencePlayer";
-import { AudioPlayer } from "./script/audio/AudioPlayer";
-import { LoadingText } from "./script/LoadingText";
-import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
+
 import { IntroAnimation } from "./animation/IntroAnimation";
 import Audio498Tokio from "./audio/498 tokio.mp3";
+import { IntroObjects, IntroPrefab } from "./prefab/IntroPrefab";
 import { AnimationLoopMode } from "./script/animation/AnimationLoopMode";
-import { ScreenOverlay } from "./script/render/ScreenOverlay";
+import { AnimationSequencePlayer } from "./script/animation/player/AnimationSequencePlayer";
+import { AnimationControl } from "./script/AnimationControl";
+import { AudioPlayer } from "./script/audio/AudioPlayer";
+import { LoadingText } from "./script/LoadingText";
 import { NumberStringPool } from "./script/NumberStringPool";
+import { ScreenOverlay } from "./script/render/ScreenOverlay";
 
 export class Bootstrapper extends BaseBootstrapper {
     public run(): SceneBuilder {
@@ -28,7 +29,7 @@ export class Bootstrapper extends BaseBootstrapper {
         const loadingText = new PrefabRef<LoadingText>();
         const audioPlayer = new PrefabRef<AudioPlayer>();
         const animationPlayer = new PrefabRef<AnimationSequencePlayer>();
-        
+
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
@@ -60,7 +61,7 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildPrefab("intro", IntroPrefab)
                 .getObjects(introObjects).make())
-            
+
             .withChild(instantiater.buildGameObject("sequence_player")
                 .withComponent(AnimationSequencePlayer, c => {
                     const firework1Render = introObjects.ref!.fireWork1.ref!;

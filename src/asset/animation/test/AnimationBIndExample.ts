@@ -1,6 +1,7 @@
 import { Vector2 } from "three/src/Three";
-import { AnimationClipBindInfo } from "../../script/animation/bind/AnimationClipBindInfo";
+
 import { ScalarHermiteInterpolator } from "../../script/animation/AnimationInterpolator";
+import { AnimationClipBindInfo } from "../../script/animation/bind/AnimationClipBindInfo";
 import { AnimationClip } from "../../script/animation/container/AnimationClip";
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";
 import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
@@ -11,7 +12,7 @@ import { AnimationKey, InterpolationKind } from "../../script/animation/key/Anim
 export const track1 = AnimationTrack.createScalarTrack([
     new AnimationKey(0, 0, InterpolationKind.Linear), //frame 0, value 0
     new AnimationKey(60, 1, InterpolationKind.Linear)  //frame 60, value 1
-])
+]);
 
 const div = document.getElementById("animated-div")!;
 
@@ -23,30 +24,30 @@ class AnimationPlayer {
     public frameRate = 60;
     private _time = 0;
     private _currentTime = 0;
-    private _animationInstance: IAnimationInstance;
+    private readonly _animationInstance: IAnimationInstance;
 
     public constructor(animationInstance: IAnimationInstance) {
         this._animationInstance = animationInstance;
     }
 
-    public start() {
+    public start(): void {
         this._time = performance.now();
         this._currentTime = 0;
         this.animate();
     }
 
-    private animate = () => {
+    private readonly animate = (): void => {
         const now = performance.now();
         const delta = now - this._time;
         this._time = now;
         this._currentTime += delta;
         const frameTime = this._currentTime * this.frameRate;
         this._animationInstance.process(frameTime);
-        
+
         if (track1.endFrame < frameTime) {
             requestAnimationFrame(this.animate);
         }
-    }
+    };
 }
 
 new AnimationPlayer(divAnimInstance).start();
@@ -69,25 +70,25 @@ const clip1 = new AnimationClip([
             new AnimationKey(60, 1, InterpolationKind.Cubic, 0, 0)  //frame 120, value 1
         ])
     }
-])
+]);
 
 {
 
-const div1 = document.getElementById("animated-div1")!;
-const div2 = document.getElementById("animated-div2")!;
+    const div1 = document.getElementById("animated-div1")!;
+    const div2 = document.getElementById("animated-div2")!;
 
-const divAnimInstance = clip1.createInstance(new AnimationClipBindInfo([
-    {
-        trackName: "track1" as const,
-        target: (value: number) => div1.style.opacity = value.toString()
-    },
-    {
-        trackName: "track2" as const,
-        target: (value: number) => div2.style.opacity = value.toString()
-    }
-]));
+    const divAnimInstance = clip1.createInstance(new AnimationClipBindInfo([
+        {
+            trackName: "track1" as const,
+            target: (value: number): void => void (div1.style.opacity = value.toString())
+        },
+        {
+            trackName: "track2" as const,
+            target: (value: number): void => void (div2.style.opacity = value.toString())
+        }
+    ]));
 
-new AnimationPlayer(divAnimInstance).start();
+    new AnimationPlayer(divAnimInstance).start();
 
 }
 
@@ -107,24 +108,24 @@ const div2 = document.getElementById("animated-div2")!;
 
 {
 
-const divAnimInstance = sequence1.createInstance([
-    (value: number) => div1.style.opacity = value.toString(),
-    new AnimationClipBindInfo([
-        {
-            trackName: "track1" as const,
-            target: (value: number) => div2.style.opacity = value.toString()
-        },
-        {
-            trackName: "track2" as const,
-            target: (value: number) => div2.style.opacity = value.toString()
+    const divAnimInstance = sequence1.createInstance([
+        (value: number): void => void (div1.style.opacity = value.toString()),
+        new AnimationClipBindInfo([
+            {
+                trackName: "track1" as const,
+                target: (value: number): void => void (div2.style.opacity = value.toString())
+            },
+            {
+                trackName: "track2" as const,
+                target: (value: number): void => void (div2.style.opacity = value.toString())
+            }
+        ]),
+        (value: Vector2): void => {
+            div1.style.left = value.x.toString();
+            div1.style.top = value.y.toString();
         }
-    ]),
-    (value: Vector2) => {
-        div1.style.left = value.x.toString();
-        div1.style.top = value.y.toString();
-    }
-]);
+    ]);
 
-new AnimationPlayer(divAnimInstance).start();
+    new AnimationPlayer(divAnimInstance).start();
 
 }

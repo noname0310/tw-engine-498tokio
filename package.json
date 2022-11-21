@@ -7,7 +7,8 @@
         "start": "webpack serve --mode development",
         "watch": "webpack --watch",
         "build": "webpack --mode production",
-        "tsc": "tsc --declaration"
+        "tsc": "tsc --declaration",
+        "lint": "eslint src --ext .ts,.tsx --fix"
     },
     "repository": {
         "type": "git",
@@ -23,6 +24,7 @@
         "@typescript-eslint/eslint-plugin": "^5.37.0",
         "@typescript-eslint/parser": "^5.37.0",
         "eslint": "^8.23.1",
+        "eslint-plugin-simple-import-sort": "^8.0.0",
         "eslint-webpack-plugin": "^3.2.0",
         "file-loader": "^6.2.0",
         "html-loader": "^4.1.0",

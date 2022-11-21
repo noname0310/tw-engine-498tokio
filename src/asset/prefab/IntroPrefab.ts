@@ -10,26 +10,27 @@ import {
     PrefabRef,
     TileAtlasItem
 } from "the-world-engine";
-import { Vector3, Vector2, Quaternion } from "three/src/Three";
-import { GlowSpriteAtlasRenderer } from "../script/render/GlowSpriteAtlasRenderer";
-import { HorizontalObjectsAnimator } from "../script/render/HorizontalObjectsAnimator";
+import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+
+import ImageFireworkSphere from "../image/firework_sphere.png";
 import ImageFirework1 from "../image/firework1.png";
 import ImageFirework2 from "../image/firework2.png";
 import ImageFirework3 from "../image/firework3.png";
-import ImageFireworkSphere from "../image/firework_sphere.png";
+import ImageGrass from "../image/grass.png";
+import ImageBackground from "../image/intro_background.jpg";
 import ImageMoon from "../image/moon.png";
 import ImageMoonEmission from "../image/moon_emission.png";
-import ImageBackground from "../image/intro_background.jpg";
-import ImageGrass from "../image/grass.png";
-import ImageSpaceshipBlue from "../image/spaceship_blue.png";
 import ImageRedHelmet from "../image/red_helmet.png";
-import { RuntimeAimationContainer } from "../script/RuntimeAnimationContainer";
+import ImageSpaceshipBlue from "../image/spaceship_blue.png";
+import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
 import { AnimationClip } from "../script/animation/container/AnimationClip";
 import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
-import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
 import { NumberStringPool } from "../script/NumberStringPool";
+import { GlowSpriteAtlasRenderer } from "../script/render/GlowSpriteAtlasRenderer";
+import { HorizontalObjectsAnimator } from "../script/render/HorizontalObjectsAnimator";
 import { ParticleEmitter } from "../script/render/ParticleEmitter";
+import { RuntimeAimationContainer } from "../script/RuntimeAnimationContainer";
 
 export type IntroObjects = {
     moonGroup: PrefabRef<GameObject>;
@@ -132,7 +133,7 @@ export class IntroPrefab extends Prefab {
                         c.asyncSetImage(ImageFireworkSphere, 1, 13);
                     })
                     .getComponent(GlowSpriteAtlasRenderer, this._fireWorkSphere))
-                    
+
                 .withChild(this.instantiater.buildGameObject("moon", new Vector3(0, 0, -2), undefined, new Vector3().setScalar(2))
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImageFromPath(ImageMoon);
@@ -164,14 +165,14 @@ export class IntroPrefab extends Prefab {
 
                     c.columnCount = 40;
                     c.rowCount = 1;
-                    
+
 
                     const tile = new Image();
                     tile.src = ImageBackground;
 
                     tile.onload = (): void => {
                         c.imageSources = [new TileAtlasItem(tile)];
-                        
+
                         const x = { i: 0, a: 0};
                         c.drawTileFromTwoDimensionalArray([
                             Array(c.columnCount).fill(x)
@@ -197,7 +198,7 @@ export class IntroPrefab extends Prefab {
                 })
                 .getComponent(HorizontalObjectsAnimator, this._grassRender1)
                 .getGameObject(this._grass1))
-                
+
             .withChild(this.instantiater.buildGameObject("grass2", new Vector3(-30, -14, -5), undefined, new Vector3().setScalar(4))
                 .withComponent(HorizontalObjectsAnimator, c => {
                     c.prefab = class extends Prefab {
@@ -249,7 +250,7 @@ export class IntroPrefab extends Prefab {
                         c.filter.brightness = 0;
                     }))
                 .getGameObject(this._spaceship))
-            
+
             .withChild(this.instantiater.buildGameObject("warp_effect",
                 new Vector3(0, 0, 12),
                 new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), -Math.PI / 4 / 1.2),
@@ -375,7 +376,7 @@ export class IntroPrefab extends Prefab {
                         })
                         .getComponent(CssHtmlElementRenderer, warpEffectSide2Renderer))))
 
-            
+
             .withChild(this.instantiater.buildGameObject("black_screen_2", new Vector3(0, 0, -3))
                 .withComponent(CssHtmlElementRenderer, c => {
                     const div = document.createElement("div");

@@ -1,9 +1,10 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
+
+import { IAnimationClock } from "../../IAnimationClock";
+import { AnimationLoopMode } from "../AnimationLoopMode";
 import { AnimationSequence, ContainerData, InferedSequenceBindData, SequenceBindInfo } from "../container/AnimationSequence";
 import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
-import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
-import { IAnimationClock } from "../../IAnimationClock";
 
 export class AnimationSequencePlayer extends Component implements IAnimationPlayer {
     private _animationSequence: AnimationSequence<any, any>|null = null;
@@ -51,7 +52,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
 
     public update(): void {
         if (!this._animationSequenceInstace || !this._isPlaying) return;
-        
+
         const frameRate = this._animationSequence!.frameRate;
 
         if (this._animationClock) {
@@ -65,7 +66,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
                 this._elapsedTime = (frameTime % this._animationSequence!.endFrame) / frameRate;
                 this._animationSequenceInstace.frameIndexHint(0);
             }
-            
+
             if (this._animationClock) {
                 this._animationClock.setPosition(this._elapsedTime);
             } else {
@@ -92,7 +93,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
             if (!this._bindInfo) throw new Error("bindInfo is not set");
             this._animationSequenceInstace = this._animationSequence.createInstance(this._bindInfo);
         }
-        
+
         if (this._animationClock) {
             this._animationClock.play();
             return;
@@ -102,7 +103,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         this._onAnimationStartEvent.invoke();
     }
 
-    public playByClock = (): void => {
+    public readonly playByClock = (): void => {
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     };
@@ -118,7 +119,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         this._onAnimationPausedEvent.invoke();
     }
 
-    public pauseByClock = (): void => {
+    public readonly pauseByClock = (): void => {
         this.processByClock(this._animationClock!.currentTime);
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
@@ -136,7 +137,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         this._onAnimationEndEvent.invoke();
     }
 
-    public stopByClock = (): void => {
+    public readonly stopByClock = (): void => {
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
@@ -161,7 +162,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
-    public processByClock = (time: number): void => {
+    public readonly processByClock = (time: number): void => {
         if (!this._animationSequence) throw new Error("animationSequence is not set");
         if (!this._bindInfo) throw new Error("bindInfo is not set");
 
@@ -194,7 +195,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         } else {
             this._animationSequence = animationSequence;
             this._bindInfo = bindInfo;
-            
+
             if (this._animationSequenceInstace) {
                 this._animationSequenceInstace = animationSequence.createInstance(bindInfo);
             }
@@ -235,7 +236,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         if (!this._animationSequence) throw new Error("animationSequence is not set");
         return this._elapsedTime * this._animationSequence.frameRate;
     }
-    
+
     public set frameTime(frameTime: number) {
         if (!this._animationSequence) throw new Error("animationSequence is not set");
         this.elapsedTime = frameTime / this._animationSequence.frameRate;
@@ -255,7 +256,7 @@ export class AnimationSequencePlayer extends Component implements IAnimationPlay
         }
 
         this._animationClock = animationClock;
-        
+
         if (animationClock) {
             animationClock.onPlayed.addListener(this.playByClock);
             animationClock.onPaused.addListener(this.pauseByClock);

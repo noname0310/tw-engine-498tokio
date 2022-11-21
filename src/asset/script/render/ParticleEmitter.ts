@@ -1,5 +1,6 @@
-import { Vector2 } from "three/src/Three";
 import { Component, PrefabConstructor, ReadonlyVector2, WritableVector2 } from "the-world-engine";
+import { Vector2 } from "three/src/Three";
+
 import { Mulberry32 } from "./Mulberry32";
 
 export class ParticleEmitter extends Component {
@@ -10,7 +11,7 @@ export class ParticleEmitter extends Component {
         public lifeTime = 0;
         public prefab: PrefabConstructor|null = null;
         public emitter: ParticleEmitter|null = null;
-    
+
         public update(): void {
             //update particle position
             const linearVelocity = this.linearVelocity;
@@ -19,7 +20,7 @@ export class ParticleEmitter extends Component {
             position.y += linearVelocity.y * this.engine.time.deltaTime;
 
             const emitter = this.emitter!;
-    
+
             //remove particle if it is dead
             if (this.activeTime + this.lifeTime < emitter._accumulatedTime) {
                 if (this.prefab === emitter._prefab) {

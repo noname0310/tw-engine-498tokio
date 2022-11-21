@@ -1,8 +1,8 @@
-import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
 import { AnimationClipBindData, AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
+import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
+import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
 import { IAnimationInstance } from "./IAniamtionInstance";
 import { IAnimationTrackInstance } from "./IAnimationTrackInstance";
-import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
 
 export class AnimationClipInstance<T extends TrackData, U extends InferedAnimationClipBindData<T> = InferedAnimationClipBindData<T>> implements IAnimationInstance {
     private _bindInfo: AnimationClipBindInfo<U>;

@@ -1,63 +1,65 @@
-import { Vector3, Quaternion } from "three/src/Three";
+import { Quaternion, Vector3 } from "three/src/Three";
+
 import { AnimationClip } from "../../script/animation/container/AnimationClip";
-import { AnimationEventKey } from "../../script/animation/key/AnimationEventKey";
 import { AnimationEventTrack } from "../../script/animation/container/AnimationEventTrack";
-import { AnimationKey, InterpolationKind } from "../../script/animation/key/AnimationKey";
 import { AnimationSequence, RangedAnimation } from "../../script/animation/container/AnimationSequence";
 import { AnimationTrack } from "../../script/animation/container/AnimationTrack";
+import { AnimationEventKey } from "../../script/animation/key/AnimationEventKey";
+import { AnimationKey, InterpolationKind } from "../../script/animation/key/AnimationKey";
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const testAnimationSequence1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroScalar = 0;
     const zAxis = new Vector3(0, 0, 1);
     let acc = 0;
-    
+
     return new AnimationSequence([
         new RangedAnimation(
             AnimationTrack.createVector3Track([
-                new AnimationKey(acc = 0.00, new Vector3( 0,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc = 0.00, new Vector3(0,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-3,  2,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 2,  3,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(2,  3,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-1,  1,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 3,  2,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(3,  2,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 1, -1,  0), InterpolationKind.Step),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Step),
+                new AnimationKey(acc += 100, new Vector3(1, -1,  0), InterpolationKind.Step),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-1,  1,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-3, -2,  0), InterpolationKind.Step),
-                new AnimationKey(acc += 100, new Vector3( 2,  3,  0), InterpolationKind.Step)
+                new AnimationKey(acc += 100, new Vector3(2,  3,  0), InterpolationKind.Step)
             ])
         ),
         new RangedAnimation(
             new AnimationClip([
                 {
-                    name: "position" as const, 
+                    name: "position" as const,
                     track: AnimationTrack.createVector3Track([
-                        new AnimationKey(acc = 0.00, new Vector3( 0,  0,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc = 0.00, new Vector3(0,  0,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 0,  0,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(0,  0,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Linear),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Linear),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 0,  0,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(0,  0,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Step)
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Step)
                     ])
                 },
                 {
@@ -82,67 +84,68 @@ export const testAnimationSequence1 = (() => {
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Step)
                     ])
-                },
+                }
             ])
         )
     ]);
 })();
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const testAnimationSequence2 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroScalar = 0;
     const zAxis = new Vector3(0, 0, 1);
     let acc = 0;
-    
+
     return new AnimationSequence([
         new RangedAnimation(
             testAnimationSequence1
         ),
         new RangedAnimation(
             AnimationTrack.createVector3Track([
-                new AnimationKey(acc = 0.00, new Vector3( 0,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc = 0.00, new Vector3(0,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-3,  2,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 2,  3,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(2,  3,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-1,  1,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 3,  2,  0), InterpolationKind.Linear),
+                new AnimationKey(acc += 100, new Vector3(3,  2,  0), InterpolationKind.Linear),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Linear),
-                new AnimationKey(acc += 100, new Vector3( 1, -1,  0), InterpolationKind.Step),
-                new AnimationKey(acc += 100, new Vector3( 3, -2,  0), InterpolationKind.Step),
+                new AnimationKey(acc += 100, new Vector3(1, -1,  0), InterpolationKind.Step),
+                new AnimationKey(acc += 100, new Vector3(3, -2,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-2,  3,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-1,  1,  0), InterpolationKind.Step),
                 new AnimationKey(acc += 100, new Vector3(-3, -2,  0), InterpolationKind.Step),
-                new AnimationKey(acc += 100, new Vector3( 2,  3,  0), InterpolationKind.Step)
+                new AnimationKey(acc += 100, new Vector3(2,  3,  0), InterpolationKind.Step)
             ])
         ),
         new RangedAnimation(
             new AnimationClip([
                 {
-                    name: "position" as const, 
+                    name: "position" as const,
                     track: AnimationTrack.createVector3Track([
-                        new AnimationKey(acc = 0.00, new Vector3( 0,  0,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc = 0.00, new Vector3(0,  0,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
-                        new AnimationKey(acc += 100, new Vector3( 0,  0,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
+                        new AnimationKey(acc += 100, new Vector3(0,  0,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Linear),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Linear),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Linear),
-                        new AnimationKey(acc += 100, new Vector3( 0,  0,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Linear),
+                        new AnimationKey(acc += 100, new Vector3(0,  0,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(2,  2,  0), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Vector3(-2, -2,  0), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Vector3(-2,  2,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 2, -2,  0), InterpolationKind.Step),
-                        new AnimationKey(acc += 100, new Vector3( 1,  1,  0), InterpolationKind.Step)
+                        new AnimationKey(acc += 100, new Vector3(2, -2,  0), InterpolationKind.Step),
+                        new AnimationKey(acc += 100, new Vector3(1,  1,  0), InterpolationKind.Step)
                     ])
                 },
                 {
@@ -167,18 +170,19 @@ export const testAnimationSequence2 = (() => {
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, 0.00000), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.PI), InterpolationKind.Step)
                     ])
-                },
+                }
             ])
-        ),
+        )
     ]);
 })();
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const testRandomSequence1 = (() => {
     const zeroVector3 = new Vector3(0, 0, 0);
     const zeroScalar = 0;
     const zAxis = new Vector3(0, 0, 1);
     let acc = 0;
-    
+
     return new AnimationSequence([
         new RangedAnimation(
             AnimationTrack.createVector3Track([
@@ -205,7 +209,7 @@ export const testRandomSequence1 = (() => {
         new RangedAnimation(
             new AnimationClip([
                 {
-                    name: "position" as const, 
+                    name: "position" as const,
                     track: AnimationTrack.createVector3Track([
                         new AnimationKey(acc = 0.00, new Vector3(Math.random() * 4 - 2, Math.random() * 8 - 4, 0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
                         new AnimationKey(acc += 100, new Vector3(Math.random() * 4 - 2, Math.random() * 8 - 4, 0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
@@ -249,7 +253,7 @@ export const testRandomSequence1 = (() => {
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.random() * 4 - 2), InterpolationKind.Step),
                         new AnimationKey(acc += 100, new Quaternion().setFromAxisAngle(zAxis, Math.random() * 4 - 2), InterpolationKind.Step)
                     ])
-                },
+                }
             ])
         ),
         new RangedAnimation(
@@ -294,7 +298,7 @@ export const testRandomSequence1 = (() => {
 //     new RangedAnimation(
 //         new AnimationClip([
 //             {
-//                 name: "position" as const, 
+//                 name: "position" as const,
 //                 track: AnimationTrack.createVector3Track([
 //                     new AnimationKey(acc = 0.00, new Vector3( 0,  0,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),
 //                     new AnimationKey(acc += 100, new Vector3( 2,  2,  0), InterpolationKind.Cubic, zeroVector3, zeroVector3),

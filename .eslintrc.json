@@ -1,4 +1,4 @@
-module.exports = {
+{
     "env": {
         "browser": true,
         "es2021": true
@@ -14,11 +14,13 @@ module.exports = {
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "simple-import-sort"
     ],
     "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-misused-new": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/explicit-member-accessibility": [
             "error",
@@ -100,14 +102,31 @@ module.exports = {
                 "format": ["PascalCase"]
             }
         ],
-        "no-debugger": "warn",
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "comma-spacing": [
+            "error"
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ],
         "indent": [
             "error",
             4
         ],
+        "keyword-spacing": [
+            "error"
+        ],
         "linebreak-style": [
             "error",
             "unix"
+        ],
+        "no-debugger": "warn",
+        "no-trailing-spaces": [
+            "error"
         ],
         "quotes": [
             "error",
@@ -117,9 +136,26 @@ module.exports = {
             "error",
             "always"
         ],
-        "comma-dangle": [
+        "semi-spacing": [
+            "error"
+        ],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "space-before-blocks": [
+            "error"
+        ],
+        "space-before-function-paren": [
             "error",
             "never"
+        ],
+        "space-in-parens": [
+            "error"
+        ],
+        "space-infix-ops": [
+            "error"
+        ],
+        "space-unary-ops": [
+            "error"
         ]
     }
-};
+}

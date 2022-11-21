@@ -1,19 +1,19 @@
-import { AnimationClip } from "./AnimationClip";
-import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
-import { AnimationTrack } from "./AnimationTrack";
 import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
-import { IAnimationContainer } from "./IAnimationContainer";
-import { AnimationEventTrack } from "./AnimationEventTrack";
-import { IAnimationInstance } from "../instance/IAniamtionInstance";
 import { AnimationSequenceBindResult } from "../bind/AnimationSequenceBindResult";
+import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
+import { IAnimationInstance } from "../instance/IAniamtionInstance";
+import { AnimationClip } from "./AnimationClip";
+import { AnimationEventTrack } from "./AnimationEventTrack";
+import { AnimationTrack } from "./AnimationTrack";
+import { IAnimationContainer } from "./IAnimationContainer";
 
 type UnwrapRangedAnimation<T extends RangedAnimation<any>> = T extends RangedAnimation<infer U> ? U : never;
 
-export type InferedSequenceBindData<T extends ContainerData> = 
+export type InferedSequenceBindData<T extends ContainerData> =
     any[] extends T
         ? NonRecursiveSequenceBindItem[]
         : {
-            [key in keyof T]: 
+            [key in keyof T]:
                 T[key] extends RangedAnimation<any>
                     ? UnwrapRangedAnimation<T[key]> extends AnimationClip<infer _, infer U>
                         ? AnimationClipBindInfo<U>

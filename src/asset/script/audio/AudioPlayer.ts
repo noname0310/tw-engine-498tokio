@@ -1,4 +1,5 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
+
 import { IAnimationClock } from "../IAnimationClock";
 import { getFileAudioBuffer } from "./DecodeAudioDataFast";
 
@@ -21,7 +22,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     private _startTime = 0;
     private _jumpedPosition = -1;
     private _state = PlayerState.Waiting;
-    
+
     private readonly _onPlayedEvent = new EventContainer<() => void>();
     private readonly _onPausedEvent = new EventContainer<() => void>();
     private readonly _onStoppedEvent = new EventContainer<() => void>();
@@ -89,7 +90,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
             }
             oldSource.disconnect();
         }
-        
+
         this._state = PlayerState.Waiting;
 
         const source = this._source = context.createBufferSource();
@@ -208,7 +209,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         if (this._pendingPlay) {
             this._pendingPlay = false;
         }
-        
+
         if (this._state !== PlayerState.Playing) return;
         this.getContext()!.suspend();
         this._state = PlayerState.Paused;
@@ -221,7 +222,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         if (this._pendingPlay) {
             this._pendingPlay = false;
         }
-        
+
         if (this._state !== PlayerState.Playing) return;
         this.getContext()!.suspend();
         this._state = PlayerState.Stopped;
@@ -253,7 +254,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         oldSource.onended = null;
         oldSource.stop();
         oldSource.disconnect();
-        
+
         const newSource = context.createBufferSource();
         newSource.onended = this.onEnded;
         newSource.buffer = oldSource.buffer;
@@ -268,7 +269,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
         this._state = PlayerState.Stopped;
         this._onStoppedEvent.invoke();
     };
-    
+
     public get currentTime(): number {
         if (!this._source) return 0;
         return (this._source.context.currentTime - this._startTime) * this._playbackRate;
@@ -315,7 +316,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     }
 
     public get onPlayed(): IEventContainer<() => void> {
-        return this._onPlayedEvent;   
+        return this._onPlayedEvent;
     }
 
     public get onPaused(): IEventContainer<() => void> {

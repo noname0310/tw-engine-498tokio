@@ -1,16 +1,16 @@
-import { AnimationClipInstance } from "../instance/AnimationClipInstance";
-import { AnimationTrack } from "./AnimationTrack";
 import { AnimationClipBindInfo, AnimationClipBindItem } from "../bind/AnimationClipBindInfo";
+import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
+import { AnimationClipInstance } from "../instance/AnimationClipInstance";
+import { AnimationEventTrack } from "./AnimationEventTrack";
+import { AnimationTrack } from "./AnimationTrack";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
-import { AnimationEventTrack } from "./AnimationEventTrack";
-import { AnimationClipBindResult } from "../bind/AnimationClipBindResult";
 
 type TrackItem<TrackName extends string, Track extends IAnimationTrack> = { name: TrackName, track: Track };
 
 export type TrackData = TrackItem<any, any>[];
 
-export type InferedAnimationClipBindData<T extends TrackData> = { 
+export type InferedAnimationClipBindData<T extends TrackData> = {
     [key in keyof T]: T[key] extends TrackItem<infer TrackName, infer Track>
         ? Track extends AnimationTrack<infer BindType>
             ? AnimationClipBindItem<TrackName, (value: BindType) => void>

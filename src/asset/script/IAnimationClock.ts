@@ -1,4 +1,5 @@
 import { IEventContainer } from "the-world-engine";
+
 import { IClock } from "./IClock";
 
 export interface IAnimationClock extends IClock {

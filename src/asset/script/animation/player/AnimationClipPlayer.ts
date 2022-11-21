@@ -1,10 +1,11 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
+
+import { IAnimationClock } from "../../IAnimationClock";
+import { AnimationLoopMode } from "../AnimationLoopMode";
+import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
 import { AnimationClip, InferedAnimationClipBindData, TrackData } from "../container/AnimationClip";
 import { AnimationClipInstance } from "../instance/AnimationClipInstance";
-import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
-import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "./IAnimationPlayer";
-import { IAnimationClock } from "../../IAnimationClock";
 
 // type UnwrapAnimationClip<T extends AnimationClip<any, any>> = T extends AnimationClip<infer U, any> ? U : never;
 
@@ -72,7 +73,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         if (!this._animationClipInstace || !this._isPlaying) return;
 
         const frameRate = this._animationClip!.frameRate;
-        
+
         if (this._animationClock) {
             this._elapsedTime = this._animationClock.currentTime;
         } else {
@@ -84,7 +85,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
                 this._elapsedTime = (frameTime % this._animationClip!.endFrame) / frameRate;
                 this._animationClipInstace.frameIndexHint(0);
             }
-        
+
             if (this._animationClock) {
                 this._animationClock.setPosition(this._elapsedTime);
             } else {
@@ -111,7 +112,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
             if (!this._bindInfo) throw new Error("bindInfo is not set");
             this._animationClipInstace = this._animationClip.createInstance(this._bindInfo);
         }
-        
+
         if (this._animationClock) {
             this._animationClock.play();
             return;
@@ -121,7 +122,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         this._onAnimationStartEvent.invoke();
     }
 
-    public playByClock = () => {
+    public readonly playByClock = (): void => {
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     };
@@ -137,7 +138,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         this._onAnimationPausedEvent.invoke();
     }
 
-    public pauseByClock = (): void => {
+    public readonly pauseByClock = (): void => {
         this.processByClock(this._animationClock!.currentTime);
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
@@ -155,7 +156,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         this._onAnimationEndEvent.invoke();
     }
 
-    public stopByClock = (): void => {
+    public readonly stopByClock = (): void => {
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
@@ -180,7 +181,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
-    public processByClock = (time: number): void => {
+    public readonly processByClock = (time: number): void => {
         if (!this._animationClip) throw new Error("animationClip is not set");
         if (!this._bindInfo) throw new Error("bindInfo is not set");
 
@@ -203,7 +204,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         return this._animationClip;
     }
 
-    public setAnimationAndBind<T extends TrackData, U extends InferedAnimationClipBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
+    public setAnimationAndBind<T extends TrackData, U extends InferedAnimationClipBindData<T>>(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>): void {
         if (this._animationClip === animationClip) {
             this._bindInfo = bindInfo;
 
@@ -213,7 +214,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         } else {
             this._animationClip = animationClip;
             this._bindInfo = bindInfo;
-            
+
             if (this._animationClipInstace) {
                 this._animationClipInstace = animationClip.createInstance(bindInfo);
             }
@@ -254,7 +255,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         if (!this._animationClip) throw new Error("animationClip is not set");
         return this._elapsedTime * this._animationClip.frameRate;
     }
-    
+
     public set frameTime(frameTime: number) {
         if (!this._animationClip) throw new Error("animationClip is not set");
         this.elapsedTime = frameTime / this._animationClip.frameRate;
@@ -274,7 +275,7 @@ export class AnimationClipPlayer extends Component implements IAnimationPlayer {
         }
 
         this._animationClock = animationClock;
-        
+
         if (animationClock) {
             animationClock.onPlayed.addListener(this.playByClock);
             animationClock.onPaused.addListener(this.pauseByClock);

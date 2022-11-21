@@ -1,4 +1,5 @@
 import { Component } from "the-world-engine";
+
 import { IAnimationContainer } from "./animation/container/IAnimationContainer";
 import { IAnimationPlayer } from "./animation/player/IAnimationPlayer";
 
@@ -8,7 +9,7 @@ export class AnimationControl extends Component {
     private _playbackRateSlider: HTMLInputElement|null = null;
     private _playButton: HTMLButtonElement|null = null;
     private _frameDisplayText: HTMLSpanElement|null = null;
-    
+
     private _ready = false;
 
     public onEnable(): void {

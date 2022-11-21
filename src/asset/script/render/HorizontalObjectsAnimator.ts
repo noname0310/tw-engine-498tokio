@@ -1,5 +1,5 @@
-import { Vector3 } from "three/src/Three";
 import { Component, GameObject, PrefabConstructor } from "the-world-engine";
+import { Vector3 } from "three/src/Three";
 
 export class HorizontalObjectsAnimator extends Component {
     private _prefab: PrefabConstructor|null = null;

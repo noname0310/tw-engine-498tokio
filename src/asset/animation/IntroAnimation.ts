@@ -1,10 +1,10 @@
-import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
-import { AnimationSequence, RangedAnimation } from "../script/animation/container/AnimationSequence";
-import { AnimationTrack } from "../script/animation/container/AnimationTrack";
+import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
 import { AnimationClip } from "../script/animation/container/AnimationClip";
 import { AnimationEventTrack } from "../script/animation/container/AnimationEventTrack";
+import { AnimationSequence, RangedAnimation } from "../script/animation/container/AnimationSequence";
+import { AnimationTrack } from "../script/animation/container/AnimationTrack";
 import { AnimationEventBindInfo, AnimationEventKey } from "../script/animation/key/AnimationEventKey";
-import { AnimationClipBindInfo } from "../script/animation/bind/AnimationClipBindInfo";
+import { AnimationKey, InterpolationKind } from "../script/animation/key/AnimationKey";
 
 type RemoveReadonly<T> = {
     -readonly [P in keyof T]: T[P];
@@ -15,7 +15,7 @@ export class IntroAnimation {
 
     private static readonly _fireworkAnimationClip = new AnimationClip([
         {
-            name: "firework1" as const, 
+            name: "firework1" as const,
             track: AnimationTrack.createScalarTrack([
                 new AnimationKey(this._timeScale * 0., 0, InterpolationKind.Step),
                 new AnimationKey(this._timeScale * 2., 1, InterpolationKind.Step),
@@ -123,7 +123,7 @@ export class IntroAnimation {
 
     private static readonly _blackScreenAnimationClip = new AnimationClip([
         {
-            name: "black_screen_opacity" as const, 
+            name: "black_screen_opacity" as const,
             track: AnimationTrack.createScalarTrack([
                 new AnimationKey(this._timeScale * 75, 1, InterpolationKind.Linear),
                 new AnimationKey(this._timeScale * 180, 0, InterpolationKind.Linear)
@@ -249,7 +249,7 @@ export class IntroAnimation {
 
     private static readonly _blackScreen2AnimationClip = new AnimationClip([
         {
-            name: "black_screen2_opacity" as const, 
+            name: "black_screen2_opacity" as const,
             track: AnimationTrack.createScalarTrack([
                 new AnimationKey(this._timeScale * 547, 0, InterpolationKind.Linear),
                 new AnimationKey(this._timeScale * 558, 1, InterpolationKind.Linear)
@@ -393,7 +393,7 @@ export class IntroAnimation {
         ]);
 
         const warpEffectClipBindInfo = new AnimationClipBindInfo([
-            { 
+            {
                 trackName: "warp_effect_activation" as const,
                 target: IntroAnimation.createActivationBindInfo(warpEffectEnable, warpEffectDisable)
             },

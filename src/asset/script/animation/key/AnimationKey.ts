@@ -19,14 +19,14 @@ export class AnimationKey<T, U = any> implements IAnimationKey {
 
     /**
      * create a key with a value and a frame
-     * 
+     *
      * if type of "value" implements "clone" method, then they will be cloned
      * if type of "inTangent", "outTangent" implements "clone" method, then they will be cloned
-     * @param frame 
-     * @param value 
-     * @param interpolation 
-     * @param inTangent 
-     * @param outTangent 
+     * @param frame
+     * @param value
+     * @param interpolation
+     * @param inTangent
+     * @param outTangent
      */
     public constructor(frame: number, value: T, interpolation: InterpolationKind, inTangent?: U, outTangent?: U) {
         this.value = (value as unknown as Cloneable).clone ? (value as unknown as Cloneable).clone() as T : value;

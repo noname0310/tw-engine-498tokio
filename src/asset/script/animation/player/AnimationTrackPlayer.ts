@@ -1,9 +1,10 @@
 import { Component, EventContainer, IEventContainer } from "the-world-engine";
+
+import { IAnimationClock } from "../../IAnimationClock";
+import { AnimationLoopMode } from "../AnimationLoopMode";
 import { AnimationTrack } from "../container/AnimationTrack";
 import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
-import { AnimationLoopMode } from "../AnimationLoopMode";
 import { IAnimationPlayer } from "../player/IAnimationPlayer";
-import { IAnimationClock } from "../../IAnimationClock";
 
 export class AnimationTrackPlayer<T> extends Component implements IAnimationPlayer {
     private _animationTrack: AnimationTrack<T>|null = null;
@@ -74,7 +75,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
                 this._animationTrackInstace.process(frame);
                 this._onAnimationProcessEvent.invoke(frameTime);
             }
-            
+
             if (this._loopMode === AnimationLoopMode.None) {
                 this.stop();
             }
@@ -102,7 +103,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         this._onAnimationStartEvent.invoke();
     }
 
-    public playByClock = () => {
+    public readonly playByClock = (): void => {
         this._isPlaying = true;
         this._onAnimationStartEvent.invoke();
     };
@@ -118,7 +119,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         this._onAnimationPausedEvent.invoke();
     }
 
-    public pauseByClock = (): void => {
+    public readonly pauseByClock = (): void => {
         this.processByClock(this._animationClock!.currentTime);
         this._isPlaying = false;
         this._onAnimationPausedEvent.invoke();
@@ -136,7 +137,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         this._onAnimationEndEvent.invoke();
     }
 
-    public stopByClock = (): void => {
+    public readonly stopByClock = (): void => {
         this._isPlaying = false;
         this._elapsedTime = 0;
         this._onAnimationEndEvent.invoke();
@@ -161,7 +162,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         this._onAnimationProcessEvent.invoke(frameTime);
     }
 
-    public processByClock = (time: number): void => {
+    public readonly processByClock = (time: number): void => {
         if (!this._animationTrack) throw new Error("animationTrack is not set");
         if (!this._animationTarget) throw new Error("animationTarget is not set");
 
@@ -229,7 +230,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         if (!this._animationTrack) throw new Error("animationTrack is not set");
         return this._elapsedTime * this._animationTrack.frameRate;
     }
-    
+
     public set frameTime(frameTime: number) {
         if (!this._animationTrack) throw new Error("animationTrack is not set");
         this.elapsedTime = frameTime / this._animationTrack.frameRate;
@@ -249,7 +250,7 @@ export class AnimationTrackPlayer<T> extends Component implements IAnimationPlay
         }
 
         this._animationClock = animationClock;
-        
+
         if (animationClock) {
             animationClock.onPlayed.addListener(this.playByClock);
             animationClock.onPaused.addListener(this.pauseByClock);

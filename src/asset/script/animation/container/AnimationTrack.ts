@@ -1,11 +1,12 @@
-import { Vector2, Vector3, Quaternion } from "three/src/Three";
+import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+
 import { IAnimationInterpolator, QuaternionHermiteInterpolator, ScalarHermiteInterpolator, Vector2HermiteInterpolator, Vector3HermiteInterpolator } from "../AnimationInterpolator";
-import { AnimationKey } from "../key/AnimationKey";
+import { BindOk } from "../bind/BindOk";
 import { AnimationTrackInstance } from "../instance/AnimationTrackInstance";
+import { IAnimationInstance } from "../instance/IAniamtionInstance";
+import { AnimationKey } from "../key/AnimationKey";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
-import { IAnimationInstance } from "../instance/IAniamtionInstance";
-import { BindOk } from "../bind/BindOk";
 
 type GetTangentType<T> = T extends IAnimationInterpolator<infer _, infer U> ? U : never;
 

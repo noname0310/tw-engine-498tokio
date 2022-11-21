@@ -1,7 +1,8 @@
 import { IEventContainer } from "the-world-engine";
-import { IAnimationContainer } from "../container/IAnimationContainer";
-import { AnimationLoopMode } from "../AnimationLoopMode";
+
 import { IAnimationClock } from "../../IAnimationClock";
+import { AnimationLoopMode } from "../AnimationLoopMode";
+import { IAnimationContainer } from "../container/IAnimationContainer";
 
 export interface IAnimationPlayer {
     get onAnimationProcess(): IEventContainer<(frameTime: number) => void>;
@@ -35,7 +36,7 @@ export interface IAnimationPlayer {
     set elapsedTime(elapsedTime: number);
 
     get frameTime(): number;
-    
+
     set frameTime(frameTime: number);
 
     get animationClock(): IAnimationClock|null;

@@ -1,12 +1,12 @@
-import { AnimationEventBindInfo, AnimationEventKey } from "../key/AnimationEventKey";
+import { BindOk } from "../bind/BindOk";
 import { AnimationEventTrackInstance } from "../instance/AnimationEventTrackInstance";
+import { AnimationEventBindInfo, AnimationEventKey } from "../key/AnimationEventKey";
 import { IAnimationContainer } from "./IAnimationContainer";
 import { IAnimationTrack } from "./IAnimationTrack";
-import { BindOk } from "../bind/BindOk";
 
 type DeDuplicate<Arr extends any[], E = never> =
     Arr extends [infer A, ...infer ArrRest]
-        ? A extends E 
+        ? A extends E
             ? DeDuplicate<ArrRest, E>
             :[A, ...DeDuplicate<ArrRest, E|A>]
         :[];
@@ -20,8 +20,8 @@ type ListAsMap<Arr extends any[], V> = {
 
 export type EventTrackData = AnimationEventKey<any>[];
 
-export type InferedEventTrackBindData<T extends EventTrackData> = ListAsMap<DeDuplicate<{ 
-    [key in keyof T]: T[key] extends AnimationEventKey<infer U> 
+export type InferedEventTrackBindData<T extends EventTrackData> = ListAsMap<DeDuplicate<{
+    [key in keyof T]: T[key] extends AnimationEventKey<infer U>
         ? U
         : never
 }>, AnimationEventBindInfo>;
