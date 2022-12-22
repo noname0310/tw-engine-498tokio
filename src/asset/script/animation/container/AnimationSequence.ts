@@ -1,7 +1,6 @@
 import { AnimationClipBindInfo } from "../bind/AnimationClipBindInfo";
 import { AnimationSequenceBindResult } from "../bind/AnimationSequenceBindResult";
 import { AnimationSequenceInstance } from "../instance/AnimationSequenceInstance";
-import { IAnimationInstance } from "../instance/IAniamtionInstance";
 import { AnimationClip } from "./AnimationClip";
 import { AnimationEventTrack } from "./AnimationEventTrack";
 import { AnimationTrack } from "./AnimationTrack";
@@ -87,7 +86,7 @@ export class AnimationSequence<T extends ContainerData, U extends InferedSequenc
         return AnimationSequenceInstance.create(this, bindData);
     }
 
-    public tryCreateInstance(bindData: U): [IAnimationInstance, AnimationSequenceBindResult] {
+    public tryCreateInstance(bindData: U): [AnimationSequenceInstance<T, U>, AnimationSequenceBindResult] {
         return AnimationSequenceInstance.tryCreate(this, bindData);
     }
 }
