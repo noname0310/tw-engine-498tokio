@@ -48,7 +48,7 @@ export class AnimationTrackInstance<T> implements IAnimationInstance {
             let min = 0;
             let max = keys.length - 1;
             while (min < max) {
-                const mid = (min + max) >> 1;
+                const mid = min + ((max - min) >> 1);
                 if (frameTime < keys[mid + 1].frame) {
                     max = mid;
                 } else {
