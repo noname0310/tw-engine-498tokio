@@ -5,7 +5,7 @@ export class HorizontalObjectsAnimator extends Component {
     private _prefab: PrefabConstructor|null = null;
     private _spawnCount = 3;
     private _padding = 1;
-    private _spawnedObjects: GameObject[] = [];
+    private readonly _spawnedObjects: GameObject[] = [];
     private _gradient = 0;
 
     public awake(): void {

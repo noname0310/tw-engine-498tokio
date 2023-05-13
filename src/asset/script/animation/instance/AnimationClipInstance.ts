@@ -8,7 +8,7 @@ export class AnimationClipInstance<T extends TrackData, U extends InferedAnimati
     private _bindInfo: AnimationClipBindInfo<U>;
 
     private readonly _animationClip: AnimationClip<T, U>;
-    private _animationTrackInstances: IAnimationTrackInstance[];
+    private readonly _animationTrackInstances: IAnimationTrackInstance[];
 
     private constructor(animationClip: AnimationClip<T, U>, bindInfo: AnimationClipBindInfo<U>) {
         this._bindInfo = bindInfo;
