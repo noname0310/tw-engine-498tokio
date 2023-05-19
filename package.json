@@ -29,6 +29,7 @@
         "file-loader": "^6.2.0",
         "html-loader": "^4.2.0",
         "html-webpack-plugin": "^5.5.1",
+        "memfs": "^3.5.1",
         "ts-loader": "^9.4.2",
         "typescript": "^5.0.4",
         "webpack": "^5.83.1",
