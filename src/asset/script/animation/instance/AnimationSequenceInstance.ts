@@ -77,7 +77,7 @@ export class AnimationSequenceInstance<T extends ContainerData, U extends Infere
         const animationContainerInstances: RangedAnimationInstance[] = [];
         const slicedBindInfo = this._bindInfo;
 
-        let animationSequenceBindResult: AnimationSequenceBindResult|undefined = undefined;
+        let animationSequenceBindResult: AnimationSequenceBindResult | undefined = undefined;
 
         if (allowFail === true) {
             const results: IBindResult[] = [];
