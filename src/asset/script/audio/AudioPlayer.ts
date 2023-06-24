@@ -31,7 +31,7 @@ export class AudioPlayer extends Component implements IAnimationClock {
     private getContext(): AudioContext|null {
         if (this._state === PlayerState.Disposed) return null;
         if (!this._context) {
-            this._context = new AudioContext();
+            this._context = new (AudioContext || (window as any).webkitAudioContext)();
             this._context.suspend();
         }
         return this._context;
